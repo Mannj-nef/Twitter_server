@@ -1,6 +1,6 @@
 import { checkSchema } from 'express-validator';
 import userSchema from '../schemas';
-import validate from '~/utils/validate';
+import validate from '~/utils/validate.util';
 import { typeUserSchema } from '../types';
 
 const validateRegister: typeUserSchema = {

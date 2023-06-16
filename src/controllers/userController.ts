@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
-import { IRegisterReqBody } from '~/interfaces/requests/user.requests';
+import { IRegisterReqBody } from '~/interfaces/requests';
 import userServices from '~/services/user';
 
 const userController = {
@@ -24,17 +24,13 @@ const userController = {
   },
 
   // [PORT] /users/register
-  register: async (req: Request, rep: Response) => {
-    try {
-      const result = await userServices.register(req.body as IRegisterReqBody);
+  register: async (req: Request, res: Response) => {
+    const result = await userServices.register(req.body as IRegisterReqBody);
 
-      return rep.status(HTTP_STATUS.CREATED).json({
-        ...result,
-        message: USERS_MESSAGES.REGISTER_SUCCESS
-      });
-    } catch (error) {
-      throw new Error(error as string);
-    }
+    return res.status(HTTP_STATUS.CREATED).json({
+      result,
+      message: USERS_MESSAGES.REGISTER_SUCCESS
+    });
   }
 };
 
