@@ -4,6 +4,7 @@ import { RunnableValidationChains } from 'express-validator/src/middlewares/sche
 import { EntityError } from '~/models/errors';
 
 // sequential processing, stops running validations chain if the previous one fails.
+// validate error entity 422
 const validate = (validation: RunnableValidationChains<ValidationChain>) => {
   const handle = async (req: Request, res: Response, next: NextFunction) => {
     await validation.run(req);
@@ -14,7 +15,7 @@ const validate = (validation: RunnableValidationChains<ValidationChain>) => {
       return next();
     }
 
-    // has error
+    // has error ENTITY 422
     const errorsObject = {
       errorObject: errors.mapped()
     };

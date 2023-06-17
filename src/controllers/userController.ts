@@ -1,7 +1,8 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
-import { IRegisterReqBody } from '~/interfaces/requests';
+import { IRegisterRequestBody } from '~/interfaces/requests';
+import UserModel from '~/models/schemas/User';
 import userServices from '~/services/user';
 
 const userController = {
@@ -11,24 +12,24 @@ const userController = {
   },
 
   // [PORT] /users/login
-  login: (req: Request, res: Response) => {
-    const { email, password } = req.body;
+  login: async (req: Request, res: Response, next: NextFunction) => {
+    const { _id, verify } = req.user as UserModel;
+    const user_id = _id?.toString() as string;
 
-    if (email === 'manhquan' && password === '123') {
-      return res.json({ email, password, message: USERS_MESSAGES.LOGIN_SUCCESS });
-    }
+    const { rfToken, token } = await userServices.login({ verify, user_id });
 
-    return res.status(HTTP_STATUS.NOT_FOUND).json({
-      message: 'login failed'
+    return res.status(HTTP_STATUS.ACCEPTED).json({
+      message: USERS_MESSAGES.LOGIN_SUCCESS,
+      token,
+      rfToken
     });
   },
 
   // [PORT] /users/register
   register: async (req: Request, res: Response) => {
-    const result = await userServices.register(req.body as IRegisterReqBody);
+    await userServices.register(req.body as IRegisterRequestBody);
 
     return res.status(HTTP_STATUS.CREATED).json({
-      result,
       message: USERS_MESSAGES.REGISTER_SUCCESS
     });
   }

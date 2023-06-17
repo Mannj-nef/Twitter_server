@@ -1,5 +1,6 @@
-import { validateRegister } from './validates';
+import { validateRegister, validateLogin } from './validates';
 
 export const validate = {
-  validateRegister
+  validateRegister,
+  validateLogin
 };

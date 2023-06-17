@@ -1,31 +1,27 @@
 import database from '~/databases';
 import { UserVerifyStatus } from '~/enums/user';
-import { IRegisterReqBody } from '~/interfaces/requests/user.requests';
+import { IRegisterRequestBody } from '~/interfaces/requests/user.requests';
 import UserModel from '~/models/schemas/User';
 import { handleHashPassword } from '~/utils/password.util';
 import { createToken } from '~/utils/token.util';
 
 class UserServices {
-  register = async (payload: IRegisterReqBody) => {
+  register = async (payload: IRegisterRequestBody) => {
     const newUser = {
       ...payload,
       date_of_birth: new Date(payload.date_of_birth),
       password: handleHashPassword(payload.password)
     };
 
-    const user = await database.users.insertOne(new UserModel(newUser));
+    await database.userMethods.insertOneUser(new UserModel(newUser));
 
-    const { token, rfToken } = createToken({
-      user_id: user.insertedId.toString(),
-      verify: UserVerifyStatus.Unverified
-    });
-
-    return { token, rfToken };
+    return;
   };
 
-  checkExistEmail = async (email: string) => {
-    const user = await database.users.findOne({ email });
-    return Boolean(user);
+  login = async (payload: { user_id: string; verify: UserVerifyStatus }) => {
+    const { rfToken, token } = createToken(payload);
+
+    return { token, rfToken };
   };
 }
 

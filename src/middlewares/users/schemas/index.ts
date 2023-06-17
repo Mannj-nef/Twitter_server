@@ -1,6 +1,6 @@
 import { USERS_MESSAGES } from '~/constants/messages';
 import { typeUserSchema } from '../types';
-import userServices from '~/services/user';
+import { UserVerifyStatus } from '~/enums/user';
 
 const userSchema: typeUserSchema = {
   // verify schema name
@@ -25,16 +25,7 @@ const userSchema: typeUserSchema = {
   email: {
     isEmail: { errorMessage: USERS_MESSAGES.EMAIL_IS_INVALID },
     notEmpty: { errorMessage: USERS_MESSAGES.EMAIL_IS_REQUIRED },
-    trim: true,
-    custom: {
-      options: async (email) => {
-        const isExistEmail = await userServices.checkExistEmail(email);
-        if (isExistEmail) {
-          throw new Error(USERS_MESSAGES.EMAIL_ALREADY_EXISTS);
-        }
-        return true;
-      }
-    }
+    trim: true
   },
 
   // verify schema password
@@ -83,7 +74,20 @@ const userSchema: typeUserSchema = {
       },
       errorMessage: USERS_MESSAGES.DATE_OF_BIRTH_MUST_BE_ISO8601
     }
-  }
+  },
+
+  email_verify_token: { isJWT: true },
+  forgot_password_token: { isJWT: true },
+  _id: { isObject: true },
+  avatar: { isString: true },
+  bio: { isString: true },
+  cover_photo: { isString: true },
+  location: { isString: true },
+  verify: { isIn: { options: [Object.values(UserVerifyStatus)] } },
+  website: { isString: true },
+  username: { isString: true },
+  created_at: { isDate: true },
+  updated_at: { isDate: true }
 };
 
 export default userSchema;

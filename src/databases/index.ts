@@ -54,9 +54,35 @@ class Database {
   get followers() {
     return;
   }
+
   get medias() {
     return;
   }
+
+  // methods
+  userMethods = {
+    findUser: async ({ email, ...resParam }: { email: string }) => {
+      const user = await this.users.findOne({ email, resParam });
+      return user;
+    },
+
+    findUserByEmail: async ({ email }: { email: string }) => {
+      const user = await this.users.findOne({ email });
+      return user;
+    },
+
+    checkExistEmail: async (email: string) => {
+      const user = await this.userMethods.findUserByEmail({ email });
+      return Boolean(user);
+    },
+
+    insertOneUser: async (user: UserModel) => {
+      const result = await this.users.insertOne(user);
+      return result;
+    }
+  };
+
+  tweetsMethods = {};
 }
 
 const database = new Database();

@@ -20,7 +20,7 @@ const refreshToken = (payload: IDataToken) => {
   return token;
 };
 
-const createToken = (user: { user_id: string; verify: UserVerifyStatus }) => {
+const createToken = (user: IDataToken) => {
   const data: IDataToken = {
     user_id: user.user_id,
     verify: user.verify
