@@ -1,7 +1,8 @@
+import { ObjectId } from 'mongodb';
 import database from '~/databases';
 import { UserVerifyStatus } from '~/enums/user';
 import { IRegisterRequestBody } from '~/interfaces/requests/user.requests';
-import UserModel from '~/models/schemas/User';
+import { RefreshTokenModel, UserModel } from '~/models/schemas/';
 import { handleHashPassword } from '~/utils/password.util';
 import { createToken } from '~/utils/token.util';
 
@@ -20,6 +21,10 @@ class UserServices {
 
   login = async (payload: { user_id: string; verify: UserVerifyStatus }) => {
     const { rfToken, token } = createToken(payload);
+
+    await database.refreshTokensMethods.insertRfToken(
+      new RefreshTokenModel({ rfToken, user_id: new ObjectId(payload.user_id) })
+    );
 
     return { token, rfToken };
   };

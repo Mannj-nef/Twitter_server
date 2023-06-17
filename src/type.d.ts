@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import UserModel from './models/schemas/User';
+import { UserModel } from './models/schemas';
 
 declare module 'express' {
   interface Request {

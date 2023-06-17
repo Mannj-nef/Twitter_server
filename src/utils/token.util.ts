@@ -1,5 +1,8 @@
+import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { UserVerifyStatus } from '~/enums/user';
+
+dotenv.config();
 
 interface IDataToken {
   user_id: string;

@@ -1,6 +1,6 @@
-import { Collection, Db, MongoClient } from 'mongodb';
+import { Collection, Db, MongoClient, ObjectId } from 'mongodb';
 import dotenv from 'dotenv';
-import UserModel from '~/models/schemas/User';
+import { UserModel, RefreshTokenModel } from '~/models/schemas/';
 
 dotenv.config();
 
@@ -47,8 +47,8 @@ class Database {
     return;
   }
 
-  get refreshTokens() {
-    return;
+  get refreshTokens(): Collection<RefreshTokenModel> {
+    return this.db.collection(process.env.DB_REFRESH_TOKEN_COLLECTION as string);
   }
 
   get followers() {
@@ -79,6 +79,18 @@ class Database {
     insertOneUser: async (user: UserModel) => {
       const result = await this.users.insertOne(user);
       return result;
+    }
+  };
+
+  refreshTokensMethods = {
+    findRfTokenByIdUser: async (idUser: { idUser: ObjectId }) => {
+      const user = await this.refreshTokens.findOne({ idUser });
+      return user;
+    },
+
+    insertRfToken: async (payload: RefreshTokenModel) => {
+      const rfToken = this.refreshTokens.insertOne(payload);
+      return rfToken;
     }
   };
 

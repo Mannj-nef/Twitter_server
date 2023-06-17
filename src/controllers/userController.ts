@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
 import { IRegisterRequestBody } from '~/interfaces/requests';
-import UserModel from '~/models/schemas/User';
+import { UserModel } from '~/models/schemas';
 import userServices from '~/services/user';
 
 const userController = {

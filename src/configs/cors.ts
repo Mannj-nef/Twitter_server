@@ -1,5 +1,5 @@
-import { config } from 'dotenv';
-config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 const corsConfig = {
   origin: [process.env.PORT as string],

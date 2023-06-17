@@ -1,13 +1,13 @@
 import express from 'express';
 import router from './routers';
-import { config } from 'dotenv';
+import dotenv from 'dotenv';
 import database from './databases';
 import cors from 'cors';
 import errorHandler from './middlewares/errors';
 import corsConfig from './configs/cors';
 
 // .env
-config();
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3838;
