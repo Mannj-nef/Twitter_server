@@ -2,10 +2,11 @@ import { USERS_MESSAGES } from '~/constants/messages';
 import { ErrorResponse, ErrorWithStatus, ErrorsTypeValidate } from './types';
 import HTTP_STATUS from '~/constants/httpStatuss';
 
-class CustomError {
+class CustomError extends Error {
   statusCode: number;
   msg: string;
   constructor({ statusCode, message }: ErrorWithStatus) {
+    super();
     this.statusCode = statusCode;
     this.msg = message;
   }

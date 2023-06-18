@@ -4,7 +4,7 @@ import { UserVerifyStatus } from '~/enums/user';
 import { IRegisterRequestBody } from '~/interfaces/requests/user.requests';
 import { RefreshTokenModel, UserModel } from '~/models/schemas/';
 import { handleHashPassword } from '~/utils/password.util';
-import { createToken } from '~/utils/token.util';
+import createToken from '~/utils/token.util';
 
 class UserServices {
   register = async (payload: IRegisterRequestBody) => {
