@@ -2,6 +2,7 @@ import userController from '~/controllers/userController';
 import { Router } from 'express';
 import { validate } from '~/middlewares/users/';
 import wrapRequestHandle from '~/utils/wrapRequest.util';
+import middlewaresAuth from '~/middlewares/auth';
 
 //  Path: /users
 const userRouter = Router();
@@ -29,5 +30,19 @@ userRouter.post('/login', validate.validateLogin, wrapRequestHandle(userControll
  * Response: { message: string }
  */
 userRouter.post('/register', validate.validateRegister, wrapRequestHandle(userController.register));
+
+/**
+ * [PORT]
+ * Path: /logout
+ * Header: {Authorization: 'Bearer <access_token>'}
+ * Body: { refetchToken: string }
+ * Response: { message: string }
+ */
+userRouter.post(
+  '/logout',
+  middlewaresAuth.authentication,
+  validate.validateLogout,
+  wrapRequestHandle(userController.logout)
+);
 
 export default userRouter;

@@ -6,7 +6,10 @@ import IUser from '~/interfaces/user';
  */
 export type typeUserSchema = {
   [k in keyof Required<IUser>]: ParamSchema;
-} & { confirm_password: ParamSchema };
+} & {
+  confirm_password: ParamSchema;
+  refreshToken: ParamSchema;
+};
 
 export type typeUserRegister = {
   name: ParamSchema;
@@ -19,4 +22,8 @@ export type typeUserRegister = {
 export type typeUserLogin = {
   email: ParamSchema;
   password: ParamSchema;
+};
+
+export type typeUserLogout = {
+  refreshToken: ParamSchema;
 };

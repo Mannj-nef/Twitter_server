@@ -10,10 +10,14 @@ const validateLogin: typeUserLogin = {
   email: {
     ...userSchema.email,
     custom: {
-      options: async (email, { req }) => {
-        const user = await database.userMethods.findUserByEmail({ email });
+      options: async (email: string, { req }) => {
+        const emailUser = email.toLowerCase().trim();
+        const user = await database.userMethods.findUserByEmail({ email: emailUser });
 
-        const passwordExactly = handleVerifyPassword({ password: req.body.password, hash: user?.password });
+        const passwordExactly = handleVerifyPassword({
+          password: req.body.password,
+          hash: user?.password
+        });
 
         if (!user || !passwordExactly) {
           throw new Error(USERS_MESSAGES.EMAIL_OR_PASSWORD_IS_INCORRECT);
@@ -28,5 +32,5 @@ const validateLogin: typeUserLogin = {
   password: userSchema.password
 };
 
-const checkValidate = checkSchema(validateLogin);
+const checkValidate = checkSchema(validateLogin, ['body']);
 export default validate(checkValidate);

@@ -1,11 +1,15 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { UserVerifyStatus } from '~/enums/user';
+import { CustomError } from '~/models/errors';
+import { capitalize } from 'lodash';
+import { TokenType } from '~/enums/token';
 
 dotenv.config();
 
 interface IDataToken {
   user_id: string;
+  token_type?: TokenType;
   verify: UserVerifyStatus;
 }
 
@@ -23,10 +27,22 @@ const signRefreshToken = (payload: IDataToken) => {
   return token;
 };
 
-const createToken = (user: IDataToken) => {
+const verifyAccessToken = ({ token, secretKey }: { token: string; secretKey: string }) => {
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    return decoded;
+  } catch (error) {
+    const { message } = error as Error;
+
+    throw new CustomError({ statusCode: 403, message: capitalize(message) });
+  }
+};
+
+const createToken = ({ token_type = TokenType.AccessToken, user_id, verify }: IDataToken) => {
   const data: IDataToken = {
-    user_id: user.user_id,
-    verify: user.verify
+    user_id,
+    token_type,
+    verify
   };
 
   const token = signAccessToken(data);
@@ -35,4 +51,5 @@ const createToken = (user: IDataToken) => {
   return { token, rfToken };
 };
 
+export { verifyAccessToken };
 export default createToken;

@@ -3,7 +3,10 @@ import HTTP_STATUS from '~/constants/httpStatuss';
 import { CustomError } from '~/models/errors';
 
 const notFound = (req: Request, res: Response, next: NextFunction) => {
-  const errorNotFound = new CustomError({ statusCode: HTTP_STATUS.NOT_FOUND, message: 'url not found' });
+  const errorNotFound = new CustomError({
+    statusCode: HTTP_STATUS.NOT_FOUND,
+    message: 'url not found'
+  });
   next(errorNotFound);
 };
 export default notFound;

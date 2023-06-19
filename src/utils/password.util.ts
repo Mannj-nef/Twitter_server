@@ -8,7 +8,13 @@ const handleHashPassword = (password: string) => {
   return hash;
 };
 
-const handleVerifyPassword = ({ password, hash = '' }: { password: string; hash: string | undefined }) => {
+const handleVerifyPassword = ({
+  password,
+  hash = ''
+}: {
+  password: string;
+  hash: string | undefined;
+}) => {
   const passwordIsMatch = bcrypt.compareSync(password, hash);
 
   return passwordIsMatch;

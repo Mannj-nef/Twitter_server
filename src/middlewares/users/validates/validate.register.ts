@@ -24,5 +24,5 @@ const validateRegister: typeUserRegister = {
   date_of_birth: userSchema.date_of_birth
 };
 
-const checkValidate = checkSchema(validateRegister);
+const checkValidate = checkSchema(validateRegister, ['body']);
 export default validate(checkValidate);

@@ -44,6 +44,7 @@ const USERS_MESSAGES = {
   REFRESH_TOKEN_IS_INVALID: 'Refresh token is invalid',
   EMAIL_VERIFY_TOKEN_IS_REQUIRED: 'Email verify token is required',
   USED_REFRESH_TOKEN_OR_NOT_EXIST: 'Used refresh token or not exist',
+  TOKEN_INVALID_FORMAT: 'Invalid token format',
 
   // not found
   USER_NOT_FOUND: 'User not found'

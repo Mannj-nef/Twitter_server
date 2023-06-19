@@ -16,7 +16,6 @@ class Database {
   }
 
   connect = async () => {
-    const client = this.client;
     const db = this.db;
 
     try {
@@ -83,14 +82,23 @@ class Database {
   };
 
   refreshTokensMethods = {
-    findRfTokenByIdUser: async (idUser: { idUser: ObjectId }) => {
-      const user = await this.refreshTokens.findOne({ idUser });
-      return user;
+    findRfToken: async (token: string) => {
+      const rfToken = await this.refreshTokens.findOne({ token });
+      return rfToken;
+    },
+
+    findRfTokenByUserId: async (user_id: ObjectId) => {
+      const rfToken = await this.refreshTokens.findOne({ user_id });
+      return rfToken;
     },
 
     insertRfToken: async (payload: RefreshTokenModel) => {
-      const rfToken = this.refreshTokens.insertOne(payload);
+      const rfToken = await this.refreshTokens.insertOne(payload);
       return rfToken;
+    },
+
+    deleteRfToken: async (token: string) => {
+      await this.refreshTokens.deleteOne({ token });
     }
   };
 

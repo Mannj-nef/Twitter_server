@@ -76,6 +76,16 @@ const userSchema: typeUserSchema = {
     }
   },
 
+  // verify refreshToken
+  refreshToken: {
+    notEmpty: {
+      errorMessage: USERS_MESSAGES.REFRESH_TOKEN_IS_INVALID
+    },
+    isJWT: {
+      errorMessage: USERS_MESSAGES.REFRESH_TOKEN_IS_INVALID
+    }
+  },
+
   email_verify_token: { isJWT: true },
   forgot_password_token: { isJWT: true },
   _id: { isObject: true },
