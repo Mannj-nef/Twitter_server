@@ -35,3 +35,13 @@ export type typeUserVerifyEmailToken = {
 export type typeUserForgotPassword = {
   email: ParamSchema;
 };
+
+export type typeUserForgotPasswordToken = {
+  forgot_password_token: ParamSchema;
+};
+
+export type typeUserResetPassword = {
+  forgot_password_token: ParamSchema;
+  password: ParamSchema;
+  confirm_password: ParamSchema;
+};

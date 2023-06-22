@@ -7,6 +7,7 @@ import { UserVerifyStatus } from '~/enums/user';
 import { IEmailTokenRequesBody } from '~/interfaces/requests';
 import { verifyToken } from '~/utils/token.util';
 
+// veriry email token
 const emailVerifyToken = async (req: Request, res: Response, next: NextFunction) => {
   const { email_verify_token } = req.body as IEmailTokenRequesBody;
 

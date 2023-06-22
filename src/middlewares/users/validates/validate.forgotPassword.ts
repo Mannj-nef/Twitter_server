@@ -24,5 +24,5 @@ const validateForgotPassword: typeUserForgotPassword = {
   }
 };
 
-const checkForgotPassword = checkSchema(validateForgotPassword, ['body']);
-export default validate(checkForgotPassword);
+const checkValidate = checkSchema(validateForgotPassword, ['body']);
+export default validate(checkValidate);

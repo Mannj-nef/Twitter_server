@@ -8,5 +8,5 @@ const validateEmailToken: typeUserVerifyEmailToken = {
   email_verify_token: userSchema.email_verify_token
 };
 
-const checkEmailToken = checkSchema(validateEmailToken, ['body']);
-export default validate(checkEmailToken);
+const checkValidate = checkSchema(validateEmailToken, ['body']);
+export default validate(checkValidate);

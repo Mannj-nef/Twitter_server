@@ -15,6 +15,16 @@ export interface ILogoutRequestBody {
   refreshToken: string;
 }
 
-export interface IForgotPasswordRequesBody {
+export interface IForgotPasswordRequestBody {
   email: string;
+}
+
+export interface IVerifyForgotPasswordTokenRequestBody {
+  forgot_password_token: string;
+}
+
+export interface IResetPasswordRequestBody {
+  forgot_password_token: string;
+  password: string;
+  confirm_password: string;
 }

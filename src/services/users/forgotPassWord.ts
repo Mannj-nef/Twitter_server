@@ -16,7 +16,7 @@ const forgotPassword = async (user_id: string) => {
   });
 
   //   send email
-  console.log({ token });
+  console.log({ send_email_forgot_password_token: token });
 
   return;
 };

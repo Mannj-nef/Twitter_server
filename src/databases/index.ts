@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { Collection, Db, MongoClient, ObjectId } from 'mongodb';
 import { UserModel, RefreshTokenModel } from '~/models/schemas/';
-import { UserUnion } from '~/types/user';
+import { UserUnion } from './types/users';
 
 dotenv.config();
 

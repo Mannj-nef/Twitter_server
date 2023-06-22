@@ -15,7 +15,7 @@ const resendVerifyEmail = async (user_id: string) => {
   });
 
   // resend email
-  console.log({ token });
+  console.log('resend email token', { resend_email_token: token });
 };
 
 export default resendVerifyEmail;

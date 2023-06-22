@@ -81,14 +81,20 @@ const userSchema: typeUserSchema = {
     trim: true
   },
 
-  // verify email token trim token
+  // verify email token
   email_verify_token: {
-    trim: true
+    trim: true,
+    notEmpty: {
+      errorMessage: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_IS_REQUIRED
+    }
   },
 
-  // forgot password token trim token
+  // forgot password token
   forgot_password_token: {
-    trim: true
+    trim: true,
+    notEmpty: {
+      errorMessage: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_REQUIRED
+    }
   },
 
   _id: { isObject: true },

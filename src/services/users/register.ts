@@ -29,7 +29,7 @@ const register = async (payload: IRegisterRequestBody) => {
    * send email to verify
    * util send email
    */
-  console.log('email_verify_token', email_verify_token);
+  console.log({ email_verify_token });
 
   return;
 };

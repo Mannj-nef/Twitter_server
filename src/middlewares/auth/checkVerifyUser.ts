@@ -6,6 +6,7 @@ import database from '~/databases';
 import { UserVerifyStatus } from '~/enums/user';
 import { TokenPayload } from '~/interfaces/requests';
 
+// send Email to get email token
 const checkVerifyUser = async (req: Request, res: Response, next: NextFunction) => {
   const { user_id } = req.decoded_token as TokenPayload;
   const _id = new ObjectId(user_id);

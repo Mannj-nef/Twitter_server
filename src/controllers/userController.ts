@@ -2,7 +2,11 @@ import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
-import { ILogoutRequestBody, IRegisterRequestBody } from '~/interfaces/requests';
+import {
+  ILogoutRequestBody,
+  IRegisterRequestBody,
+  IResetPasswordRequestBody
+} from '~/interfaces/requests';
 import { TokenPayload } from '~/interfaces/requests';
 import { UserModel } from '~/models/schemas';
 import userServices from '~/services/user';
@@ -80,6 +84,25 @@ const userController = {
 
     res.status(200).json({
       message: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_SUCCESS
+    });
+  },
+
+  // [PORT] /user/verify-forgot-password
+  verifyForgotPassWord: async (req: Request, res: Response) => {
+    return res.status(HTTP_STATUS.OK).json({
+      message: USERS_MESSAGES.VERIFY_FORGOT_PASSWORD_TOKEN_SUCCESS
+    });
+  },
+
+  // [PORT] /user/reset-password
+  resetPassword: async (req: Request, res: Response) => {
+    const { password } = req.body as IResetPasswordRequestBody;
+    const { user_id } = req.decoded_token as TokenPayload;
+
+    await userServices.resetPassword({ user_id, newPassword: password });
+
+    return res.status(HTTP_STATUS.OK).json({
+      message: USERS_MESSAGES.RESET_PASSWORD_SUCCESS
     });
   }
 };

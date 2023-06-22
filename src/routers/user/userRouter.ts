@@ -50,7 +50,7 @@ userRouter.post(
  * [PORT]
  * Path: /verify-email
  * Body: { verify-email-token: JWT<email_verify_token> }
- * Response: { access_token, refresh_token }
+ * Response: { accessToken: JWT<access_token>, refreshToken: JWT<access_token> }
  */
 userRouter.post(
   '/veriry-email',
@@ -82,6 +82,32 @@ userRouter.post(
   '/forgot-password',
   validate.forgotPassword,
   wrapRequestHandle(userController.forgotPassword)
+);
+
+/**
+ * [PORT]
+ * Path: /verify-forgot-password
+ * Body: { forgot_password_token: JWT<forgot_password_token> }
+ * Response: { message: string }
+ */
+userRouter.post(
+  '/verify-forgot-password',
+  validate.forgotPasswordToken,
+  middlewaresAuth.verifyForgotPassWordToken,
+  wrapRequestHandle(userController.verifyForgotPassWord)
+);
+
+/**
+ * [PORT]
+ * Path: /reset-password
+ * Body: { password: string, confirm_password: string, forgot_password_token: JWT<forgot_password_token> }
+ * Response: { message: string }
+ */
+userRouter.post(
+  '/reset-password',
+  validate.resetPassword,
+  middlewaresAuth.verifyForgotPassWordToken,
+  wrapRequestHandle(userController.resetPassword)
 );
 
 export default userRouter;

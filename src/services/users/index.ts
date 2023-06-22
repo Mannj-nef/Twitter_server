@@ -3,6 +3,7 @@ import login from './login';
 import logout from './logout';
 import register from './register';
 import resendVerifyEmail from './resendVerifyEmail';
+import resetPassword from './resetPassword';
 import verifyEmailToken from './verifyEmailToken';
 
 const user = {
@@ -11,7 +12,8 @@ const user = {
   register,
   verifyEmailToken,
   resendVerifyEmail,
-  forgotPassword
+  forgotPassword,
+  resetPassword
 };
 
 export default user;

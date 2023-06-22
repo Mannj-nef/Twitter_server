@@ -6,6 +6,10 @@ export interface IEmailTokenRequesBody {
   email_verify_token: string;
 }
 
+export interface IForgotPasswordRequesBody {
+  forgot_password_token: string;
+}
+
 export interface TokenPayload extends JwtPayload {
   user_id: string;
   verify: UserVerifyStatus;

@@ -21,6 +21,7 @@ const USERS_MESSAGES = {
   PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50: 'Password length must be from 6 to 50',
   PASSWORD_MUST_BE_STRONG:
     'Password must be 6-50 characters long and contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 symbol',
+  RESET_PASSWORD_SUCCESS: 'Rest password success',
 
   // confirm password
   CONFIRM_PASSWORD_IS_REQUIRED: 'Confirm password is required',
@@ -50,6 +51,8 @@ const USERS_MESSAGES = {
   TOKEN_INVALID_FORMAT: 'Invalid token format',
   EMAIL_VERIFY_TOKEN_INVALID: 'Email verify token is invalid',
   FORGOT_PASSWORD_TOKEN_INVALID: 'Forgot password token is invalid',
+  FORGOT_PASSWORD_TOKEN_REQUIRED: 'Forgot password token required',
+  VERIFY_FORGOT_PASSWORD_TOKEN_SUCCESS: 'Verify forgot password success',
 
   // not found
   USER_NOT_FOUND: 'User not found'
