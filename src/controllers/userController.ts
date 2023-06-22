@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
 import { ILogoutRequestBody, IRegisterRequestBody } from '~/interfaces/requests';
+import { TokenPayload } from '~/interfaces/requests';
 import { UserModel } from '~/models/schemas';
 import userServices from '~/services/user';
 
@@ -20,8 +21,8 @@ const userController = {
 
     return res.status(HTTP_STATUS.ACCEPTED).json({
       message: USERS_MESSAGES.LOGIN_SUCCESS,
-      token,
-      rfToken
+      access_token: token,
+      refresh_token: rfToken
     });
   },
 
@@ -34,7 +35,7 @@ const userController = {
     });
   },
 
-  // [PORT] /user/logout
+  // [PORT] /users/logout
   logout: async (req: Request, res: Response) => {
     const { refreshToken } = req.body as ILogoutRequestBody;
 
@@ -42,6 +43,30 @@ const userController = {
 
     return res.status(HTTP_STATUS.OK).json({
       message: USERS_MESSAGES.LOGOUT_SUCCESS
+    });
+  },
+
+  // [PORT] /users/verify-email
+  verifyEmail: async (req: Request, res: Response) => {
+    const user = req.user as UserModel;
+
+    const { token, rfToken } = await userServices.verifyEmail(user);
+
+    return res.status(200).json({
+      message: 'success',
+      accessToken: token,
+      refreshToken: rfToken
+    });
+  },
+
+  // [PORT] /user/send-email
+  sendEmail: async (req: Request, res: Response) => {
+    const { user_id } = req.decoded_token as TokenPayload;
+
+    await userServices.resendVerifyEmail(user_id);
+
+    return res.status(200).json({
+      message: 'success'
     });
   }
 };

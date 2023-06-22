@@ -4,6 +4,7 @@ import { UserVerifyStatus } from '~/enums/user';
 import { CustomError } from '~/models/errors';
 import { capitalize } from 'lodash';
 import { TokenType } from '~/enums/token';
+import { TokenPayload } from '~/interfaces/requests';
 
 dotenv.config();
 
@@ -14,23 +15,45 @@ interface IDataToken {
 }
 
 const signAccessToken = (payload: IDataToken) => {
-  const token = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN as string, {
+  const accessTokenData: IDataToken = {
+    ...payload,
+    token_type: TokenType.AccessToken
+  };
+
+  const token = jwt.sign(accessTokenData, process.env.JWT_ACCESS_TOKEN as string, {
     expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN
   });
   return token;
 };
 
 const signRefreshToken = (payload: IDataToken) => {
-  const token = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN as string, {
+  const rfTokenData: IDataToken = {
+    ...payload,
+    token_type: TokenType.RefreshToken
+  };
+
+  const token = jwt.sign(rfTokenData, process.env.JWT_REFRESH_TOKEN as string, {
     expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN
   });
   return token;
 };
 
-const verifyAccessToken = ({ token, secretKey }: { token: string; secretKey: string }) => {
+const signEmailToken = (payload: IDataToken) => {
+  const emailToken: IDataToken = {
+    ...payload,
+    token_type: TokenType.EmailVerifyToken
+  };
+
+  const token = jwt.sign(emailToken, process.env.JWT_EMAIL_VERIFY_TOKEN as string, {
+    expiresIn: process.env.JWT_EMAIL_VERIFY_TOKEN_EXPIRES_IN
+  });
+  return token;
+};
+
+const verifyToken = ({ token, secretKey }: { token: string; secretKey: string }) => {
   try {
     const decoded = jwt.verify(token, secretKey);
-    return decoded;
+    return decoded as TokenPayload;
   } catch (error) {
     const { message } = error as Error;
 
@@ -38,10 +61,9 @@ const verifyAccessToken = ({ token, secretKey }: { token: string; secretKey: str
   }
 };
 
-const createToken = ({ token_type = TokenType.AccessToken, user_id, verify }: IDataToken) => {
+const createToken = ({ user_id, verify }: IDataToken) => {
   const data: IDataToken = {
     user_id,
-    token_type,
     verify
   };
 
@@ -51,5 +73,5 @@ const createToken = ({ token_type = TokenType.AccessToken, user_id, verify }: ID
   return { token, rfToken };
 };
 
-export { verifyAccessToken };
+export { verifyToken, signEmailToken };
 export default createToken;

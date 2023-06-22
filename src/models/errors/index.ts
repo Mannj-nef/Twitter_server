@@ -5,10 +5,13 @@ import HTTP_STATUS from '~/constants/httpStatuss';
 class CustomError extends Error {
   statusCode: number;
   msg: string;
-  constructor({ statusCode, message }: ErrorWithStatus) {
+  path?: string;
+
+  constructor({ statusCode, message, path }: ErrorWithStatus) {
     super();
     this.statusCode = statusCode;
     this.msg = message;
+    this.path = path;
   }
 }
 

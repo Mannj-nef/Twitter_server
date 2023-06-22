@@ -1,7 +1,10 @@
-import { validateRegister, validateLogin, validateLogout } from './validates';
+import { register, login, logout, emailToken } from './validates';
 
-export const validate = {
-  validateRegister,
-  validateLogin,
-  validateLogout
+const validate = {
+  register,
+  login,
+  logout,
+  emailToken
 };
+
+export default validate;

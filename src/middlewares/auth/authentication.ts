@@ -4,7 +4,7 @@ import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
 import { TokenPayload } from '~/interfaces/requests';
 import { CustomError } from '~/models/errors';
-import { verifyAccessToken } from '~/utils/token.util';
+import { verifyToken } from '~/utils/token.util';
 
 dotenv.config();
 
@@ -33,7 +33,7 @@ const authentication = (req: Request, res: Response, next: NextFunction) => {
     );
   }
 
-  const decoded = verifyAccessToken({ token, secretKey: process.env.JWT_ACCESS_TOKEN as string });
+  const decoded = verifyToken({ token, secretKey: process.env.JWT_ACCESS_TOKEN as string });
 
   req.decoded_token = decoded as TokenPayload;
 

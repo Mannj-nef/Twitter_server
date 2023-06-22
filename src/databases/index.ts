@@ -1,6 +1,7 @@
-import { Collection, Db, MongoClient, ObjectId } from 'mongodb';
 import dotenv from 'dotenv';
+import { Collection, Db, MongoClient, ObjectId } from 'mongodb';
 import { UserModel, RefreshTokenModel } from '~/models/schemas/';
+import { UserUnion } from '~/types/user';
 
 dotenv.config();
 
@@ -60,8 +61,8 @@ class Database {
 
   // methods
   userMethods = {
-    findUser: async ({ email, ...resParam }: { email: string }) => {
-      const user = await this.users.findOne({ email, resParam });
+    findUserById: async ({ _id }: { _id: ObjectId }) => {
+      const user = await this.users.findOne({ _id });
       return user;
     },
 
@@ -78,6 +79,10 @@ class Database {
     insertOneUser: async (user: UserModel) => {
       const result = await this.users.insertOne(user);
       return result;
+    },
+
+    updateOneUser: async ({ _id, payload }: { _id: ObjectId; payload: UserUnion }) => {
+      await this.users.updateOne({ _id }, { $set: payload, $currentDate: { updated_at: true } });
     }
   };
 

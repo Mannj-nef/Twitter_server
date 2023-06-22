@@ -4,7 +4,9 @@ import { typeUserLogout } from '../types';
 import validate from '~/utils/validate.util';
 
 const validateLogout: typeUserLogout = {
+  // trim token
   refreshToken: userSchema.refreshToken
 };
+
 const checkValidate = checkSchema(validateLogout, ['body']);
 export default validate(checkValidate);

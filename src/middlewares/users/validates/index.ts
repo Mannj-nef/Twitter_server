@@ -1,5 +1,4 @@
-import validateRegister from './validate.register';
-import validateLogin from './validate.login';
-import validateLogout from './validate.logout';
-
-export { validateRegister, validateLogin, validateLogout };
+export { default as register } from './validate.register';
+export { default as login } from './validate.login';
+export { default as logout } from './validate.logout';
+export { default as emailToken } from './validateEmailToken';

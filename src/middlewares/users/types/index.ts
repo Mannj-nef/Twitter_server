@@ -27,3 +27,7 @@ export type typeUserLogin = {
 export type typeUserLogout = {
   refreshToken: ParamSchema;
 };
+
+export type typeUserVerifyEmailToken = {
+  email_verify_token: ParamSchema;
+};

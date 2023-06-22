@@ -78,16 +78,15 @@ const userSchema: typeUserSchema = {
 
   // verify refreshToken
   refreshToken: {
-    notEmpty: {
-      errorMessage: USERS_MESSAGES.REFRESH_TOKEN_IS_INVALID
-    },
-    isJWT: {
-      errorMessage: USERS_MESSAGES.REFRESH_TOKEN_IS_INVALID
-    }
+    trim: true
   },
 
-  email_verify_token: { isJWT: true },
-  forgot_password_token: { isJWT: true },
+  // verify email token
+  email_verify_token: {
+    trim: true
+  },
+
+  forgot_password_token: {},
   _id: { isObject: true },
   avatar: { isString: true },
   bio: { isString: true },
