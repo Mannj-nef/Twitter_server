@@ -72,4 +72,16 @@ userRouter.post(
   wrapRequestHandle(userController.sendEmail)
 );
 
+/**
+ * [PORT]
+ * Path: /forgot-password
+ * Body: { email: string }
+ * Response: { message: string }
+ */
+userRouter.post(
+  '/forgot-password',
+  validate.forgotPassword,
+  wrapRequestHandle(userController.forgotPassword)
+);
+
 export default userRouter;

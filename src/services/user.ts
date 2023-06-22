@@ -10,7 +10,7 @@ class UserServices {
   resendVerifyEmail = user.resendVerifyEmail;
 
   // password
-  forgotPassword = () => [];
+  forgotPassword = user.forgotPassword;
   resetPassword = () => [];
 
   // user

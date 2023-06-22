@@ -14,6 +14,7 @@ interface IDataToken {
   verify: UserVerifyStatus;
 }
 
+// sign access token
 const signAccessToken = (payload: IDataToken) => {
   const accessTokenData: IDataToken = {
     ...payload,
@@ -23,9 +24,11 @@ const signAccessToken = (payload: IDataToken) => {
   const token = jwt.sign(accessTokenData, process.env.JWT_ACCESS_TOKEN as string, {
     expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN
   });
+
   return token;
 };
 
+// sign refresh token
 const signRefreshToken = (payload: IDataToken) => {
   const rfTokenData: IDataToken = {
     ...payload,
@@ -35,9 +38,11 @@ const signRefreshToken = (payload: IDataToken) => {
   const token = jwt.sign(rfTokenData, process.env.JWT_REFRESH_TOKEN as string, {
     expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN
   });
+
   return token;
 };
 
+// sign email token
 const signEmailToken = (payload: IDataToken) => {
   const emailToken: IDataToken = {
     ...payload,
@@ -47,12 +52,29 @@ const signEmailToken = (payload: IDataToken) => {
   const token = jwt.sign(emailToken, process.env.JWT_EMAIL_VERIFY_TOKEN as string, {
     expiresIn: process.env.JWT_EMAIL_VERIFY_TOKEN_EXPIRES_IN
   });
+
   return token;
 };
 
+// sign forgot password token
+const signForgotPassToken = (payload: IDataToken) => {
+  const forgotPasswordToken = {
+    ...payload,
+    TokenType: TokenType.ForgotPasswordToken
+  };
+
+  const token = jwt.sign(forgotPasswordToken, process.env.JWT_FORGOT_PASSWORD_TOKEN as string, {
+    expiresIn: process.env.JWT_FORGOT_PASSWORD_EXPIRES_IN
+  });
+
+  return token;
+};
+
+// verify token
 const verifyToken = ({ token, secretKey }: { token: string; secretKey: string }) => {
   try {
     const decoded = jwt.verify(token, secretKey);
+
     return decoded as TokenPayload;
   } catch (error) {
     const { message } = error as Error;
@@ -61,6 +83,7 @@ const verifyToken = ({ token, secretKey }: { token: string; secretKey: string })
   }
 };
 
+// ceate token
 const createToken = ({ user_id, verify }: IDataToken) => {
   const data: IDataToken = {
     user_id,
@@ -73,5 +96,5 @@ const createToken = ({ user_id, verify }: IDataToken) => {
   return { token, rfToken };
 };
 
-export { verifyToken, signEmailToken };
+export { verifyToken, signEmailToken, signForgotPassToken };
 export default createToken;

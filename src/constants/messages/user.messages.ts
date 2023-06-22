@@ -37,6 +37,9 @@ const USERS_MESSAGES = {
   LOGIN_SUCCESS: 'Login success',
   REGISTER_SUCCESS: 'Register success',
   LOGOUT_SUCCESS: 'Logout success',
+  RESED_EMAIL_SUCCESS: 'Resend email success, please check your email',
+  FORGOT_PASSWORD_TOKEN_SUCCESS: 'Resend forgot password success, please check your email',
+  VERIFY_EMAIL_TOKEN_SUCCESS: 'Verify email token success',
 
   // token
   ACCESS_TOKEN_IS_REQUIRED: 'Access token is required',
@@ -45,6 +48,8 @@ const USERS_MESSAGES = {
   EMAIL_VERIFY_TOKEN_IS_REQUIRED: 'Email verify token is required',
   USED_REFRESH_TOKEN_OR_NOT_EXIST: 'Used refresh token or not exist',
   TOKEN_INVALID_FORMAT: 'Invalid token format',
+  EMAIL_VERIFY_TOKEN_INVALID: 'Email verify token is invalid',
+  FORGOT_PASSWORD_TOKEN_INVALID: 'Forgot password token is invalid',
 
   // not found
   USER_NOT_FOUND: 'User not found'

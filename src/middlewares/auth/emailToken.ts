@@ -17,28 +17,38 @@ const emailVerifyToken = async (req: Request, res: Response, next: NextFunction)
     });
   }
 
-  const { user_id } = verifyToken({
-    token: email_verify_token,
-    secretKey: process.env.JWT_EMAIL_VERIFY_TOKEN as string
-  });
-
-  const user = await database.userMethods.findUserById({ _id: new ObjectId(user_id) });
-
-  if (!user) {
-    return res.status(HTTP_STATUS.NOT_FOUND).json({
-      message: USERS_MESSAGES.USER_NOT_FOUND
+  try {
+    const { user_id } = verifyToken({
+      token: email_verify_token,
+      secretKey: process.env.JWT_EMAIL_VERIFY_TOKEN as string
     });
+
+    const user = await database.userMethods.findUserById({ _id: new ObjectId(user_id) });
+
+    if (email_verify_token !== user?.email_verify_token) {
+      return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
+        message: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_INVALID
+      });
+    }
+
+    if (!user) {
+      return res.status(HTTP_STATUS.NOT_FOUND).json({
+        message: USERS_MESSAGES.USER_NOT_FOUND
+      });
+    }
+
+    if (user.verify === UserVerifyStatus.Verified) {
+      return res.status(HTTP_STATUS.OK).json({
+        message: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE
+      });
+    }
+
+    req.user = user;
+
+    next();
+  } catch (error) {
+    next(error);
   }
-
-  if (user.verify === UserVerifyStatus.Verified) {
-    return res.status(HTTP_STATUS.OK).json({
-      message: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE
-    });
-  }
-
-  req.user = user;
-
-  next();
 };
 
 export default emailVerifyToken;

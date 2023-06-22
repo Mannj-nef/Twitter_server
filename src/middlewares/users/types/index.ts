@@ -31,3 +31,7 @@ export type typeUserLogout = {
 export type typeUserVerifyEmailToken = {
   email_verify_token: ParamSchema;
 };
+
+export type typeUserForgotPassword = {
+  email: ParamSchema;
+};

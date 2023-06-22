@@ -76,17 +76,21 @@ const userSchema: typeUserSchema = {
     }
   },
 
-  // verify refreshToken
+  // verify refreshToken trim token
   refreshToken: {
     trim: true
   },
 
-  // verify email token
+  // verify email token trim token
   email_verify_token: {
     trim: true
   },
 
-  forgot_password_token: {},
+  // forgot password token trim token
+  forgot_password_token: {
+    trim: true
+  },
+
   _id: { isObject: true },
   avatar: { isString: true },
   bio: { isString: true },

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { ObjectId } from 'mongodb';
 import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
 import { ILogoutRequestBody, IRegisterRequestBody } from '~/interfaces/requests';
@@ -53,7 +54,7 @@ const userController = {
     const { token, rfToken } = await userServices.verifyEmail(user);
 
     return res.status(200).json({
-      message: 'success',
+      message: USERS_MESSAGES.VERIFY_EMAIL_TOKEN_SUCCESS,
       accessToken: token,
       refreshToken: rfToken
     });
@@ -66,7 +67,19 @@ const userController = {
     await userServices.resendVerifyEmail(user_id);
 
     return res.status(200).json({
-      message: 'success'
+      message: USERS_MESSAGES.RESED_EMAIL_SUCCESS
+    });
+  },
+
+  // [PORT] /user/forgot-password
+  forgotPassword: async (req: Request, res: Response) => {
+    const { _id } = req.user as UserModel;
+    const user_id = (_id as ObjectId).toString();
+
+    await userServices.forgotPassword(user_id);
+
+    res.status(200).json({
+      message: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_SUCCESS
     });
   }
 };

@@ -1,10 +1,11 @@
-import { register, login, logout, emailToken } from './validates';
+import { register, login, logout, emailToken, forgotPassword } from './validates';
 
 const validate = {
   register,
   login,
   logout,
-  emailToken
+  emailToken,
+  forgotPassword
 };
 
 export default validate;
