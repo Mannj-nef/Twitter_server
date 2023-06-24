@@ -1,14 +1,14 @@
 import authentication from './authentication';
-import emailVerifyToken from './emailToken';
+import verifyEmailToken from './verifyEmailToken';
 import verifyRefreshToken from './refreshToken';
-import checkVerifyUser from './checkVerifyUser';
+import verifyStatusUser from './verifyStatusUser';
 import verifyForgotPassWordToken from './verifyForgotPasswordToken';
 
 const middlewaresAuth = {
   authentication,
-  emailVerifyToken,
+  verifyEmailToken,
   verifyRefreshToken,
-  checkVerifyUser,
+  verifyStatusUser,
   verifyForgotPassWordToken
 };
 

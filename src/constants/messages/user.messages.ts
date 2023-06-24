@@ -42,6 +42,7 @@ const USERS_MESSAGES = {
   FORGOT_PASSWORD_TOKEN_SUCCESS: 'Resend forgot password success, please check your email',
   VERIFY_EMAIL_TOKEN_SUCCESS: 'Verify email token success',
   GET_USER_SUCCESS: 'Get user success',
+  UPDATE_USER_SUCCESS: 'Update user success',
 
   // token
   ACCESS_TOKEN_IS_REQUIRED: 'Access token is required',
@@ -56,7 +57,25 @@ const USERS_MESSAGES = {
   VERIFY_FORGOT_PASSWORD_TOKEN_SUCCESS: 'Verify forgot password success',
 
   // not found
-  USER_NOT_FOUND: 'User not found'
+  USER_NOT_FOUND: 'User not found',
+
+  // user
+  USER_NOT_VERIFIED: 'User not verified',
+  USER_NAME_NOT_INVALID:
+    'Username cannot contain consecutive periods, no trailing period, begins with alphanumeric characters or underscores, May contain alphanumeric characters, underscores and periods Word length 4 up to 15 characters',
+  USER_NAME_ALREADY_EXISTS: 'Username already exists',
+
+  // bio
+  BIO_MUST_BE_STRING: 'Biography must be a string',
+  BIO_MUST_BE_LENGTH: 'Biography length must be from 1 to 100',
+
+  // lovation
+  LOCATION_MUST_BE_STRING: 'Location must be a string',
+  LOCATION_MUST_BE_LENGTH: 'Location length must be from 1 to 100',
+
+  // url
+  URL_MUST_BE_STRING: 'URL must be is string',
+  URL_MUST_BE_LENGTH: 'URL length must be from 1 to 300'
 } as const;
 
 export default USERS_MESSAGES;

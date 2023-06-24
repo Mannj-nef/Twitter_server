@@ -5,6 +5,7 @@ import logout from './logout';
 import register from './register';
 import resendVerifyEmail from './resendVerifyEmail';
 import resetPassword from './resetPassword';
+import updateMe from './updateMe';
 import verifyEmailToken from './verifyEmailToken';
 
 const user = {
@@ -15,7 +16,8 @@ const user = {
   resendVerifyEmail,
   forgotPassword,
   resetPassword,
-  getMe
+  getMe,
+  updateMe
 };
 
 export default user;

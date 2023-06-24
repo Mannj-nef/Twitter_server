@@ -8,6 +8,7 @@ import { signEmailToken } from '~/utils/token.util';
 
 const register = async (payload: IRegisterRequestBody) => {
   const user_id = new ObjectId();
+  const userName = `${payload.name}-${user_id.toString()}`;
 
   const email_verify_token = signEmailToken({
     user_id: user_id.toString(),
@@ -17,6 +18,7 @@ const register = async (payload: IRegisterRequestBody) => {
   const newUser = {
     ...payload,
     _id: user_id,
+    username: userName,
     email_verify_token,
     email: payload.email.toLowerCase().trim(),
     date_of_birth: new Date(payload.date_of_birth),

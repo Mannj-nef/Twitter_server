@@ -3,12 +3,11 @@ import { ObjectId } from 'mongodb';
 import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
 import database from '~/databases';
-import { UserVerifyStatus } from '~/enums/user';
 import { IEmailTokenRequesBody } from '~/interfaces/requests';
 import { verifyToken } from '~/utils/token.util';
 
 // veriry email token
-const emailVerifyToken = async (req: Request, res: Response, next: NextFunction) => {
+const verifyEmailToken = async (req: Request, res: Response, next: NextFunction) => {
   const { email_verify_token } = req.body as IEmailTokenRequesBody;
 
   if (!email_verify_token) {
@@ -27,30 +26,23 @@ const emailVerifyToken = async (req: Request, res: Response, next: NextFunction)
     const _id = new ObjectId(user_id);
     const user = await database.userMethods.findUser({ filter: { _id } });
 
-    if (email_verify_token !== user?.email_verify_token) {
-      return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-        message: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_INVALID
-      });
-    }
-
     if (!user) {
       return res.status(HTTP_STATUS.NOT_FOUND).json({
         message: USERS_MESSAGES.USER_NOT_FOUND
       });
     }
 
-    if (user.verify === UserVerifyStatus.Verified) {
-      return res.status(HTTP_STATUS.OK).json({
-        message: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE
+    if (email_verify_token !== user.email_verify_token) {
+      return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
+        message: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_INVALID
       });
     }
 
     req.user = user;
-
     next();
   } catch (error) {
     next(error);
   }
 };
 
-export default emailVerifyToken;
+export default verifyEmailToken;

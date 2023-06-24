@@ -1,5 +1,14 @@
 import dotenv from 'dotenv';
-import { Collection, Db, FindOptions, MongoClient, ObjectId } from 'mongodb';
+import {
+  Collection,
+  Db,
+  FindOneAndUpdateOptions,
+  FindOptions,
+  MongoClient,
+  ObjectId,
+  UpdateFilter,
+  UpdateResult
+} from 'mongodb';
 import { UserModel, RefreshTokenModel } from '~/models/schemas/';
 import { UserUnion } from './types/users';
 
@@ -82,6 +91,19 @@ class Database {
 
     updateOneUser: async ({ _id, payload }: { _id: ObjectId; payload: UserUnion }) => {
       await this.users.updateOne({ _id }, { $set: payload, $currentDate: { updated_at: true } });
+    },
+
+    updateAndReturnResult: async ({
+      _id,
+      payload,
+      option
+    }: {
+      _id: ObjectId;
+      payload: UpdateFilter<UserUnion>;
+      option?: FindOneAndUpdateOptions;
+    }) => {
+      const { value } = await this.users.findOneAndUpdate({ _id }, payload, option);
+      return value;
     }
   };
 

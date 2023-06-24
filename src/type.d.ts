@@ -7,6 +7,5 @@ declare module 'express' {
   interface Request {
     user?: UserModel;
     decoded_token?: TokenPayload;
-    decoded_emailToken?: TokenPayload;
   }
 }

@@ -15,7 +15,7 @@ class UserServices {
 
   // user
   getMe = user.getMe;
-  updateMe = () => [];
+  updateMe = user.updateMe;
   getProfile = () => [];
   follow = () => [];
   unfollow = () => [];

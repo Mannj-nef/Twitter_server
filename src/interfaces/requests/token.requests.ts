@@ -6,7 +6,7 @@ export interface IEmailTokenRequesBody {
   email_verify_token: string;
 }
 
-export interface IForgotPasswordRequesBody {
+export interface IForgotPasswordTokenRequestBody {
   forgot_password_token: string;
 }
 

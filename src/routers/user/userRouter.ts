@@ -3,6 +3,9 @@ import { Router } from 'express';
 import validate from '~/middlewares/users/';
 import wrapRequestHandle from '~/utils/wrapRequest.util';
 import middlewaresAuth from '~/middlewares/auth';
+import filterRequestBody from '~/middlewares/common/filterRequestBody';
+import { IRegisterRequestBody, IUpdateMeRequestBody } from '~/interfaces/requests';
+import { register, update } from '~/common/users/requestBody';
 
 //  Path: /users
 const userRouter = Router();
@@ -34,7 +37,12 @@ userRouter.post('/login', validate.login, wrapRequestHandle(userController.login
  * Body: { name: string, email: string, password: string, confirm_password: string, date_birth: isISO8601 }
  * Response: { message: string }
  */
-userRouter.post('/register', validate.register, wrapRequestHandle(userController.register));
+userRouter.post(
+  '/register',
+  filterRequestBody<IRegisterRequestBody>(register),
+  validate.register,
+  wrapRequestHandle(userController.register)
+);
 
 /**
  * [PORT]
@@ -60,7 +68,7 @@ userRouter.post(
 userRouter.post(
   '/veriry-email',
   validate.emailToken,
-  middlewaresAuth.emailVerifyToken,
+  middlewaresAuth.verifyEmailToken,
   wrapRequestHandle(userController.verifyEmail)
 );
 
@@ -73,7 +81,6 @@ userRouter.post(
 userRouter.post(
   '/send-email',
   middlewaresAuth.authentication,
-  middlewaresAuth.checkVerifyUser,
   wrapRequestHandle(userController.sendEmail)
 );
 
@@ -113,6 +120,28 @@ userRouter.post(
   validate.resetPassword,
   middlewaresAuth.verifyForgotPassWordToken,
   wrapRequestHandle(userController.resetPassword)
+);
+
+/**
+ * [PATCH]
+ * Header: {Authorization: 'Bearer <access_token>'}
+ * Body: UserModel
+ * Response: { message: string }
+ */
+userRouter.patch(
+  '/me',
+  middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
+  filterRequestBody<IUpdateMeRequestBody>(update),
+  validate.updateMe,
+  wrapRequestHandle(userController.updateMe)
+);
+
+userRouter.get(
+  '/:username',
+  wrapRequestHandle((req, res) => {
+    const { username } = req.params;
+  })
 );
 
 export default userRouter;

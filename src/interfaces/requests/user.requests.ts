@@ -28,3 +28,14 @@ export interface IResetPasswordRequestBody {
   password: string;
   confirm_password: string;
 }
+
+export interface IUpdateMeRequestBody {
+  name?: string;
+  date_of_birth?: Date;
+  bio?: string;
+  location?: string;
+  website?: string;
+  username?: string;
+  avatar?: string;
+  cover_photo?: string;
+}

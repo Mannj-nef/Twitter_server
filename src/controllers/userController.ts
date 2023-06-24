@@ -2,10 +2,12 @@ import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
+import { UserVerifyStatus } from '~/enums/user';
 import {
   ILogoutRequestBody,
   IRegisterRequestBody,
-  IResetPasswordRequestBody
+  IResetPasswordRequestBody,
+  IUpdateMeRequestBody
 } from '~/interfaces/requests';
 import { TokenPayload } from '~/interfaces/requests';
 import { UserModel } from '~/models/schemas';
@@ -62,6 +64,12 @@ const userController = {
   verifyEmail: async (req: Request, res: Response) => {
     const user = req.user as UserModel;
 
+    if (user.verify === UserVerifyStatus.Verified) {
+      return res.status(HTTP_STATUS.OK).json({
+        message: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE
+      });
+    }
+
     const { token, rfToken } = await userServices.verifyEmail(user);
 
     return res.status(200).json({
@@ -74,6 +82,13 @@ const userController = {
   // [PORT] /user/send-email
   sendEmail: async (req: Request, res: Response) => {
     const { user_id } = req.decoded_token as TokenPayload;
+    const user = req.user as UserModel;
+
+    if (user.verify === UserVerifyStatus.Verified) {
+      return res.status(HTTP_STATUS.OK).json({
+        message: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE
+      });
+    }
 
     await userServices.resendVerifyEmail(user_id);
 
@@ -110,6 +125,18 @@ const userController = {
 
     return res.status(HTTP_STATUS.OK).json({
       message: USERS_MESSAGES.RESET_PASSWORD_SUCCESS
+    });
+  },
+
+  // [PATCH] /user/me
+  updateMe: async (req: Request, res: Response) => {
+    const { _id } = req.user as Required<UserModel>;
+
+    const result = await userServices.updateMe({ _id, payload: req.body as IUpdateMeRequestBody });
+
+    res.status(HTTP_STATUS.OK).json({
+      message: USERS_MESSAGES.UPDATE_USER_SUCCESS,
+      result
     });
   }
 };

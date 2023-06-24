@@ -5,7 +5,8 @@ import {
   emailToken,
   forgotPassword,
   forgotPasswordToken,
-  resetPassword
+  resetPassword,
+  updateMe
 } from './validates';
 
 const validate = {
@@ -15,7 +16,8 @@ const validate = {
   emailToken,
   forgotPassword,
   forgotPasswordToken,
-  resetPassword
+  resetPassword,
+  updateMe
 };
 
 export default validate;

@@ -1,26 +1,9 @@
 import { USERS_MESSAGES } from '~/constants/messages';
 import { typeUserSchema } from '../types';
 import { UserVerifyStatus } from '~/enums/user';
+import { nameSchema, urlSchema } from './constants/paramSchemaCustom';
 
 const userSchema: typeUserSchema = {
-  // verify schema name
-  name: {
-    notEmpty: {
-      errorMessage: USERS_MESSAGES.NAME_IS_REQUIRED
-    },
-    isString: {
-      errorMessage: USERS_MESSAGES.NAME_MUST_BE_A_STRING
-    },
-    trim: true,
-    isLength: {
-      options: {
-        min: 1,
-        max: 100
-      },
-      errorMessage: USERS_MESSAGES.NAME_LENGTH_MUST_BE_FROM_1_TO_100
-    }
-  },
-
   // verify schema email
   email: {
     isEmail: { errorMessage: USERS_MESSAGES.EMAIL_IS_INVALID },
@@ -97,16 +80,51 @@ const userSchema: typeUserSchema = {
     }
   },
 
-  _id: { isObject: true },
-  avatar: { isString: true },
-  bio: { isString: true },
-  cover_photo: { isString: true },
-  location: { isString: true },
+  // verify schema name
+  name: nameSchema,
+  username: nameSchema,
+
+  avatar: urlSchema,
+  cover_photo: urlSchema,
+  website: urlSchema,
+
+  //  verify biography
+  bio: {
+    optional: true,
+    isString: {
+      errorMessage: USERS_MESSAGES.BIO_MUST_BE_STRING
+    },
+    trim: true,
+    isLength: {
+      options: {
+        min: 1,
+        max: 100
+      },
+      errorMessage: USERS_MESSAGES.BIO_MUST_BE_LENGTH
+    }
+  },
+
+  //  verify location
+  location: {
+    optional: true,
+    isString: {
+      errorMessage: USERS_MESSAGES.LOCATION_MUST_BE_STRING
+    },
+    trim: true,
+    isLength: {
+      options: {
+        min: 1,
+        max: 100
+      },
+      errorMessage: USERS_MESSAGES.LOCATION_MUST_BE_LENGTH
+    }
+  },
+
+  //
   verify: { isIn: { options: [Object.values(UserVerifyStatus)] } },
-  website: { isString: true },
-  username: { isString: true },
   created_at: { isDate: true },
-  updated_at: { isDate: true }
+  updated_at: { isDate: true },
+  _id: { isObject: true }
 };
 
 export default userSchema;
