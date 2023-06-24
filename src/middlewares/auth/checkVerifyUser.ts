@@ -12,7 +12,11 @@ const checkVerifyUser = async (req: Request, res: Response, next: NextFunction) 
   const _id = new ObjectId(user_id);
 
   try {
-    const user = await database.userMethods.findUserById({ _id });
+    const user = await database.userMethods.findUser({
+      filter: {
+        _id
+      }
+    });
 
     if (!user) {
       return res.status(HTTP_STATUS.NOT_FOUND).json({

@@ -24,7 +24,8 @@ const emailVerifyToken = async (req: Request, res: Response, next: NextFunction)
       secretKey: process.env.JWT_EMAIL_VERIFY_TOKEN as string
     });
 
-    const user = await database.userMethods.findUserById({ _id: new ObjectId(user_id) });
+    const _id = new ObjectId(user_id);
+    const user = await database.userMethods.findUser({ filter: { _id } });
 
     if (email_verify_token !== user?.email_verify_token) {
       return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({

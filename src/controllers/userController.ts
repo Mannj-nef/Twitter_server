@@ -12,9 +12,16 @@ import { UserModel } from '~/models/schemas';
 import userServices from '~/services/user';
 
 const userController = {
-  // [GET] /users
-  getall: (rep: Request, res: Response) => {
-    res.json('user router');
+  // [GET] /users/me
+  getMe: async (rep: Request, res: Response) => {
+    const { user_id } = rep.decoded_token as TokenPayload;
+
+    const result = await userServices.getMe(user_id);
+
+    return res.json({
+      message: USERS_MESSAGES.GET_USER_SUCCESS,
+      result
+    });
   },
 
   // [PORT] /users/login

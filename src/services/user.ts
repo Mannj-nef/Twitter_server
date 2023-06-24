@@ -14,7 +14,7 @@ class UserServices {
   resetPassword = user.resetPassword;
 
   // user
-  getMe = () => [];
+  getMe = user.getMe;
   updateMe = () => [];
   getProfile = () => [];
   follow = () => [];

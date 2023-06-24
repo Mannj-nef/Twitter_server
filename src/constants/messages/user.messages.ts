@@ -41,6 +41,7 @@ const USERS_MESSAGES = {
   RESED_EMAIL_SUCCESS: 'Resend email success, please check your email',
   FORGOT_PASSWORD_TOKEN_SUCCESS: 'Resend forgot password success, please check your email',
   VERIFY_EMAIL_TOKEN_SUCCESS: 'Verify email token success',
+  GET_USER_SUCCESS: 'Get user success',
 
   // token
   ACCESS_TOKEN_IS_REQUIRED: 'Access token is required',

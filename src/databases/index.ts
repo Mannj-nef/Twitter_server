@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { Collection, Db, MongoClient, ObjectId } from 'mongodb';
+import { Collection, Db, FindOptions, MongoClient, ObjectId } from 'mongodb';
 import { UserModel, RefreshTokenModel } from '~/models/schemas/';
 import { UserUnion } from './types/users';
 
@@ -61,18 +61,17 @@ class Database {
 
   // methods
   userMethods = {
-    findUserById: async ({ _id }: { _id: ObjectId }) => {
-      const user = await this.users.findOne({ _id });
-      return user;
-    },
-
-    findUserByEmail: async ({ email }: { email: string }) => {
-      const user = await this.users.findOne({ email });
+    findUser: async ({ filter, findOptions }: { filter: UserUnion; findOptions?: FindOptions }) => {
+      const user = await this.users.findOne(filter, findOptions);
       return user;
     },
 
     checkExistEmail: async (email: string) => {
-      const user = await this.userMethods.findUserByEmail({ email });
+      const user = await this.userMethods.findUser({
+        filter: {
+          email
+        }
+      });
       return Boolean(user);
     },
 

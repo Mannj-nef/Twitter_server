@@ -12,7 +12,11 @@ const validateLogin: typeUserLogin = {
     custom: {
       options: async (email: string, { req }) => {
         const emailUser = email.toLowerCase();
-        const user = await database.userMethods.findUserByEmail({ email: emailUser });
+        const user = await database.userMethods.findUser({
+          filter: {
+            email: emailUser
+          }
+        });
 
         const passwordExactly = handleVerifyPassword({
           password: req.body.password,

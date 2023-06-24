@@ -9,11 +9,16 @@ const userRouter = Router();
 
 /**
  * [GET]
- * Path: /
- * Body: {} | {page: number, limit: number}
- * Response: UserModel[]
+ * Path: /me
+ * Header: {Authorization: 'Bearer <access_token>'}
+ * Response: Omit<UserModel[], {
+ *              password: string,
+ *              forgot_password_token: JWT<forgot_password_token>,
+ *              verify-email-token: JWT<email_verify_token>
+ *           }>
  */
-userRouter.get('/', wrapRequestHandle(userController.getall));
+
+userRouter.get('/me', middlewaresAuth.authentication, wrapRequestHandle(userController.getMe));
 
 /**
  * [POST]

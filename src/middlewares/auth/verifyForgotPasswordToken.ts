@@ -16,7 +16,11 @@ const verifyForgotPassWordToken = async (req: Request, res: Response, next: Next
     });
 
     const _id = new ObjectId(decoded.user_id);
-    const user = await database.userMethods.findUserById({ _id });
+    const user = await database.userMethods.findUser({
+      filter: {
+        _id
+      }
+    });
 
     if (!user) {
       return res.status(HTTP_STATUS.NOT_FOUND).json({

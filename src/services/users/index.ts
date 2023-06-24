@@ -1,4 +1,5 @@
 import forgotPassword from './forgotPassWord';
+import getMe from './getMe';
 import login from './login';
 import logout from './logout';
 import register from './register';
@@ -13,7 +14,8 @@ const user = {
   verifyEmailToken,
   resendVerifyEmail,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  getMe
 };
 
 export default user;

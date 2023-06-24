@@ -11,7 +11,11 @@ const validateForgotPassword: typeUserForgotPassword = {
     custom: {
       options: async (email: string, { req }) => {
         const emailUser = email.toLowerCase();
-        const user = await database.userMethods.findUserByEmail({ email: emailUser });
+        const user = await database.userMethods.findUser({
+          filter: {
+            email: emailUser
+          }
+        });
 
         if (!user) {
           throw new Error(USERS_MESSAGES.USER_NOT_FOUND);
