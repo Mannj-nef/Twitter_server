@@ -4,21 +4,23 @@ import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
 import { UserVerifyStatus } from '~/enums/user';
 import {
+  IGetProfileParamBody,
   ILogoutRequestBody,
   IRegisterRequestBody,
   IResetPasswordRequestBody,
   IUpdateMeRequestBody
 } from '~/interfaces/requests';
 import { TokenPayload } from '~/interfaces/requests';
+import { IResponse, IResponseResult, IResponseToken } from '~/interfaces/response';
 import { UserModel } from '~/models/schemas';
 import userServices from '~/services/user';
 
 const userController = {
   // [GET] /users/me
-  getMe: async (rep: Request, res: Response) => {
+  getMe: async (rep: Request, res: Response<IResponseResult<UserModel>>) => {
     const { user_id } = rep.decoded_token as TokenPayload;
 
-    const result = await userServices.getMe(user_id);
+    const result = (await userServices.getMe(user_id)) as UserModel;
 
     return res.json({
       message: USERS_MESSAGES.GET_USER_SUCCESS,
@@ -27,7 +29,7 @@ const userController = {
   },
 
   // [PORT] /users/login
-  login: async (req: Request, res: Response) => {
+  login: async (req: Request, res: Response<IResponseToken>) => {
     const { _id, verify } = req.user as UserModel;
     const user_id = _id?.toString() as string;
 
@@ -41,7 +43,7 @@ const userController = {
   },
 
   // [PORT] /users/register
-  register: async (req: Request, res: Response) => {
+  register: async (req: Request, res: Response<IResponse>) => {
     await userServices.register(req.body as IRegisterRequestBody);
 
     return res.status(HTTP_STATUS.CREATED).json({
@@ -50,7 +52,7 @@ const userController = {
   },
 
   // [PORT] /users/logout
-  logout: async (req: Request, res: Response) => {
+  logout: async (req: Request, res: Response<IResponse>) => {
     const { refreshToken } = req.body as ILogoutRequestBody;
 
     await userServices.logout(refreshToken);
@@ -61,7 +63,7 @@ const userController = {
   },
 
   // [PORT] /users/verify-email
-  verifyEmail: async (req: Request, res: Response) => {
+  verifyEmail: async (req: Request, res: Response<IResponseToken | IResponse>) => {
     const user = req.user as UserModel;
 
     if (user.verify === UserVerifyStatus.Verified) {
@@ -74,13 +76,13 @@ const userController = {
 
     return res.status(200).json({
       message: USERS_MESSAGES.VERIFY_EMAIL_TOKEN_SUCCESS,
-      accessToken: token,
-      refreshToken: rfToken
+      access_token: token,
+      refresh_token: rfToken
     });
   },
 
   // [PORT] /user/send-email
-  sendEmail: async (req: Request, res: Response) => {
+  sendEmail: async (req: Request, res: Response<IResponse>) => {
     const { user_id } = req.decoded_token as TokenPayload;
     const user = req.user as UserModel;
 
@@ -98,26 +100,26 @@ const userController = {
   },
 
   // [PORT] /user/forgot-password
-  forgotPassword: async (req: Request, res: Response) => {
+  forgotPassword: async (req: Request, res: Response<IResponse>) => {
     const { _id } = req.user as UserModel;
     const user_id = (_id as ObjectId).toString();
 
     await userServices.forgotPassword(user_id);
 
-    res.status(200).json({
+    return res.status(200).json({
       message: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_SUCCESS
     });
   },
 
   // [PORT] /user/verify-forgot-password
-  verifyForgotPassWord: async (req: Request, res: Response) => {
+  verifyForgotPassWord: async (req: Request, res: Response<IResponse>) => {
     return res.status(HTTP_STATUS.OK).json({
       message: USERS_MESSAGES.VERIFY_FORGOT_PASSWORD_TOKEN_SUCCESS
     });
   },
 
   // [PORT] /user/reset-password
-  resetPassword: async (req: Request, res: Response) => {
+  resetPassword: async (req: Request, res: Response<IResponse>) => {
     const { password } = req.body as IResetPasswordRequestBody;
     const { user_id } = req.decoded_token as TokenPayload;
 
@@ -129,13 +131,37 @@ const userController = {
   },
 
   // [PATCH] /user/me
-  updateMe: async (req: Request, res: Response) => {
+  updateMe: async (req: Request, res: Response<IResponseResult<UserModel>>) => {
     const { _id } = req.user as Required<UserModel>;
 
-    const result = await userServices.updateMe({ _id, payload: req.body as IUpdateMeRequestBody });
+    const result = (await userServices.updateMe({
+      _id,
+      payload: req.body as IUpdateMeRequestBody
+    })) as UserModel;
 
-    res.status(HTTP_STATUS.OK).json({
+    return res.status(HTTP_STATUS.OK).json({
       message: USERS_MESSAGES.UPDATE_USER_SUCCESS,
+      result
+    });
+  },
+
+  // [GET] /user/:username
+  getProfile: async (
+    req: Request<IGetProfileParamBody>,
+    res: Response<IResponseResult<UserModel> | IResponse>
+  ) => {
+    const { username } = req.params;
+
+    const result = await userServices.getProfile(username);
+
+    if (!result) {
+      return res.status(HTTP_STATUS.NOT_FOUND).json({
+        message: USERS_MESSAGES.USER_NOT_FOUND
+      });
+    }
+
+    return res.status(HTTP_STATUS.OK).json({
+      message: USERS_MESSAGES.GET_USER_SUCCESS,
       result
     });
   }

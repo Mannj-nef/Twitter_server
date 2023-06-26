@@ -10,6 +10,8 @@ import { register, update } from '~/common/users/requestBody';
 //  Path: /users
 const userRouter = Router();
 
+// [GET]-----------------------------------------
+
 /**
  * [GET]
  * Path: /me
@@ -22,6 +24,15 @@ const userRouter = Router();
  */
 
 userRouter.get('/me', middlewaresAuth.authentication, wrapRequestHandle(userController.getMe));
+
+/**
+ * [GET]
+ * Param: {username: string}
+ * Response: {message: string user: UserModel}
+ */
+userRouter.get('/:username', wrapRequestHandle(userController.getProfile));
+
+// [POST]-----------------------------------------
 
 /**
  * [POST]
@@ -122,6 +133,8 @@ userRouter.post(
   wrapRequestHandle(userController.resetPassword)
 );
 
+// [PATCH]------------------------------------------------
+
 /**
  * [PATCH]
  * Header: {Authorization: 'Bearer <access_token>'}
@@ -135,13 +148,6 @@ userRouter.patch(
   filterRequestBody<IUpdateMeRequestBody>(update),
   validate.updateMe,
   wrapRequestHandle(userController.updateMe)
-);
-
-userRouter.get(
-  '/:username',
-  wrapRequestHandle((req, res) => {
-    const { username } = req.params;
-  })
 );
 
 export default userRouter;

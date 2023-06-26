@@ -1,5 +1,6 @@
 import forgotPassword from './forgotPassWord';
 import getMe from './getMe';
+import getProfile from './getProfile';
 import login from './login';
 import logout from './logout';
 import register from './register';
@@ -17,7 +18,8 @@ const user = {
   forgotPassword,
   resetPassword,
   getMe,
-  updateMe
+  updateMe,
+  getProfile
 };
 
 export default user;

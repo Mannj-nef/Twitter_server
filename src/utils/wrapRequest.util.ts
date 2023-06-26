@@ -1,7 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 
-const wrapRequestHandle = (functionController: RequestHandler) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
+const wrapRequestHandle = <P>(functionController: RequestHandler<P>) => {
+  return async (req: Request<P>, res: Response, next: NextFunction) => {
     /**
      * wrapp function controller
      * resolve => functionController(req, res, next)

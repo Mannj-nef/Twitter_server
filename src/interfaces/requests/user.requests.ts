@@ -39,3 +39,7 @@ export interface IUpdateMeRequestBody {
   avatar?: string;
   cover_photo?: string;
 }
+
+export interface IGetProfileParamBody {
+  username: string;
+}
