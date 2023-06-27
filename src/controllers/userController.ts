@@ -4,6 +4,7 @@ import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
 import { UserVerifyStatus } from '~/enums/user';
 import {
+  IChangePasswordRequestBody,
   IFollowRequestBody,
   IGetProfileParamBody,
   ILogoutRequestBody,
@@ -191,6 +192,18 @@ const userController = {
     return res.status(HTTP_STATUS.OK).json({
       message: USERS_MESSAGES.UPDATE_USER_SUCCESS,
       result
+    });
+  },
+
+  // [PUT]----------------------------------------------------------
+  changePassword: async (req: Request, res: Response<IResponse>) => {
+    const { _id } = req.user as Required<UserModel>;
+    const { password } = req.body as IChangePasswordRequestBody;
+
+    await userServices.changePassword({ _id, password });
+
+    return res.status(HTTP_STATUS.OK).json({
+      message: USERS_MESSAGES.CHANGE_PASSWORD_SUCCESS
     });
   },
 

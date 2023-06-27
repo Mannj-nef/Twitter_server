@@ -1,4 +1,8 @@
-import { IRegisterRequestBody, IUpdateMeRequestBody } from '~/interfaces/requests';
+import {
+  IChangePasswordRequestBody,
+  IRegisterRequestBody,
+  IUpdateMeRequestBody
+} from '~/interfaces/requests';
 
 export const update: Array<keyof IUpdateMeRequestBody> = [
   'avatar',
@@ -16,5 +20,11 @@ export const register: Array<keyof IRegisterRequestBody> = [
   'date_of_birth',
   'email',
   'name',
+  'password'
+];
+
+export const changePassword: Array<keyof IChangePasswordRequestBody> = [
+  'confirm_password',
+  'current_password',
   'password'
 ];

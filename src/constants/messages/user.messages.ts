@@ -22,6 +22,13 @@ const USERS_MESSAGES = {
   PASSWORD_MUST_BE_STRONG:
     'Password must be 6-50 characters long and contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 symbol',
   RESET_PASSWORD_SUCCESS: 'Rest password success',
+  CHANGE_PASSWORD_SUCCESS: 'Change password success',
+  PASSWORD_MUST_BE_DIFFERENT_CURRENT_PASSWORD:
+    'The new password must be different from the old password',
+
+  // current password
+  CURRENT_PASSWORD_NOT_MATCH: 'Current password not match',
+  CURRENT_PASSWORD_IS_REQUIRED: 'Current password is required',
 
   // confirm password
   CONFIRM_PASSWORD_IS_REQUIRED: 'Confirm password is required',

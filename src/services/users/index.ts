@@ -1,3 +1,4 @@
+import changePassword from './changePassword';
 import follow from './follow';
 import forgotPassword from './forgotPassWord';
 import getMe from './getMe';
@@ -23,7 +24,8 @@ const user = {
   updateMe,
   getProfile,
   follow,
-  unFollow
+  unFollow,
+  changePassword
 };
 
 export default user;

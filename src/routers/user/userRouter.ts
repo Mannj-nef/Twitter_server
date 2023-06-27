@@ -4,8 +4,12 @@ import validate from '~/middlewares/users/';
 import wrapRequestHandle from '~/utils/wrapRequest.util';
 import middlewaresAuth from '~/middlewares/auth';
 import filterRequestBody from '~/middlewares/common/filterRequestBody';
-import { IRegisterRequestBody, IUpdateMeRequestBody } from '~/interfaces/requests';
-import { register, update } from '~/common/users/requestBody';
+import {
+  IChangePasswordRequestBody,
+  IRegisterRequestBody,
+  IUpdateMeRequestBody
+} from '~/interfaces/requests';
+import { changePassword, register, update } from '~/common/users/requestBody';
 
 //  Path: /users
 const userRouter = Router();
@@ -151,6 +155,7 @@ userRouter.post(
 
 /**
  * [PATCH]
+ * Path: /me
  * Header: {Authorization: 'Bearer <access_token>'}
  * Body: UserModel
  * Response: { message: string }
@@ -162,6 +167,22 @@ userRouter.patch(
   filterRequestBody<IUpdateMeRequestBody>(update),
   validate.updateMe,
   wrapRequestHandle(userController.updateMe)
+);
+
+/**
+ * [PUT]
+ * Path: /change-pasword
+ * Header: { Authorization: 'Bearer <access_token>' }
+ * Body: { current_password: string, password: string, password_confirmation: string }
+ * Resonse: { message: string }
+ */
+userRouter.put(
+  '/change-password',
+  middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
+  filterRequestBody<IChangePasswordRequestBody>(changePassword),
+  validate.changePassword,
+  wrapRequestHandle(userController.changePassword)
 );
 
 // [DELETE]------------------------------------------------

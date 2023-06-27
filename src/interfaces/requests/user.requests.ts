@@ -47,3 +47,9 @@ export interface IGetProfileParamBody {
 export interface IFollowRequestBody {
   followed_user_id: string;
 }
+
+export interface IChangePasswordRequestBody {
+  current_password: string;
+  password: string;
+  confirm_password: string;
+}

@@ -19,6 +19,7 @@ class UserServices {
   getProfile = user.getProfile;
   follow = user.follow;
   unfollow = user.unFollow;
+  changePassword = user.changePassword;
 }
 
 const userServices = new UserServices();
