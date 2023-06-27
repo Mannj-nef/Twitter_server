@@ -137,6 +137,16 @@ class Database {
       const follower = await database.followers.findOne(filter, options);
 
       return follower;
+    },
+
+    deleteFollower: async ({
+      filter,
+      options
+    }: {
+      filter: FollowerUnion;
+      options?: FindOptions;
+    }) => {
+      await database.followers.deleteOne(filter, options);
     }
   };
 

@@ -164,7 +164,13 @@ const userController = {
       user_id
     };
 
-    await userServices.follow(followPayload);
+    const follower = await userServices.follow(followPayload);
+
+    if (follower) {
+      return res.status(HTTP_STATUS.OK).json({
+        message: USERS_MESSAGES.FOLLOW_USER_AREADY_SUCCESS
+      });
+    }
 
     return res.status(HTTP_STATUS.OK).json({
       message: USERS_MESSAGES.FOLLOW_USER_SUCCESS
@@ -185,6 +191,31 @@ const userController = {
     return res.status(HTTP_STATUS.OK).json({
       message: USERS_MESSAGES.UPDATE_USER_SUCCESS,
       result
+    });
+  },
+
+  // [DELETE]-------------------------------------------------------
+
+  // [DELETE] /user/follow
+  unFollow: async (req: Request, res: Response<IResponse>) => {
+    const { followed_user_id } = req.body as IFollowRequestBody;
+    const { user_id } = req.decoded_token as TokenPayload;
+
+    const payload = {
+      followed_user_id,
+      user_id
+    };
+
+    const follower = await userServices.unfollow(payload);
+
+    if (!follower) {
+      return res.status(HTTP_STATUS.OK).json({
+        message: USERS_MESSAGES.UNFOLLOW_USER_AREADY_SUCCESS
+      });
+    }
+
+    return res.status(HTTP_STATUS.OK).json({
+      message: USERS_MESSAGES.UNFOLLOW_USER_SUCCESS
     });
   }
 };

@@ -67,7 +67,9 @@ const USERS_MESSAGES = {
   USER_ID_REQUIRED: 'User id is required',
   USER_ID_INVALID: 'User id invalid',
   FOLLOW_USER_SUCCESS: 'Follow user success',
+  FOLLOW_USER_AREADY_SUCCESS: 'This person has been followed by you before',
   UNFOLLOW_USER_SUCCESS: 'Unfollow user success',
+  UNFOLLOW_USER_AREADY_SUCCESS: 'Unfollowed this user before',
 
   // bio
   BIO_MUST_BE_STRING: 'Biography must be a string',

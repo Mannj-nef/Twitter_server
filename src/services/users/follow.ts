@@ -36,7 +36,7 @@ const follow = async (followPayload: IFollowPayload) => {
     await database.followerMethods.insertFollow(new FollowerModel(payload));
   }
 
-  return;
+  return Boolean(follower);
 };
 
 export default follow;
