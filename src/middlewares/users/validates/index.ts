@@ -6,3 +6,4 @@ export { default as forgotPassword } from './validate.forgotPassword';
 export { default as forgotPasswordToken } from './validate.forgotPasswordToken';
 export { default as resetPassword } from './validate.resetPassword';
 export { default as updateMe } from './validate.updateMe';
+export { default as follow } from './validate.follow';

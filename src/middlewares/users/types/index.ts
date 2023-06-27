@@ -1,6 +1,7 @@
 import { ParamSchema } from 'express-validator';
 import {
   IEmailTokenRequesBody,
+  IFollowRequestBody,
   IForgotPasswordRequestBody,
   IForgotPasswordTokenRequestBody,
   ILoginRequestBody,
@@ -19,6 +20,7 @@ export type typeUserSchema = {
 } & {
   confirm_password: ParamSchema;
   refreshToken: ParamSchema;
+  followed_user_id: ParamSchema;
 };
 
 export type typeUserVerifyEmailToken = {
@@ -51,4 +53,8 @@ export type typeUserResetPassword = {
 
 export type typeUpdateMe = {
   [k in keyof IUpdateMeRequestBody]: ParamSchema;
+};
+
+export type typeFollow = {
+  [k in keyof IFollowRequestBody]: ParamSchema;
 };

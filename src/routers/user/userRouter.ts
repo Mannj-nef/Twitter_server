@@ -133,6 +133,20 @@ userRouter.post(
   wrapRequestHandle(userController.resetPassword)
 );
 
+/**
+ * [PORT]
+ * Path: /follow
+ * Header: { Authorization: 'Bearer <access_token>' }
+ * Body: { followed_user_id: string }
+ * Response: { message: string }
+ */
+userRouter.post(
+  '/follow',
+  middlewaresAuth.authentication,
+  validate.follow,
+  wrapRequestHandle(userController.follow)
+);
+
 // [PATCH]------------------------------------------------
 
 /**

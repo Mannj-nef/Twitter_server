@@ -6,11 +6,11 @@ import {
   FindOptions,
   MongoClient,
   ObjectId,
-  UpdateFilter,
-  UpdateResult
+  UpdateFilter
 } from 'mongodb';
-import { UserModel, RefreshTokenModel } from '~/models/schemas/';
+import { UserModel, RefreshTokenModel, FollowerModel } from '~/models/schemas/';
 import { UserUnion } from './types/users';
+import { FollowerUnion } from './types/followers';
 
 dotenv.config();
 
@@ -61,7 +61,7 @@ class Database {
   }
 
   get followers() {
-    return;
+    return this.db.collection(process.env.DB_FOLLOW_COLLECTION as string);
   }
 
   get medias() {
@@ -125,6 +125,18 @@ class Database {
 
     deleteRfToken: async (token: string) => {
       await this.refreshTokens.deleteOne({ token });
+    }
+  };
+
+  followerMethods = {
+    insertFollow: async (follower: FollowerModel) => {
+      await this.followers.insertOne(follower);
+    },
+
+    fildFollower: async ({ filter, options }: { filter: FollowerUnion; options?: FindOptions }) => {
+      const follower = await database.followers.findOne(filter, options);
+
+      return follower;
     }
   };
 

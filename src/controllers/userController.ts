@@ -4,6 +4,7 @@ import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
 import { UserVerifyStatus } from '~/enums/user';
 import {
+  IFollowRequestBody,
   IGetProfileParamBody,
   ILogoutRequestBody,
   IRegisterRequestBody,
@@ -27,6 +28,29 @@ const userController = {
       result
     });
   },
+
+  // [GET] /user/:username
+  getProfile: async (
+    req: Request<IGetProfileParamBody>,
+    res: Response<IResponseResult<UserModel> | IResponse>
+  ) => {
+    const { username } = req.params;
+
+    const result = await userServices.getProfile(username);
+
+    if (!result) {
+      return res.status(HTTP_STATUS.NOT_FOUND).json({
+        message: USERS_MESSAGES.USER_NOT_FOUND
+      });
+    }
+
+    return res.status(HTTP_STATUS.OK).json({
+      message: USERS_MESSAGES.GET_USER_SUCCESS,
+      result
+    });
+  },
+
+  // [PORT]---------------------------------------------
 
   // [PORT] /users/login
   login: async (req: Request, res: Response<IResponseToken>) => {
@@ -130,6 +154,25 @@ const userController = {
     });
   },
 
+  // [PORT] /user/follow
+  follow: async (req: Request, res: Response<IResponse>) => {
+    const { followed_user_id } = req.body as IFollowRequestBody;
+    const { user_id } = req.decoded_token as TokenPayload;
+
+    const followPayload = {
+      followed_user_id,
+      user_id
+    };
+
+    await userServices.follow(followPayload);
+
+    return res.status(HTTP_STATUS.OK).json({
+      message: USERS_MESSAGES.FOLLOW_USER_SUCCESS
+    });
+  },
+
+  // [PATCH]--------------------------------------------------------
+
   // [PATCH] /user/me
   updateMe: async (req: Request, res: Response<IResponseResult<UserModel>>) => {
     const { _id } = req.user as Required<UserModel>;
@@ -141,27 +184,6 @@ const userController = {
 
     return res.status(HTTP_STATUS.OK).json({
       message: USERS_MESSAGES.UPDATE_USER_SUCCESS,
-      result
-    });
-  },
-
-  // [GET] /user/:username
-  getProfile: async (
-    req: Request<IGetProfileParamBody>,
-    res: Response<IResponseResult<UserModel> | IResponse>
-  ) => {
-    const { username } = req.params;
-
-    const result = await userServices.getProfile(username);
-
-    if (!result) {
-      return res.status(HTTP_STATUS.NOT_FOUND).json({
-        message: USERS_MESSAGES.USER_NOT_FOUND
-      });
-    }
-
-    return res.status(HTTP_STATUS.OK).json({
-      message: USERS_MESSAGES.GET_USER_SUCCESS,
       result
     });
   }

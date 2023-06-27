@@ -64,6 +64,10 @@ const USERS_MESSAGES = {
   USER_NAME_NOT_INVALID:
     'Username cannot contain consecutive periods, no trailing period, begins with alphanumeric characters or underscores, May contain alphanumeric characters, underscores and periods Word length 4 up to 15 characters',
   USER_NAME_ALREADY_EXISTS: 'Username already exists',
+  USER_ID_REQUIRED: 'User id is required',
+  USER_ID_INVALID: 'User id invalid',
+  FOLLOW_USER_SUCCESS: 'Follow user success',
+  UNFOLLOW_USER_SUCCESS: 'Unfollow user success',
 
   // bio
   BIO_MUST_BE_STRING: 'Biography must be a string',

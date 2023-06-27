@@ -1,4 +1,5 @@
+import FollowerModel from './Follower';
 import RefreshTokenModel from './RefreshToken';
 import UserModel from './User';
 
-export { RefreshTokenModel, UserModel };
+export { RefreshTokenModel, UserModel, FollowerModel };

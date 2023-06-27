@@ -17,8 +17,8 @@ class UserServices {
   getMe = user.getMe;
   updateMe = user.updateMe;
   getProfile = user.getProfile;
-  follow = () => [];
-  unfollow = () => [];
+  follow = user.follow;
+  unfollow = user.unFollow;
 }
 
 const userServices = new UserServices();

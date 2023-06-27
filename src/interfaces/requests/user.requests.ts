@@ -43,3 +43,7 @@ export interface IUpdateMeRequestBody {
 export interface IGetProfileParamBody {
   username: string;
 }
+
+export interface IFollowRequestBody {
+  followed_user_id: string;
+}

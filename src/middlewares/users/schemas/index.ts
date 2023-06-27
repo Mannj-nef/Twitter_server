@@ -2,6 +2,7 @@ import { USERS_MESSAGES } from '~/constants/messages';
 import { typeUserSchema } from '../types';
 import { UserVerifyStatus } from '~/enums/user';
 import { nameSchema, urlSchema } from './constants/paramSchemaCustom';
+import { ObjectId } from 'mongodb';
 
 const userSchema: typeUserSchema = {
   // verify schema email
@@ -117,6 +118,22 @@ const userSchema: typeUserSchema = {
         max: 100
       },
       errorMessage: USERS_MESSAGES.LOCATION_MUST_BE_LENGTH
+    }
+  },
+
+  // follower user id
+  followed_user_id: {
+    notEmpty: {
+      errorMessage: USERS_MESSAGES.USER_ID_REQUIRED
+    },
+    custom: {
+      options: (user_id: string) => {
+        if (!ObjectId.isValid(user_id)) {
+          throw new Error(USERS_MESSAGES.USER_ID_INVALID);
+        }
+
+        return true;
+      }
     }
   },
 
