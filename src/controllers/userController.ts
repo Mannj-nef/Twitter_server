@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import HTTP_STATUS from '~/constants/httpStatuss';
@@ -16,6 +17,9 @@ import { TokenPayload } from '~/interfaces/requests';
 import { IResponse, IResponseResult, IResponseToken } from '~/interfaces/response';
 import { UserModel } from '~/models/schemas';
 import userServices from '~/services/user';
+import { getTokenOauth } from '~/utils/oauth.util';
+
+dotenv.config();
 
 const userController = {
   // [GET] /users/me
@@ -49,6 +53,16 @@ const userController = {
       message: USERS_MESSAGES.GET_USER_SUCCESS,
       result
     });
+  },
+
+  // [GET] /user/oauth/google
+  oauth: async (req: Request, res: Response) => {
+    console.log('oauth------------');
+
+    await getTokenOauth(req.query.code as string);
+
+    // return res.redirect(process.env.CLIENT_URL as string);
+    return res.json({ mes: 'success' });
   },
 
   // [PORT]---------------------------------------------

@@ -11,6 +11,7 @@ import resetPassword from './resetPassword';
 import unFollow from './unfollow';
 import updateMe from './updateMe';
 import verifyEmailToken from './verifyEmailToken';
+import oauth from './oauth';
 
 const user = {
   login,
@@ -25,7 +26,8 @@ const user = {
   getProfile,
   follow,
   unFollow,
-  changePassword
+  changePassword,
+  oauth
 };
 
 export default user;

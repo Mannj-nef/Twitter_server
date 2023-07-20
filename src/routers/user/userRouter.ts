@@ -36,6 +36,14 @@ userRouter.get('/me', middlewaresAuth.authentication, wrapRequestHandle(userCont
  */
 userRouter.get('/:username', wrapRequestHandle(userController.getProfile));
 
+/**
+ * [GET]
+ * Path: /oauth/google
+ * Querry: {code: string}
+ * Redirect: /?accesstoken=JWT<access_token>&refreshToken=JWT<refresh_token>
+ */
+userRouter.get('/oauth/google', wrapRequestHandle(userController.oauth));
+
 // [POST]-----------------------------------------
 
 /**
@@ -171,10 +179,10 @@ userRouter.patch(
 
 /**
  * [PUT]
- * Path: /change-pasword
+ * Path: /change-password
  * Header: { Authorization: 'Bearer <access_token>' }
  * Body: { current_password: string, password: string, password_confirmation: string }
- * Resonse: { message: string }
+ * Response: { message: string }
  */
 userRouter.put(
   '/change-password',

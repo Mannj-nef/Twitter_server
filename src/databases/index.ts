@@ -123,6 +123,16 @@ class Database {
       return rfToken;
     },
 
+    updateRfToken: async ({
+      previousRfToken,
+      payload
+    }: {
+      previousRfToken: string;
+      payload: RefreshTokenModel;
+    }) => {
+      await this.refreshTokens.updateOne({ token: previousRfToken }, { $set: payload });
+    },
+
     deleteRfToken: async (token: string) => {
       await this.refreshTokens.deleteOne({ token });
     }
