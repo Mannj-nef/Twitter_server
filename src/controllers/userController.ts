@@ -17,7 +17,6 @@ import { TokenPayload } from '~/interfaces/requests';
 import { IResponse, IResponseResult, IResponseToken } from '~/interfaces/response';
 import { UserModel } from '~/models/schemas';
 import userServices from '~/services/user';
-import { getTokenOauth } from '~/utils/oauth.util';
 
 dotenv.config();
 
@@ -57,12 +56,19 @@ const userController = {
 
   // [GET] /user/oauth/google
   oauth: async (req: Request, res: Response) => {
-    console.log('oauth------------');
+    const data = await userServices.oauth(req.query.code as string);
 
-    await getTokenOauth(req.query.code as string);
+    if (!data) {
+      res.redirect(`${process.env.CLIENT_URL}/login`);
+      res.status(HTTP_STATUS.FORBIDDEN).json({
+        message: USERS_MESSAGES.USER_BANNED
+      });
+      return;
+    }
 
-    // return res.redirect(process.env.CLIENT_URL as string);
-    return res.json({ mes: 'success' });
+    return res.redirect(
+      `${process.env.CLIENT_URL}?access_token=${data.token}&refresh_token=${data.rfToken}`
+    );
   },
 
   // [PORT]---------------------------------------------
@@ -82,11 +88,13 @@ const userController = {
   },
 
   // [PORT] /users/register
-  register: async (req: Request, res: Response<IResponse>) => {
-    await userServices.register(req.body as IRegisterRequestBody);
+  register: async (req: Request, res: Response<IResponseToken>) => {
+    const { token, rfToken } = await userServices.register(req.body as IRegisterRequestBody);
 
     return res.status(HTTP_STATUS.CREATED).json({
-      message: USERS_MESSAGES.REGISTER_SUCCESS
+      message: USERS_MESSAGES.REGISTER_SUCCESS,
+      access_token: token,
+      refresh_token: rfToken
     });
   },
 

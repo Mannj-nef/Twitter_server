@@ -3,10 +3,12 @@ import dotenv from 'dotenv';
 import { IGetTokenOauthRequest } from '~/interfaces/requests/oauth.requests';
 
 import jwt from 'jsonwebtoken';
+import { IResponseGoogleUserInfo } from '~/interfaces/response';
 
 dotenv.config();
 
-export const getTokenOauth = async (code: string) => {
+export const getUserGoogelInfor = async (code: string) => {
+  // Request Body to google oauth  token
   const requestBody: IGetTokenOauthRequest = {
     code,
     client_id: process.env.GOOGLE_OAUTH_CLIENT_ID as string,
@@ -15,19 +17,20 @@ export const getTokenOauth = async (code: string) => {
     grant_type: 'authorization_code'
   };
 
-  const { data } = await axios.post(process.env.GOOGLE_OAUTH_TOKEN_URI as string, requestBody, {
+  /**
+   * @url Google oauth token
+   * @body RequestBody
+   * @headers 'Content-Type': 'application/x-www-form-urlencoded'
+   */
+  const {
+    data: { id_token }
+  } = await axios.post(process.env.GOOGLE_OAUTH_TOKEN_URI as string, requestBody, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   });
 
-  console.log(data);
+  const userDecode = jwt.decode(id_token);
 
-  console.log(jwt.decode(data.id_token));
-
-  return data as {
-    access_token: string;
-    refresh_token: string;
-    id_token: string;
-  };
+  return userDecode as IResponseGoogleUserInfo;
 };

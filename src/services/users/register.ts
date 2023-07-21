@@ -2,9 +2,9 @@ import { ObjectId } from 'mongodb';
 import database from '~/databases';
 import { UserVerifyStatus } from '~/enums/user';
 import { IRegisterRequestBody } from '~/interfaces/requests';
-import { UserModel } from '~/models/schemas';
+import { RefreshTokenModel, UserModel } from '~/models/schemas';
 import { handleHashPassword } from '~/utils/password.util';
-import { signEmailToken } from '~/utils/token.util';
+import createToken, { signEmailToken } from '~/utils/token.util';
 
 const register = async (payload: IRegisterRequestBody) => {
   const user_id = new ObjectId();
@@ -13,6 +13,11 @@ const register = async (payload: IRegisterRequestBody) => {
   const email_verify_token = signEmailToken({
     user_id: user_id.toString(),
     verify: UserVerifyStatus.Unverified
+  });
+
+  const { token, rfToken } = createToken({
+    user_id: user_id.toString(),
+    verify: UserVerifyStatus.Verified
   });
 
   const newUser = {
@@ -26,6 +31,7 @@ const register = async (payload: IRegisterRequestBody) => {
   };
 
   await database.userMethods.insertOneUser(new UserModel(newUser));
+  await database.refreshTokensMethods.insertRfToken(new RefreshTokenModel({ rfToken, user_id }));
 
   /**
    * send email to verify
@@ -33,7 +39,10 @@ const register = async (payload: IRegisterRequestBody) => {
    */
   console.log({ email_verify_token });
 
-  return;
+  return {
+    token,
+    rfToken
+  };
 };
 
 export default register;

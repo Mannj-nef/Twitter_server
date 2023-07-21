@@ -77,6 +77,8 @@ const USERS_MESSAGES = {
   FOLLOW_USER_AREADY_SUCCESS: 'This person has been followed by you before',
   UNFOLLOW_USER_SUCCESS: 'Unfollow user success',
   UNFOLLOW_USER_AREADY_SUCCESS: 'Unfollowed this user before',
+  USER_BANNED:
+    'This user has been banned, please contact the administrator of the site or application if you have any questions',
 
   // bio
   BIO_MUST_BE_STRING: 'Biography must be a string',
