@@ -22,8 +22,8 @@ dotenv.config();
 
 const userController = {
   // [GET] /users/me
-  getMe: async (rep: Request, res: Response<IResponseResult<UserModel>>) => {
-    const { user_id } = rep.decoded_token as TokenPayload;
+  getMe: async (req: Request, res: Response<IResponseResult<UserModel>>) => {
+    const { user_id } = req.decoded_token as TokenPayload;
 
     const result = (await userServices.getMe(user_id)) as UserModel;
 
