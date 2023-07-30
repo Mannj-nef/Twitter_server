@@ -1,13 +1,16 @@
 import { Request, Response } from 'express';
-import { IResponse } from '~/interfaces/response';
-import mediaServices from '~/services/media';
+import { uploadImageFile } from '~/utils/file.util';
 
 const mediaControler = {
   // [POST] /medias/upload-image
-  uploadImage: (rep: Request, res: Response<IResponse>) => {
-    const service = mediaServices.uploadImage();
+  uploadImage: async (req: Request, res: Response) => {
+    // const service = mediaServices.uploadImage();
+
+    const data = await uploadImageFile(req);
+
     return res.json({
-      message: 'success'
+      message: 'success',
+      data
     });
   }
 };

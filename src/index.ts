@@ -5,12 +5,16 @@ import database from './databases';
 import cors from 'cors';
 import errorHandler from './middlewares/errors';
 import corsConfig from './configs/cors';
+import { handleCreateFolder } from './utils/file.util';
 
 // .env
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3838;
+
+//  init foulder uploads
+handleCreateFolder('uploads');
 
 // config cors
 app.use(cors(corsConfig));

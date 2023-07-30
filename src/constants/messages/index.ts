@@ -1,3 +1,2 @@
-import USERS_MESSAGES from './user.messages';
-
-export { USERS_MESSAGES };
+export { default as USERS_MESSAGES } from './user.messages';
+export { default as MEDIA_MESSAGE } from './media.message';
