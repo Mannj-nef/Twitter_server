@@ -6,6 +6,7 @@ import cors from 'cors';
 import errorHandler from './middlewares/errors';
 import corsConfig from './configs/cors';
 import { handleCreateFolder } from './utils/file.util';
+import { UPLOAD_IMAGE_TEMP_DIR } from './constants/dirs';
 
 // .env
 dotenv.config();
@@ -14,7 +15,7 @@ const app = express();
 const port = process.env.PORT || 3838;
 
 //  init foulder uploads
-handleCreateFolder('uploads');
+handleCreateFolder(UPLOAD_IMAGE_TEMP_DIR);
 
 // config cors
 app.use(cors(corsConfig));

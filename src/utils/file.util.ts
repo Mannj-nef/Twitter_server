@@ -1,35 +1,33 @@
 import { Request } from 'express';
-import formidable, { Fields, Files } from 'formidable';
-import { CustomError, EntityError } from '~/models/errors';
+import formidable, { Fields, File, Files } from 'formidable';
+import { CustomError } from '~/models/errors';
 
 import fileSystem from 'fs';
 
-import path from 'path';
 import { MEDIA_MESSAGE } from '~/constants/messages';
 import HTTP_STATUS from '~/constants/httpStatuss';
+import { formidableImageOption } from '~/common/medias';
 
-const formidableOption: formidable.Options = {
-  uploadDir: path.resolve('uploads'),
-  maxFiles: 4,
-  keepExtensions: true,
-  maxFileSize: 300 * 1024, // 300mb
-  filter: ({ mimetype }) => {
-    return Boolean(mimetype && mimetype.includes('image'));
+export const handleCreateFolder = (path: string) => {
+  if (!fileSystem.existsSync(path)) {
+    fileSystem.mkdirSync(path, {
+      recursive: true
+    });
   }
 };
 
 export const uploadImageFile = async (req: Request) => {
-  const form = formidable(formidableOption);
+  const form = formidable(formidableImageOption);
 
-  return new Promise((resolve, reject) => {
+  return new Promise<File[]>((resolve, reject) => {
     form.parse(req, (err: { httpCode: number }, fields: Fields, files: Files) => {
       if (err) {
         return reject(
           new CustomError({
             statusCode: err.httpCode,
-            message: `${MEDIA_MESSAGE.REQUEST_ENTITY_TOO_LARGE}: ${formidableOption.maxFileSize
+            message: `${MEDIA_MESSAGE.REQUEST_ENTITY_TOO_LARGE}: ${formidableImageOption.maxFileSize
               ?.toString()
-              .slice(0, 2)}MB`
+              .slice(0, 2)}kB`
           })
         );
       }
@@ -43,18 +41,7 @@ export const uploadImageFile = async (req: Request) => {
         );
       }
 
-      resolve({ fields, files });
+      resolve(files.image as File[]);
     });
   });
-};
-
-export const handleCreateFolder = (foulderName: string) => {
-  const foulder = path.resolve(foulderName);
-
-  if (!fileSystem.existsSync(foulder)) {
-    fileSystem.mkdirSync(foulder),
-      {
-        recursive: true
-      };
-  }
 };
