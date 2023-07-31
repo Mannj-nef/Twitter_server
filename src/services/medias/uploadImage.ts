@@ -6,27 +6,29 @@ import { UPLOAD_IMAGE_DIR } from '~/constants/dirs';
 import { uploadImageFile } from '~/utils/file.util';
 
 import dotenv from 'dotenv';
-
+import { MediaType } from '~/enums/media';
+import IMedia from '~/interfaces/media';
 dotenv.config();
 
 const uploadImage = async (req: Request) => {
   const files = await uploadImageFile(req);
 
-  let name;
+  const listUrlImage: IMedia[] = await Promise.all(
+    files.map(async (file) => {
+      const newName = file.newFilename.split('.')[0];
+      const newPath = `${UPLOAD_IMAGE_DIR}/${newName}.jpg`;
 
-  files.forEach(async (file) => {
-    const newName = file.newFilename.split('.')[0];
-    const newPath = `${UPLOAD_IMAGE_DIR}/${newName}.jpg`;
+      await sharp(file.filepath).jpeg().toFile(newPath);
+      fileSystem.unlinkSync(file.filepath);
 
-    name = newName;
+      const hostImgUrl = isProduction ? process.env.HOST : `http://localhost:${process.env.PORT}`;
+      const imageURl = `${hostImgUrl}/static/images/${newName}.jpg`;
 
-    await sharp(file.filepath).jpeg().toFile(newPath);
-    fileSystem.unlinkSync(file.filepath);
-  });
+      return { url: imageURl, type: MediaType.Image };
+    })
+  );
 
-  const imageURl = isProduction ? process.env.HOST : `http://localhot:${process.env.PORT}`;
-
-  return `${imageURl}/medias/${name}.jpg`;
+  return listUrlImage;
 };
 
 export default uploadImage;

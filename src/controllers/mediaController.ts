@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
+import path from 'path';
+import { UPLOAD_IMAGE_DIR } from '~/constants/dirs';
+import HTTP_STATUS from '~/constants/httpStatuss';
 import mediaServices from '~/services/media';
-import { uploadImageFile } from '~/utils/file.util';
 
 const mediaControler = {
   // [POST] /medias/upload-image
@@ -11,6 +13,12 @@ const mediaControler = {
       message: 'success',
       result
     });
+  },
+
+  // serve url
+  serveImage: (req: Request, res: Response) => {
+    const { name } = req.params;
+    return res.status(HTTP_STATUS.OK).sendFile(path.resolve(UPLOAD_IMAGE_DIR, name));
   }
 };
 
