@@ -4,6 +4,7 @@ const HTTP_STATUS = {
   CREATED: 201,
   ACCEPTED: 202,
   NO_CONTENT: 204,
+  PARTIAL_CONTENT: 206,
 
   // Client error responses
   BAD_REQUEST: 400,

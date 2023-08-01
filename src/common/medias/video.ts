@@ -3,7 +3,7 @@ import { UPLOAD_VIDEO_DIR } from '~/constants/dirs';
 import { MediaType } from '~/enums/media';
 
 const maxFiles = 1;
-const maxFileSize = 50 * 1024 * 1024; // 50MB
+const maxFileSize = 200 * 1024 * 1024; // 200MB
 
 export const formidableVideoOption: Options = {
   uploadDir: UPLOAD_VIDEO_DIR,
