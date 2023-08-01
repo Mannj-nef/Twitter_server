@@ -1,12 +1,11 @@
 import { Request } from 'express';
-import formidable, { Fields, File, Files } from 'formidable';
+import formidable, { Fields, File, Files, Options } from 'formidable';
 import { CustomError } from '~/models/errors';
 
 import fileSystem from 'fs';
 
 import { MEDIA_MESSAGE } from '~/constants/messages';
 import HTTP_STATUS from '~/constants/httpStatuss';
-import { formidableImageOption } from '~/common/medias';
 
 export const handleCreateFolder = (path: string) => {
   if (!fileSystem.existsSync(path)) {
@@ -16,8 +15,14 @@ export const handleCreateFolder = (path: string) => {
   }
 };
 
-export const uploadImageFile = async (req: Request) => {
-  const form = formidable(formidableImageOption);
+export const uploadFile = async ({
+  req,
+  formidableOption
+}: {
+  req: Request;
+  formidableOption: Options;
+}) => {
+  const form = formidable(formidableOption);
 
   return new Promise<File[]>((resolve, reject) => {
     form.parse(req, (err: { httpCode: number }, fields: Fields, files: Files) => {
@@ -25,23 +30,23 @@ export const uploadImageFile = async (req: Request) => {
         return reject(
           new CustomError({
             statusCode: err.httpCode,
-            message: `${MEDIA_MESSAGE.REQUEST_ENTITY_TOO_LARGE}: ${formidableImageOption.maxFileSize
+            message: `${MEDIA_MESSAGE.REQUEST_ENTITY_TOO_LARGE}: ${formidableOption.maxFileSize
               ?.toString()
-              .slice(0, 2)}kB`
+              .slice(0, 2)}${files.image ? 'kB' : files.image ? 'MB' : ''}`
           })
         );
       }
 
-      if (!files.image) {
+      if (!files.image && !files.video) {
         return reject(
           new CustomError({
-            message: MEDIA_MESSAGE.FILE_TYPE_IS_NOT_VALID,
-            statusCode: HTTP_STATUS.UNPROCESSABLE_ENTITY
+            message: MEDIA_MESSAGE.FILE_NOT_IS_EMPTY,
+            statusCode: HTTP_STATUS.NOT_FOUND
           })
         );
       }
 
-      resolve(files.image as File[]);
+      resolve((files.image as File[]) || (files.video as File[]));
     });
   });
 };

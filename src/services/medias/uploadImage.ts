@@ -3,15 +3,16 @@ import fileSystem from 'fs';
 import sharp from 'sharp';
 import { isProduction } from '~/configs/argv';
 import { UPLOAD_IMAGE_DIR } from '~/constants/dirs';
-import { uploadImageFile } from '~/utils/file.util';
+import { uploadFile } from '~/utils/file.util';
 
 import dotenv from 'dotenv';
 import { MediaType } from '~/enums/media';
 import IMedia from '~/interfaces/media';
+import { formidableImageOption } from '~/common/medias';
 dotenv.config();
 
 const uploadImage = async (req: Request) => {
-  const files = await uploadImageFile(req);
+  const files = await uploadFile({ req, formidableOption: formidableImageOption });
 
   const listUrlImage: IMedia[] = await Promise.all(
     files.map(async (file) => {

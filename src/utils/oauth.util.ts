@@ -7,7 +7,7 @@ import { IResponseGoogleUserInfo } from '~/interfaces/response';
 
 dotenv.config();
 
-export const getUserGoogelInfor = async (code: string) => {
+export const getUserGoogeInfor = async (code: string) => {
   // Request Body to google oauth  token
   const requestBody: IGetTokenOauthRequest = {
     code,
