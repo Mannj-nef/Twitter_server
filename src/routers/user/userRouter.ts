@@ -58,13 +58,25 @@ userRouter.post('/login', validate.login, wrapRequestHandle(userController.login
  * [PORT]
  * Path: /register
  * Body: { name: string, email: string, password: string, confirm_password: string, date_birth: isISO8601 }
- * Response: { message: string }
+ * Response: { accessToken: JWT<access_token>, refetchToken: JWT<refresh_token>, message: string }
  */
 userRouter.post(
   '/register',
   filterRequestBody<IRegisterRequestBody>(register),
   validate.register,
   wrapRequestHandle(userController.register)
+);
+
+/**
+ * [PORT]
+ * Path: /refresh-token
+ * Body: { refreshToken: JWT<refersh_token> }
+ * Response: { accessToken: JWT<access_token>, refetchToken: JWT<refresh_token>, message: string }
+ */
+userRouter.post(
+  '/refresh-token',
+  middlewaresAuth.verifyRefreshToken,
+  wrapRequestHandle(userController.refreshToken)
 );
 
 /**

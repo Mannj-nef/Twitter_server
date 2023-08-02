@@ -5,6 +5,8 @@ interface IRefreshToken {
   rfToken: string;
   created_at?: Date;
   user_id: ObjectId;
+  iat: number;
+  exp: number;
 }
 
 export default IRefreshToken;

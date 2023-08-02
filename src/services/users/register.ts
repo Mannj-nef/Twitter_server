@@ -4,7 +4,10 @@ import { UserVerifyStatus } from '~/enums/user';
 import { IRegisterRequestBody } from '~/interfaces/requests';
 import { RefreshTokenModel, UserModel } from '~/models/schemas';
 import { handleHashPassword } from '~/utils/password.util';
-import createToken, { signEmailToken } from '~/utils/token.util';
+import createToken, { signEmailToken, verifyToken } from '~/utils/token.util';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const register = async (payload: IRegisterRequestBody) => {
   const user_id = new ObjectId();
@@ -20,6 +23,11 @@ const register = async (payload: IRegisterRequestBody) => {
     verify: UserVerifyStatus.Verified
   });
 
+  const { exp, iat } = verifyToken({
+    token: rfToken,
+    secretKey: process.env.JWT_REFRESH_TOKEN as string
+  });
+
   const newUser = {
     ...payload,
     _id: user_id,
@@ -31,7 +39,9 @@ const register = async (payload: IRegisterRequestBody) => {
   };
 
   await database.userMethods.insertOneUser(new UserModel(newUser));
-  await database.refreshTokensMethods.insertRfToken(new RefreshTokenModel({ rfToken, user_id }));
+  await database.refreshTokensMethods.insertRfToken(
+    new RefreshTokenModel({ rfToken, user_id, exp, iat })
+  );
 
   /**
    * send email to verify

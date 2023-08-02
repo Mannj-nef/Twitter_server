@@ -4,6 +4,8 @@ class UserServices {
   register = user.register;
   login = user.login;
   logout = user.logout;
+  refrestToken = user.refrestToken;
+
   oauth = user.oauth;
 
   // email

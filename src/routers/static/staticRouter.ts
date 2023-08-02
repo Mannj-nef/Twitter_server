@@ -5,6 +5,6 @@ const staticRouter = router();
 
 staticRouter.get('/images/:name', mediaControler.serveImage);
 staticRouter.get('/videos/:name', mediaControler.serveVideo);
-staticRouter.get('/video-stream/:name', mediaControler.serveStreamVideo);
+staticRouter.get('/videos-stream/:name', mediaControler.serveStreamVideo);
 
 export default staticRouter;

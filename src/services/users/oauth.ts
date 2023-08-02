@@ -2,9 +2,12 @@ import { ObjectId } from 'mongodb';
 import database from '~/databases';
 import { UserVerifyStatus } from '~/enums/user';
 import { getUserGoogeInfor } from '~/utils/oauth.util';
-import createToken from '~/utils/token.util';
+import createToken, { verifyToken } from '~/utils/token.util';
 import register from './register';
 import { RefreshTokenModel } from '~/models/schemas';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const oauth = async (code: string) => {
   const userGoogleInfor = await getUserGoogeInfor(code);
@@ -26,8 +29,13 @@ const oauth = async (code: string) => {
       verify: UserVerifyStatus.Verified
     });
 
+    const { exp, iat } = verifyToken({
+      token: rfToken,
+      secretKey: process.env.JWT_REFRESH_TOKEN as string
+    });
+
     await database.refreshTokensMethods.insertRfToken(
-      new RefreshTokenModel({ rfToken, user_id: user._id as ObjectId })
+      new RefreshTokenModel({ rfToken, user_id: user._id as ObjectId, exp, iat })
     );
 
     return {

@@ -9,7 +9,7 @@ const mediaRouter = Router();
  * Path: /upload-image
  * Header: { Authorization: 'Bearer <access_token>' }
  * Body: { File : { key: image } }
- * Response: { message: string, result: url[] }
+ * Response: { message: string, result: IMedia[] }
  */
 mediaRouter.post('/upload-image', wrapRequestHandle(mediaControler.uploadImage));
 
@@ -18,7 +18,7 @@ mediaRouter.post('/upload-image', wrapRequestHandle(mediaControler.uploadImage))
  * Path: /upload-video
  * Header: { Authorization: 'Bearer <access_token>' }
  * Body: { File : { key: video } }
- * Response: { message: string, result: url[] }
+ * Response: { message: string, result: IMedia[] }
  */
 mediaRouter.post('/upload-video', wrapRequestHandle(mediaControler.uploadVideo));
 

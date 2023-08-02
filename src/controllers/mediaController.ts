@@ -43,6 +43,7 @@ const mediaControler = {
 
   serveStreamVideo: (req: Request, res: Response) => {
     const range = req.headers.range;
+
     if (!range) {
       return res.status(HTTP_STATUS.BAD_REQUEST).send('Requires Range header');
     }

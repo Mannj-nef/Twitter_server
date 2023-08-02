@@ -9,6 +9,7 @@ import {
   IFollowRequestBody,
   IGetProfileParamBody,
   ILogoutRequestBody,
+  IRefreshTokenRequestBody,
   IRegisterRequestBody,
   IResetPasswordRequestBody,
   IUpdateMeRequestBody
@@ -93,6 +94,22 @@ const userController = {
 
     return res.status(HTTP_STATUS.CREATED).json({
       message: USERS_MESSAGES.REGISTER_SUCCESS,
+      access_token: token,
+      refresh_token: rfToken
+    });
+  },
+
+  // [POST] /users/refresh-token
+  refreshToken: async (req: Request, res: Response<IResponseToken>) => {
+    const { refreshToken } = req.body as IRefreshTokenRequestBody;
+
+    const { rfToken, token } = await userServices.refrestToken({
+      refreshToken,
+      tokenDecoded: req.decoded_token as TokenPayload
+    });
+
+    return res.status(HTTP_STATUS.OK).json({
+      message: USERS_MESSAGES.REFRESH_TOKEN_IS_SUCCESS,
       access_token: token,
       refresh_token: rfToken
     });

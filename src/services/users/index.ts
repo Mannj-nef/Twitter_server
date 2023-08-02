@@ -12,6 +12,7 @@ import unFollow from './unfollow';
 import updateMe from './updateMe';
 import verifyEmailToken from './verifyEmailToken';
 import oauth from './oauth';
+import refrestToken from './refreshToken';
 
 const user = {
   login,
@@ -27,7 +28,8 @@ const user = {
   follow,
   unFollow,
   changePassword,
-  oauth
+  oauth,
+  refrestToken
 };
 
 export default user;
