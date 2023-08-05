@@ -20,7 +20,10 @@ initFoulder();
 app.use(cors(corsConfig));
 
 // connect db
-database.connect();
+// database.connect();
+database.connect().then(() => {
+  database.createIndexCollection();
+});
 
 // body parser
 app.use(express.json());

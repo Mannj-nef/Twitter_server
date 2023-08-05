@@ -11,6 +11,7 @@ import {
 import { UserModel, RefreshTokenModel, FollowerModel } from '~/models/schemas/';
 import { UserUnion } from './types/users';
 import { FollowerUnion } from './types/followers';
+import FollowerModle from '~/models/schemas/Follower';
 
 dotenv.config();
 
@@ -36,6 +37,14 @@ class Database {
     }
   };
 
+  createIndexCollection = () => {
+    this.userIndexs();
+    this.refreshTokenIndexs();
+    this.followIndexs();
+  };
+
+  // collection
+
   get users(): Collection<UserModel> {
     return this.db.collection(process.env.DB_USERS_COLLECTION as string);
   }
@@ -60,13 +69,27 @@ class Database {
     return this.db.collection(process.env.DB_REFRESH_TOKEN_COLLECTION as string);
   }
 
-  get followers() {
+  get followers(): Collection<FollowerModle> {
     return this.db.collection(process.env.DB_FOLLOW_COLLECTION as string);
   }
 
   get medias() {
     return;
   }
+
+  // indexs
+  userIndexs = () => {
+    this.users.createIndex({ email: 1 }, { unique: true });
+    this.users.createIndex({ username: 1 }, { unique: true });
+  };
+
+  refreshTokenIndexs = () => {
+    this.refreshTokens.createIndex({ token: 1 }, { unique: true });
+  };
+
+  followIndexs = () => {
+    this.followers.createIndex({ user_id: 1, followed_user_id: 1 });
+  };
 
   // methods
   userMethods = {
@@ -110,11 +133,6 @@ class Database {
   refreshTokensMethods = {
     findRfToken: async (token: string) => {
       const rfToken = await this.refreshTokens.findOne({ token });
-      return rfToken;
-    },
-
-    findRfTokenByUserId: async (user_id: ObjectId) => {
-      const rfToken = await this.refreshTokens.findOne({ user_id });
       return rfToken;
     },
 

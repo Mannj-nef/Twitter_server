@@ -9,6 +9,7 @@ dotenv.config();
 
 const login = async (payload: { user_id: string; verify: UserVerifyStatus }) => {
   const { rfToken, token } = createToken(payload);
+
   const { exp, iat } = verifyToken({
     token: rfToken,
     secretKey: process.env.JWT_REFRESH_TOKEN as string

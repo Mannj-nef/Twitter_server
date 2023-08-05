@@ -11,7 +11,9 @@ const validateRegister: typeUserRegister = {
     ...userSchema.email,
     custom: {
       options: async (email: string) => {
-        const isExistEmail = await database.userMethods.checkExistEmail(email);
+        const emailUser = email.toLowerCase();
+        const isExistEmail = await database.userMethods.checkExistEmail(emailUser);
+
         if (isExistEmail) {
           throw new Error(USERS_MESSAGES.EMAIL_ALREADY_EXISTS);
         }
