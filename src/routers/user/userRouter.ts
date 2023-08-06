@@ -31,10 +31,35 @@ userRouter.get('/me', middlewaresAuth.authentication, wrapRequestHandle(userCont
 
 /**
  * [GET]
+ * Path: /:username
  * Param: {username: string}
- * Response: {message: string user: UserModel}
+ * Response: {message: string, user: UserModel}
  */
 userRouter.get('/:username', wrapRequestHandle(userController.getProfile));
+
+/**
+ * [GET]
+ * Paht /:username/follwing
+ * Param: {username: string}
+ * Response: {message: string, user: UserModel}
+ */
+userRouter.get('/follwing', (req, res) => {
+  return res.json({
+    message: 'success'
+  });
+});
+
+/**
+ * [GET]
+ * Paht /:username/follwing
+ * Param: {username: string}
+ * Response: {message: string, user: UserModel}
+ */
+userRouter.get('/follwing', (req, res) => {
+  return res.json({
+    message: 'success'
+  });
+});
 
 /**
  * [GET]
@@ -157,20 +182,6 @@ userRouter.post(
   wrapRequestHandle(userController.resetPassword)
 );
 
-/**
- * [PORT]
- * Path: /follow
- * Header: { Authorization: 'Bearer <access_token>' }
- * Body: { followed_user_id: string }
- * Response: { message: string }
- */
-userRouter.post(
-  '/follow',
-  middlewaresAuth.authentication,
-  validate.follow,
-  wrapRequestHandle(userController.follow)
-);
-
 // [PATCH]------------------------------------------------
 
 /**
@@ -206,19 +217,5 @@ userRouter.put(
 );
 
 // [DELETE]------------------------------------------------
-
-/**
- * [DELETE]
- * Path: /follow
- * Header: { Authorization: 'Bearer <access_token>' }
- * Body: { followed_user_id: string }
- * Response: { message: string }
- */
-userRouter.delete(
-  '/follow',
-  middlewaresAuth.authentication,
-  validate.follow,
-  wrapRequestHandle(userController.unFollow)
-);
 
 export default userRouter;

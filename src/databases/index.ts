@@ -78,17 +78,33 @@ class Database {
   }
 
   // indexs
-  userIndexs = () => {
+  userIndexs = async () => {
+    const exists = await this.users.indexExists(['email_1', 'username_1']);
+    if (exists) return;
+
     this.users.createIndex({ email: 1 }, { unique: true });
     this.users.createIndex({ username: 1 }, { unique: true });
   };
 
-  refreshTokenIndexs = () => {
+  refreshTokenIndexs = async () => {
+    const exists = await this.refreshTokens.indexExists(['token_1', 'exp_1']);
+    if (exists) return;
+
     this.refreshTokens.createIndex({ token: 1 }, { unique: true });
+    this.refreshTokens.createIndex({ exp: 1 }, { expireAfterSeconds: 0 });
   };
 
-  followIndexs = () => {
+  followIndexs = async () => {
+    const exists = await this.followers.indexExists([
+      'user_id_1',
+      'followed_user_id_1',
+      'user_id_1_followed_user_id_1'
+    ]);
+    if (exists) return;
+
     this.followers.createIndex({ user_id: 1, followed_user_id: 1 });
+    this.followers.createIndex({ user_id: 1 });
+    this.followers.createIndex({ followed_user_id: 1 });
   };
 
   // methods
@@ -165,6 +181,18 @@ class Database {
       const follower = await database.followers.findOne(filter, options);
 
       return follower;
+    },
+
+    fildFollowerList: async ({
+      filter,
+      options
+    }: {
+      filter: FollowerUnion;
+      options?: FindOptions;
+    }) => {
+      const follows = await database.followers.find(filter, options).toArray();
+
+      return follows;
     },
 
     deleteFollower: async ({

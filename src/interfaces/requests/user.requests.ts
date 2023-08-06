@@ -50,6 +50,7 @@ export interface IGetProfileParamBody {
 
 export interface IFollowRequestBody {
   followed_user_id: string;
+  user_id?: string;
 }
 
 export interface IChangePasswordRequestBody {

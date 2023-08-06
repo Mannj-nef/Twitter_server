@@ -20,8 +20,6 @@ class UserServices {
   getMe = user.getMe;
   updateMe = user.updateMe;
   getProfile = user.getProfile;
-  follow = user.follow;
-  unfollow = user.unFollow;
   changePassword = user.changePassword;
 }
 
