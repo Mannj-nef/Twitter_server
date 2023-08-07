@@ -26,13 +26,17 @@ export const uploadFile = async ({
 
   return new Promise<File[]>((resolve, reject) => {
     form.parse(req, (err: { httpCode: number }, fields: Fields, files: Files) => {
+      const urlReq = req.url;
+
       if (err) {
         return reject(
           new CustomError({
             statusCode: err.httpCode,
             message: `${MEDIA_MESSAGE.REQUEST_ENTITY_TOO_LARGE}: ${formidableOption.maxFileSize
               ?.toString()
-              .slice(0, 2)}${files.image ? 'kB' : files.image ? 'MB' : ''}`
+              .slice(0, 2)}${
+              urlReq.includes('image') ? 'kB' : urlReq.includes('video') ? 'MB' : ''
+            }`
           })
         );
       }

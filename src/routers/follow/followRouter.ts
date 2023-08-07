@@ -26,7 +26,7 @@ followRouter.post(
  * [GET]
  * Paht /follow/follwing
  * Param: {user_id: string}
- * Response: {message: string, user: []}
+ * Response: {message: string, result: FollowerModel[]}
  */
 
 followRouter.get(
@@ -39,7 +39,7 @@ followRouter.get(
  * [GET]
  * Paht /follow/follwers
  * Param: {followed_user_id: string}
- * Response: {message: string, user: []}
+ * Response: {message: string, result: FollowerModel[]}
  */
 followRouter.get(
   '/follwers',
