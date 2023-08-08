@@ -138,7 +138,7 @@ const userSchema: typeUserSchema = {
   },
 
   //
-  verify: { isIn: { options: [Object.values(UserVerifyStatus)] } },
+  verify: { isIn: { options: Object.values(UserVerifyStatus) } },
   created_at: { isDate: true },
   updated_at: { isDate: true },
   _id: { isObject: true }

@@ -8,7 +8,9 @@ const tweetController = {
 
   // [PORT] /tweet
   createTweer: (req: Request, res: Response) => {
-    res.json('hello');
+    return res.json({
+      result: req.body
+    });
   }
 };
 

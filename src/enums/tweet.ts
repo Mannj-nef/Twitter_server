@@ -1,6 +1,6 @@
 export enum TweetAudience {
   Everyone = 'everyone',
-  TwitterCircle = 'twitter_Circle'
+  TwitterCircle = 'circle'
 }
 
 export enum TweetType {

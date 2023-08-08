@@ -1,7 +1,26 @@
 import { ObjectId } from 'mongodb';
 import { TweetAudience, TweetType } from '~/enums/tweet';
 import IMedia from '~/interfaces/media';
-import ITweet from '~/interfaces/tweet';
+
+export interface ITweet {
+  _id?: ObjectId;
+
+  user_id: ObjectId;
+  parent_id: ObjectId | null;
+  type: TweetType;
+  audience: TweetAudience;
+  content: string;
+
+  hashtags?: ObjectId[];
+  mentions?: ObjectId[];
+  medias?: IMedia[];
+
+  guest_views?: number;
+  user_views?: number;
+
+  created_at?: Date;
+  updated_at?: Date;
+}
 
 class TweetModel {
   _id?: ObjectId;
@@ -13,45 +32,32 @@ class TweetModel {
   hashtags: ObjectId[];
   mentions: ObjectId[];
   medias: IMedia[];
+
   guest_views: number;
   user_views: number;
   created_at: Date;
   updated_at: Date;
 
-  constructor({
-    user_id,
-    _id,
-    audience,
-    content,
-    created_at,
-    guest_views,
-    hashtags,
-    medias,
-    mentions,
-    parent_id,
-    type,
-    updated_at,
-    user_views
-  }: ITweet) {
+  constructor({ ...argumentSpread }: ITweet) {
     const date = new Date();
 
-    this._id = _id;
-    this.user_id = user_id;
-    this.parent_id = parent_id;
+    this._id = argumentSpread._id;
 
-    this.type = type;
-    this.audience = audience;
+    this.user_id = argumentSpread.user_id;
+    this.parent_id = argumentSpread.parent_id;
+    this.type = argumentSpread.type;
+    this.audience = argumentSpread.audience;
+    this.content = argumentSpread.content;
 
-    this.content = content;
-    this.hashtags = hashtags;
-    this.mentions = mentions;
-    this.medias = medias;
+    this.hashtags = argumentSpread.hashtags || [];
+    this.mentions = argumentSpread.mentions || [];
+    this.medias = argumentSpread.medias || [];
 
-    this.guest_views = guest_views || 0;
-    this.user_views = user_views || 0;
+    this.guest_views = argumentSpread.guest_views || 0;
+    this.user_views = argumentSpread.user_views || 0;
 
-    this.created_at = created_at || date;
-    this.updated_at = updated_at || date;
+    this.created_at = argumentSpread.created_at || date;
+    this.updated_at = argumentSpread.updated_at || date;
   }
 }
 

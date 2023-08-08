@@ -1,3 +1,6 @@
-const validate = {};
+import { createTweet } from './validates';
 
-export default validate;
+const tweetValidate = {
+  createTweet
+};
+export default tweetValidate;
