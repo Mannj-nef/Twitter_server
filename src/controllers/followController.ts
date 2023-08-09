@@ -1,14 +1,23 @@
 import { Request, Response } from 'express';
+import { ParamsDictionary } from 'express-serve-static-core';
 import HTTP_STATUS from '~/constants/httpStatuss';
 import { USERS_MESSAGES } from '~/constants/messages';
-import { IFollowRequestBody, TokenPayload } from '~/interfaces/requests';
+import { TokenPayload } from '~/interfaces/requests';
+import {
+  IFollowUserRequestBody,
+  IGetFollowerRewuestBody,
+  IGetFollowingRequestBody
+} from '~/interfaces/requests';
 import { IResponse, IResponseResult } from '~/interfaces/response';
 import { FollowerModel } from '~/models/schemas';
 import followService from '~/services/follow';
 
 const followController = {
   // [GET] /following
-  following: async (req: Request, res: Response<IResponseResult<FollowerModel[]>>) => {
+  following: async (
+    req: Request<ParamsDictionary, IResponseResult<FollowerModel[]>, IGetFollowingRequestBody>,
+    res: Response<IResponseResult<FollowerModel[]>>
+  ) => {
     const { user_id } = req.body;
     const result = await followService.following(user_id);
     return res.status(HTTP_STATUS.OK).json({
@@ -18,7 +27,10 @@ const followController = {
   },
 
   // [GET] /follower
-  follower: async (req: Request, res: Response<IResponseResult<FollowerModel[]>>) => {
+  follower: async (
+    req: Request<ParamsDictionary, IResponseResult<FollowerModel[]>, IGetFollowerRewuestBody>,
+    res: Response<IResponseResult<FollowerModel[]>>
+  ) => {
     const { followed_user_id } = req.body;
 
     const result = await followService.followers(followed_user_id);
@@ -31,8 +43,11 @@ const followController = {
   // [POST]-------------------------------------------------------
 
   // [PORT] /follow
-  follow: async (req: Request, res: Response<IResponse>) => {
-    const { followed_user_id } = req.body as IFollowRequestBody;
+  follow: async (
+    req: Request<ParamsDictionary, IResponseResult<FollowerModel[]>, IFollowUserRequestBody>,
+    res: Response<IResponse>
+  ) => {
+    const { followed_user_id } = req.body;
     const { user_id } = req.decoded_token as TokenPayload;
 
     const followPayload = {
@@ -57,7 +72,7 @@ const followController = {
 
   // [DELETE] /follow
   unFollow: async (req: Request, res: Response<IResponse>) => {
-    const { followed_user_id } = req.body as IFollowRequestBody;
+    const { followed_user_id } = req.body;
     const { user_id } = req.decoded_token as TokenPayload;
 
     const payload = {

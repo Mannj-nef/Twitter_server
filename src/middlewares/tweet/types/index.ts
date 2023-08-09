@@ -1,5 +1,4 @@
 import { ParamSchema } from 'express-validator';
-import { TweetAudience } from '~/enums/tweet';
 import { ITweetRequestBody } from '~/interfaces/requests';
 import { ITweet } from '~/models/schemas/tweet';
 

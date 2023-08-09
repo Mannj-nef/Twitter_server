@@ -2,7 +2,7 @@ import { TweetAudience, TweetType } from '~/enums/tweet';
 import { typeTweetSchema } from '../types';
 import { TWEETS_MESSAGES } from '~/constants/messages';
 import { ObjectId } from 'mongodb';
-import IMedia from '~/interfaces/media';
+import { IMedia } from '~/models/schemas/Media';
 import { MediaType } from '~/enums/media';
 
 const tweetSchema: typeTweetSchema = {

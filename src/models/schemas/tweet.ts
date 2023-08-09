@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { TweetAudience, TweetType } from '~/enums/tweet';
-import IMedia from '~/interfaces/media';
+import { IMedia } from './Media';
 
 export interface ITweet {
   _id?: ObjectId;
@@ -38,26 +38,26 @@ class TweetModel {
   created_at: Date;
   updated_at: Date;
 
-  constructor({ ...argumentSpread }: ITweet) {
+  constructor(tweet: ITweet) {
     const date = new Date();
 
-    this._id = argumentSpread._id;
+    this._id = tweet._id;
 
-    this.user_id = argumentSpread.user_id;
-    this.parent_id = argumentSpread.parent_id;
-    this.type = argumentSpread.type;
-    this.audience = argumentSpread.audience;
-    this.content = argumentSpread.content;
+    this.user_id = tweet.user_id;
+    this.parent_id = tweet.parent_id;
+    this.type = tweet.type;
+    this.audience = tweet.audience;
+    this.content = tweet.content;
 
-    this.hashtags = argumentSpread.hashtags || [];
-    this.mentions = argumentSpread.mentions || [];
-    this.medias = argumentSpread.medias || [];
+    this.hashtags = tweet.hashtags || [];
+    this.mentions = tweet.mentions || [];
+    this.medias = tweet.medias || [];
 
-    this.guest_views = argumentSpread.guest_views || 0;
-    this.user_views = argumentSpread.user_views || 0;
+    this.guest_views = tweet.guest_views || 0;
+    this.user_views = tweet.user_views || 0;
 
-    this.created_at = argumentSpread.created_at || date;
-    this.updated_at = argumentSpread.updated_at || date;
+    this.created_at = tweet.created_at || date;
+    this.updated_at = tweet.updated_at || date;
   }
 }
 

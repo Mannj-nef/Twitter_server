@@ -1,5 +1,11 @@
 import { ObjectId } from 'mongodb';
-import IFllower from '~/interfaces/follower';
+
+export interface IFllower {
+  _id?: ObjectId;
+  user_id: ObjectId;
+  followed_user_id: ObjectId;
+  created_at?: Date;
+}
 
 class FollowerModle {
   _id?: ObjectId;

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import path from 'path';
 import { UPLOAD_IMAGE_DIR, UPLOAD_VIDEO_DIR } from '~/constants/dirs';
 import HTTP_STATUS from '~/constants/httpStatuss';
-import IMedia from '~/interfaces/media';
+import { IMedia } from '~/models/schemas/Media';
 import { IResponseResult } from '~/interfaces/response';
 import mediaServices from '~/services/media';
 import fileSystem from 'fs';

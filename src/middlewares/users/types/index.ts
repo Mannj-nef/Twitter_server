@@ -2,7 +2,7 @@ import { ParamSchema } from 'express-validator';
 import {
   IChangePasswordRequestBody,
   IEmailTokenRequesBody,
-  IFollowRequestBody,
+  IFollowUserRequestBody,
   IForgotPasswordRequestBody,
   IForgotPasswordTokenRequestBody,
   ILoginRequestBody,
@@ -11,7 +11,7 @@ import {
   IResetPasswordRequestBody,
   IUpdateMeRequestBody
 } from '~/interfaces/requests';
-import IUser from '~/interfaces/user';
+import { IUser } from '~/models/schemas/User';
 
 /**
  customer typeuserSchema to IUser
@@ -58,7 +58,7 @@ export type typeUpdateMe = {
 };
 
 export type typeFollow = {
-  [k in keyof IFollowRequestBody]: ParamSchema;
+  [k in keyof IFollowUserRequestBody]: ParamSchema;
 };
 
 export type typeChangePassword = {

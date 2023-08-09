@@ -1,5 +1,13 @@
 import { ObjectId } from 'mongodb';
-import IRefreshToken from '~/interfaces/refreshToken';
+
+export interface IRefreshToken {
+  _id?: ObjectId;
+  rfToken: string;
+  created_at?: Date;
+  user_id: ObjectId;
+  iat: number;
+  exp: number;
+}
 
 class RefreshTokenModel {
   _id?: ObjectId;

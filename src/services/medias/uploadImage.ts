@@ -7,7 +7,7 @@ import { uploadFile } from '~/utils/file.util';
 
 import dotenv from 'dotenv';
 import { MediaType } from '~/enums/media';
-import IMedia from '~/interfaces/media';
+import { IMedia } from '~/models/schemas/Media';
 import { formidableImageOption } from '~/common/medias';
 dotenv.config();
 

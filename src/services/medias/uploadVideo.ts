@@ -2,7 +2,7 @@ import { Request } from 'express';
 import fileSystem from 'fs';
 import { isProduction } from '~/configs/argv';
 import { MediaType } from '~/enums/media';
-import IMedia from '~/interfaces/media';
+import { IMedia } from '~/models/schemas/Media';
 import { uploadFile } from '~/utils/file.util';
 import dotenv from 'dotenv';
 import { formidableVideoOption } from '~/common/medias';
