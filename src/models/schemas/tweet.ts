@@ -5,15 +5,15 @@ import { IMedia } from './Media';
 export interface ITweet {
   _id?: ObjectId;
 
-  user_id: ObjectId;
-  parent_id: ObjectId | null;
+  user_id: string;
+  parent_id: string | null;
   type: TweetType;
   audience: TweetAudience;
   content: string;
 
-  hashtags?: ObjectId[];
-  mentions?: ObjectId[];
-  medias?: IMedia[];
+  hashtags: ObjectId[];
+  mentions: string[];
+  medias: IMedia[];
 
   guest_views?: number;
   user_views?: number;
@@ -43,14 +43,15 @@ class TweetModel {
 
     this._id = tweet._id;
 
-    this.user_id = tweet.user_id;
-    this.parent_id = tweet.parent_id;
+    this.user_id = new ObjectId(tweet.user_id);
+    this.parent_id = tweet.parent_id ? new ObjectId(tweet.parent_id) : null;
     this.type = tweet.type;
     this.audience = tweet.audience;
     this.content = tweet.content;
 
     this.hashtags = tweet.hashtags || [];
-    this.mentions = tweet.mentions || [];
+    this.mentions = tweet.mentions?.map((item) => new ObjectId(item)) || [];
+
     this.medias = tweet.medias || [];
 
     this.guest_views = tweet.guest_views || 0;

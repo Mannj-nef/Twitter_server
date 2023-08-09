@@ -1,5 +1,5 @@
 import { TweetAudience, TweetType } from '~/enums/tweet';
-import IMedia from '../media';
+import { IMedia } from '~/models/schemas/Media';
 
 export interface ITweetRequestBody {
   type: TweetType;
@@ -9,6 +9,5 @@ export interface ITweetRequestBody {
 
   hashtags: string[];
   mentions: string[];
-
   medias: IMedia[];
 }

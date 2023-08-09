@@ -34,7 +34,10 @@ const TWEETS_MESSAGES = {
   TWEET_IS_NOT_PUBLIC: 'Tweet is not public',
 
   USER_ID_MUST_BE_IS_STRING: 'UserId must be is string',
-  USER_ID_MUST_BE_INVALID: 'UserId must be is ObjectId'
+  USER_ID_MUST_BE_INVALID: 'UserId must be is ObjectId',
+
+  // success
+  CREATE_TWEET_SUCCESS: 'Create tweet success'
 } as const;
 
 export default TWEETS_MESSAGES;

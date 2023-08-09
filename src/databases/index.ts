@@ -12,6 +12,8 @@ import { UserModel, RefreshTokenModel, FollowerModel } from '~/models/schemas/';
 import { UserUnion } from './types/users';
 import { FollowerUnion } from './types/followers';
 import FollowerModle from '~/models/schemas/Follower';
+import TweetModel from '~/models/schemas/Tweet';
+import HashTagModel from '~/models/schemas/HashTags';
 
 dotenv.config();
 
@@ -41,6 +43,7 @@ class Database {
     this.userIndexs();
     this.refreshTokenIndexs();
     this.followIndexs();
+    this.hashTagIndex();
   };
 
   // collection
@@ -49,20 +52,20 @@ class Database {
     return this.db.collection(process.env.DB_USERS_COLLECTION as string);
   }
 
-  get tweets() {
-    return;
+  get tweets(): Collection<TweetModel> {
+    return this.db.collection(process.env.DB_TWEET_COLLECTION as string);
   }
 
   get bookmarks() {
-    return;
+    return this.db.collection(process.env.DB_BOOKMARK_COLLECTION as string);
   }
 
   get likes() {
-    return;
+    return this.db.collection(process.env.DB_LIKE_COLLECTION as string);
   }
 
-  get hashtag() {
-    return;
+  get hashtag(): Collection<HashTagModel> {
+    return this.db.collection(process.env.DB_HASHTAG_COLLECTION as string);
   }
 
   get refreshTokens(): Collection<RefreshTokenModel> {
@@ -79,32 +82,39 @@ class Database {
 
   // indexs
   userIndexs = async () => {
-    const exists = await this.users.indexExists(['email_1', 'username_1']);
-    if (exists) return;
+    const existed = await this.users.indexExists(['email_1', 'username_1']);
+    if (existed) return;
 
     this.users.createIndex({ email: 1 }, { unique: true });
     this.users.createIndex({ username: 1 }, { unique: true });
   };
 
   refreshTokenIndexs = async () => {
-    const exists = await this.refreshTokens.indexExists(['token_1', 'exp_1']);
-    if (exists) return;
+    const existed = await this.refreshTokens.indexExists(['token_1', 'exp_1']);
+    if (existed) return;
 
     this.refreshTokens.createIndex({ token: 1 }, { unique: true });
     this.refreshTokens.createIndex({ exp: 1 }, { expireAfterSeconds: 0 });
   };
 
   followIndexs = async () => {
-    const exists = await this.followers.indexExists([
+    const existed = await this.followers.indexExists([
       'user_id_1',
       'followed_user_id_1',
       'user_id_1_followed_user_id_1'
     ]);
-    if (exists) return;
+    if (existed) return;
 
     this.followers.createIndex({ user_id: 1, followed_user_id: 1 });
     this.followers.createIndex({ user_id: 1 });
     this.followers.createIndex({ followed_user_id: 1 });
+  };
+
+  hashTagIndex = async () => {
+    const existed = await this.hashtag.indexExists('name_1');
+    if (existed) return;
+
+    await this.hashtag.createIndex({ name: 1 });
   };
 
   // methods
@@ -206,7 +216,27 @@ class Database {
     }
   };
 
-  tweetsMethods = {};
+  tweetsMethods = {
+    insertTweet: async (payload: TweetModel) => {
+      await this.tweets.insertOne(payload);
+    }
+  };
+
+  hashTagMethods = {
+    findAndUpdate: async ({ name }: { name: string }) => {
+      const hashtag = await this.hashtag.findOneAndUpdate(
+        { name },
+        {
+          $setOnInsert: new HashTagModel({ name })
+        },
+        {
+          upsert: true,
+          returnDocument: 'after'
+        }
+      );
+      return hashtag;
+    }
+  };
 }
 
 const database = new Database();

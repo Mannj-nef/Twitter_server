@@ -51,9 +51,7 @@ const tweetSchema: typeTweetSchema = {
       errorMessage: TWEETS_MESSAGES.HASHTAGS_MUST_BE_AN_ARRAY_OF_STRING
     },
     custom: {
-      options: (hashtags: string[], { req }) => {
-        const content: string = req.body.content;
-
+      options: (hashtags: string[]) => {
         if (hashtags.some((item) => typeof item !== 'string')) {
           throw Error(TWEETS_MESSAGES.HASHTAGS_MUST_BE_AN_ARRAY_OF_STRING);
         }
