@@ -14,6 +14,7 @@ import { FollowerUnion } from './types/followers';
 import FollowerModle from '~/models/schemas/Follower';
 import TweetModel from '~/models/schemas/Tweet';
 import HashTagModel from '~/models/schemas/HashTags';
+import BookMarkModel from '~/models/schemas/BookMark';
 
 dotenv.config();
 
@@ -56,7 +57,7 @@ class Database {
     return this.db.collection(process.env.DB_TWEET_COLLECTION as string);
   }
 
-  get bookmarks() {
+  get bookmarks(): Collection<BookMarkModel> {
     return this.db.collection(process.env.DB_BOOKMARK_COLLECTION as string);
   }
 
@@ -237,6 +238,8 @@ class Database {
       return hashtag;
     }
   };
+
+  bookmarkMethods = {};
 }
 
 const database = new Database();
