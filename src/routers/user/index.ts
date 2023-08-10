@@ -50,7 +50,7 @@ userRouter.get('/oauth/google', wrapRequestHandle(userController.oauth));
 /**
  * [POST]
  * Path: /login
- * Body: {email: string, password: string }
+ * Body: { email: string, password: string }
  * Response: { accessToken: JWT<access_token>, refetchToken: JWT<refresh_token>, message: string }
  */
 userRouter.post('/login', validate.login, wrapRequestHandle(userController.login));

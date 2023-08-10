@@ -4,4 +4,5 @@ const tweetValidate = {
   createTweet,
   deleteTweet
 };
+
 export default tweetValidate;

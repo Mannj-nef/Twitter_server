@@ -7,5 +7,5 @@ const validateDeleteTweet: typeDeteleTweet = {
   tweet_id: tweetSchema.tweet_id
 };
 
-const checkValidate = checkSchema(validateDeleteTweet, ['body']);
+const checkValidate = checkSchema(validateDeleteTweet, ['params']);
 export default validate(checkValidate);

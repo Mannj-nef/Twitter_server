@@ -7,5 +7,5 @@ const validateIdTweet: typeBookmarkRequest = {
   tweet_id: bookmarkSchema.tweet_id
 };
 
-const checkValidate = checkSchema(validateIdTweet, ['body']);
+const checkValidate = checkSchema(validateIdTweet, ['body', 'params']);
 export default validate(checkValidate);

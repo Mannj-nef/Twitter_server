@@ -1,11 +1,10 @@
-import database from '~/databases';
-import { typebookmarkSchema } from '../types';
 import { ObjectId } from 'bson';
+import { typeLikeSchema } from '../types';
 import { TWEETS_MESSAGES } from '~/constants/messages';
+import database from '~/databases';
 
-const bookmarkSchema: typebookmarkSchema = {
+const likeSchema: typeLikeSchema = {
   tweet_id: {
-    trim: true,
     custom: {
       options: async (tweet_id: string, { req }) => {
         const tweetId = tweet_id || (req.params?.tweet_id as string);
@@ -31,4 +30,4 @@ const bookmarkSchema: typebookmarkSchema = {
   created_at: {}
 };
 
-export default bookmarkSchema;
+export default likeSchema;

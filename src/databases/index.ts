@@ -16,6 +16,7 @@ import FollowerModle from '~/models/schemas/Follower';
 import TweetModel from '~/models/schemas/Tweet';
 import HashTagModel from '~/models/schemas/HashTags';
 import BookMarkModel from '~/models/schemas/BookMark';
+import LikeTweetModel from '~/models/schemas/LikeTweet';
 
 dotenv.config();
 
@@ -64,7 +65,7 @@ class Database {
     return this.db.collection(process.env.DB_BOOKMARK_COLLECTION as string);
   }
 
-  get likes() {
+  get likes(): Collection<LikeTweetModel> {
     return this.db.collection(process.env.DB_LIKE_COLLECTION as string);
   }
 
@@ -286,6 +287,28 @@ class Database {
 
     deleteBoolmark: async ({ user_id, tweet_id }: { user_id: string; tweet_id: string }) => {
       await this.bookmarks.deleteOne({
+        user_id: new ObjectId(user_id),
+        tweet_id: new ObjectId(tweet_id)
+      });
+    }
+  };
+
+  likeMethods = {
+    findOneAndUpdate: async ({ user_id, tweet_id }: { user_id: string; tweet_id: string }) => {
+      const result = await this.likes.findOneAndUpdate(
+        { user_id: new ObjectId(user_id), tweet_id: new ObjectId(tweet_id) },
+        { $setOnInsert: new BookMarkModel({ tweet_id, user_id }) },
+        {
+          upsert: true,
+          returnDocument: 'after'
+        }
+      );
+
+      return result.value;
+    },
+
+    unLikeTweet: async ({ user_id, tweet_id }: { user_id: string; tweet_id: string }) => {
+      await this.likes.deleteOne({
         user_id: new ObjectId(user_id),
         tweet_id: new ObjectId(tweet_id)
       });
