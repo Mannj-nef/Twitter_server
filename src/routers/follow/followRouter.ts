@@ -51,13 +51,12 @@ followRouter.get(
 
 /**
  * [DELETE]
- * Path: /
+ * Path: /:followed_user_id
  * Header: { Authorization: 'Bearer <access_token>' }
- * Body: { followed_user_id: string }
  * Response: { message: string }
  */
 followRouter.delete(
-  '/',
+  '/:followed_user_id',
   middlewaresAuth.authentication,
   validate.follow,
   wrapRequestHandle(followController.unFollow)

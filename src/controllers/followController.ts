@@ -72,7 +72,7 @@ const followController = {
 
   // [DELETE] /follow
   unFollow: async (req: Request, res: Response<IResponse>) => {
-    const { followed_user_id } = req.body;
+    const { followed_user_id } = req.params;
     const { user_id } = req.decoded_token as TokenPayload;
 
     const payload = {
