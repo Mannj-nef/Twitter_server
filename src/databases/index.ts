@@ -220,6 +220,12 @@ class Database {
   tweetsMethods = {
     insertTweet: async (payload: TweetModel) => {
       await this.tweets.insertOne(payload);
+    },
+
+    fintTweetById: async ({ tweet_id, option }: { tweet_id: string; option?: FindOptions }) => {
+      const tweet = await this.tweets.findOne({ _id: new ObjectId(tweet_id) }, option);
+
+      return tweet;
     }
   };
 
@@ -239,7 +245,27 @@ class Database {
     }
   };
 
-  bookmarkMethods = {};
+  bookmarkMethods = {
+    findOneAndUpdate: async ({ user_id, tweet_id }: { user_id: string; tweet_id: string }) => {
+      const result = await this.bookmarks.findOneAndUpdate(
+        { user_id: new ObjectId(user_id), tweet_id: new ObjectId(tweet_id) },
+        { $setOnInsert: new BookMarkModel({ tweet_id, user_id }) },
+        {
+          upsert: true,
+          returnDocument: 'after'
+        }
+      );
+
+      return result.value;
+    },
+
+    deleteBoolmark: async ({ user_id, tweet_id }: { user_id: string; tweet_id: string }) => {
+      await this.bookmarks.deleteOne({
+        user_id: new ObjectId(user_id),
+        tweet_id: new ObjectId(tweet_id)
+      });
+    }
+  };
 }
 
 const database = new Database();

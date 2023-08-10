@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import bookMarkController from '~/controllers/bookmarkController';
 import middlewaresAuth from '~/middlewares/auth';
+import bookmarkValidate from '~/middlewares/bookmarks';
 import wrapRequestHandle from '~/utils/wrapRequest.util';
 
 const bookmarkRouter = Router();
@@ -30,6 +31,7 @@ bookmarkRouter.get(
 bookmarkRouter.post(
   '/',
   middlewaresAuth.authentication,
+  bookmarkValidate.validateIdTweet,
   wrapRequestHandle(bookMarkController.bookMark)
 );
 
@@ -37,13 +39,14 @@ bookmarkRouter.post(
 
 /**
  * [DELETE]
- * Path: /:tweet-id:
+ * Path: /:tweet_id:
  * Header: { Authorization: 'Bearer <access_token>' }
  * Response: { message: string }
  */
 bookmarkRouter.delete(
-  '/',
+  '/:tweet_id',
   middlewaresAuth.authentication,
+  bookmarkValidate.validateIdTweet,
   wrapRequestHandle(bookMarkController.unBookMark)
 );
 

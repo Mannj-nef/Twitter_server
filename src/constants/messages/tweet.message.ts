@@ -32,6 +32,7 @@ const TWEETS_MESSAGES = {
 
   TWEET_NOT_FOUND: 'Tweet not found',
   TWEET_IS_NOT_PUBLIC: 'Tweet is not public',
+  TWEET_ID_MUST_BE_IS_STRING: 'Tweet id must be is string',
 
   USER_ID_MUST_BE_IS_STRING: 'UserId must be is string',
   USER_ID_MUST_BE_INVALID: 'UserId must be is ObjectId',

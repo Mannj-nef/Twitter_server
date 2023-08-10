@@ -125,7 +125,7 @@ const userSchema: typeUserSchema = {
   followed_user_id: {
     custom: {
       options: (value: string, { req }) => {
-        const user_id = req.params?.followed_user_id || value;
+        const user_id = (req.params?.followed_user_id as string) || value;
 
         if (!ObjectId.isValid(user_id)) {
           throw new Error(USERS_MESSAGES.USER_ID_INVALID);

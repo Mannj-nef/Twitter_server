@@ -1,7 +1,6 @@
 import tweetController from '~/controllers/tweetController';
 import { Router } from 'express';
 import middlewaresAuth from '~/middlewares/auth';
-import validate from '~/middlewares/tweet';
 import tweetValidate from '~/middlewares/tweet';
 import wrapRequestHandle from '~/utils/wrapRequest.util';
 

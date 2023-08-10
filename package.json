@@ -59,7 +59,6 @@
   },
   "lint-staged": {
     "src/**/*.ts": [
-      "npm run check",
       "npm run lint:fix",
       "npm run prettier:fix"
     ]
