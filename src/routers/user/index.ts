@@ -39,30 +39,6 @@ userRouter.get('/:username', wrapRequestHandle(userController.getProfile));
 
 /**
  * [GET]
- * Paht /:username/follwing
- * Param: {username: string}
- * Response: {message: string, user: UserModel}
- */
-userRouter.get('/follwing', (req, res) => {
-  return res.json({
-    message: 'success'
-  });
-});
-
-/**
- * [GET]
- * Paht /:username/follwing
- * Param: {username: string}
- * Response: {message: string, user: UserModel}
- */
-userRouter.get('/follwing', (req, res) => {
-  return res.json({
-    message: 'success'
-  });
-});
-
-/**
- * [GET]
  * Path: /oauth/google
  * Querry: {code: string}
  * Redirect: /?accesstoken=JWT<access_token>&refreshToken=JWT<refresh_token>
@@ -217,5 +193,8 @@ userRouter.put(
 );
 
 // [DELETE]------------------------------------------------
+
+// middlewaresAuth.authentication,
+// middlewaresAuth.verifyStatusUser,
 
 export default userRouter;

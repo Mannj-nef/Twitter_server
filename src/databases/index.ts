@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import {
   Collection,
   Db,
+  Filter,
   FindOneAndUpdateOptions,
   FindOptions,
   MongoClient,
@@ -45,6 +46,8 @@ class Database {
     this.refreshTokenIndexs();
     this.followIndexs();
     this.hashTagIndex();
+    this.tweetIndex();
+    this.bookmarkIndex();
   };
 
   // collection
@@ -116,6 +119,21 @@ class Database {
     if (existed) return;
 
     await this.hashtag.createIndex({ name: 1 });
+  };
+
+  tweetIndex = async () => {
+    const existed = await this.tweets.indexExists(['user_id_1', 'user_id_1__id_1']);
+    if (existed) return;
+
+    await this.tweets.createIndex({ user_id: 1 });
+    await this.tweets.createIndex({ user_id: 1, _id: 1 });
+  };
+
+  bookmarkIndex = async () => {
+    const existed = await this.tweets.indexExists(['user_id_1', 'tweet_id_1']);
+    if (existed) return;
+
+    await this.bookmarks.createIndex({ user_id: 1, tweet_id: 1 });
   };
 
   // methods
@@ -222,10 +240,17 @@ class Database {
       await this.tweets.insertOne(payload);
     },
 
-    fintTweetById: async ({ tweet_id, option }: { tweet_id: string; option?: FindOptions }) => {
-      const tweet = await this.tweets.findOne({ _id: new ObjectId(tweet_id) }, option);
+    findTweet: async ({ filter, option }: { filter: Filter<TweetModel>; option?: FindOptions }) => {
+      const tweet = await this.tweets.findOne(filter, option);
 
       return tweet;
+    },
+
+    deleteTweet: async ({ tweet_id, user_id }: { tweet_id: string; user_id: string }) => {
+      await this.tweets.deleteOne({
+        _id: new ObjectId(tweet_id),
+        user_id: new ObjectId(user_id)
+      });
     }
   };
 

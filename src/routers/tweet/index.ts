@@ -28,8 +28,22 @@ tweetRouter.get('/', tweetController.getAll);
 tweetRouter.post(
   '/',
   middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
   tweetValidate.createTweet,
   wrapRequestHandle(tweetController.createTweer)
+);
+
+/**
+ * [DELETE]
+ * Path: /:tweet_id
+ * Response: { message: string }
+ */
+tweetRouter.delete(
+  '/:tweet_id',
+  middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
+  tweetValidate.deleteTweet,
+  wrapRequestHandle(tweetController.deleteTweet)
 );
 
 export default tweetRouter;

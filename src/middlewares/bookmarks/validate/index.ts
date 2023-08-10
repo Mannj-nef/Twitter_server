@@ -1,1 +1,1 @@
-export { default as validateIdTweet } from './validate.createBookmark';
+export { default as validateIdTweet } from './validate.bookmark';

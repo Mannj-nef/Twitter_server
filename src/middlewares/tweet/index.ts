@@ -1,6 +1,7 @@
-import { createTweet } from './validates';
+import { createTweet, deleteTweet } from './validates';
 
 const tweetValidate = {
-  createTweet
+  createTweet,
+  deleteTweet
 };
 export default tweetValidate;

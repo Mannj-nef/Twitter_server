@@ -9,11 +9,14 @@ const bookmarkSchema: typebookmarkSchema = {
     custom: {
       options: async (tweet_id: string, { req }) => {
         const tweetId = tweet_id || (req.params?.tweet_id as string);
+
         if (!ObjectId.isValid(tweetId)) {
           throw new Error(TWEETS_MESSAGES.INVALID_TWEET_ID);
         }
 
-        const tweetExisted = await database.tweetsMethods.fintTweetById({ tweet_id: tweetId });
+        const tweetExisted = await database.tweetsMethods.findTweet({
+          filter: { _id: new ObjectId(tweetId) }
+        });
 
         if (!tweetExisted) {
           throw new Error(TWEETS_MESSAGES.TWEET_NOT_FOUND);

@@ -16,6 +16,7 @@ const followRouter = Router();
 followRouter.post(
   '/',
   middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
   validate.follow,
   wrapRequestHandle(followController.follow)
 );
@@ -58,6 +59,7 @@ followRouter.get(
 followRouter.delete(
   '/:followed_user_id',
   middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
   validate.follow,
   wrapRequestHandle(followController.unFollow)
 );

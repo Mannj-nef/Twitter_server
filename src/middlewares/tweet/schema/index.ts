@@ -4,6 +4,7 @@ import { TWEETS_MESSAGES } from '~/constants/messages';
 import { ObjectId } from 'mongodb';
 import { IMedia } from '~/models/schemas/Media';
 import { MediaType } from '~/enums/media';
+import database from '~/databases';
 
 const tweetSchema: typeTweetSchema = {
   // verify schema audience
@@ -125,6 +126,29 @@ const tweetSchema: typeTweetSchema = {
       options: (UserId) => {
         if (!ObjectId.isValid(UserId)) {
           throw new Error(TWEETS_MESSAGES.USER_ID_MUST_BE_INVALID);
+        }
+        return true;
+      }
+    }
+  },
+
+  tweet_id: {
+    custom: {
+      options: async (v, { req }) => {
+        const tweetId = req.params?.tweet_id as string;
+
+        if (!ObjectId.isValid(tweetId)) {
+          throw new Error(TWEETS_MESSAGES.INVALID_TWEET_ID);
+        }
+
+        const tweetExisted = await database.tweetsMethods.findTweet({
+          filter: {
+            _id: new ObjectId(tweetId)
+          }
+        });
+
+        if (!tweetExisted) {
+          throw new Error(TWEETS_MESSAGES.TWEET_NOT_FOUND);
         }
         return true;
       }

@@ -16,6 +16,7 @@ const bookmarkRouter = Router();
 bookmarkRouter.get(
   '/',
   middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
   wrapRequestHandle(bookMarkController.getBookMark)
 );
 
@@ -31,6 +32,7 @@ bookmarkRouter.get(
 bookmarkRouter.post(
   '/',
   middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
   bookmarkValidate.validateIdTweet,
   wrapRequestHandle(bookMarkController.bookMark)
 );
@@ -46,6 +48,7 @@ bookmarkRouter.post(
 bookmarkRouter.delete(
   '/:tweet_id',
   middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
   bookmarkValidate.validateIdTweet,
   wrapRequestHandle(bookMarkController.unBookMark)
 );

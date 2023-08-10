@@ -34,11 +34,14 @@ const TWEETS_MESSAGES = {
   TWEET_IS_NOT_PUBLIC: 'Tweet is not public',
   TWEET_ID_MUST_BE_IS_STRING: 'Tweet id must be is string',
 
+  YOU_CANT_DELETE_TWEET: "you can't delete this tweet",
+
   USER_ID_MUST_BE_IS_STRING: 'UserId must be is string',
   USER_ID_MUST_BE_INVALID: 'UserId must be is ObjectId',
 
   // success
-  CREATE_TWEET_SUCCESS: 'Create tweet success'
+  CREATE_TWEET_SUCCESS: 'Create tweet successfully',
+  DELETE_TWEET_SUCCESS: 'Delete tweet successfully'
 } as const;
 
 export default TWEETS_MESSAGES;
