@@ -30,6 +30,9 @@ const TWEETS_MESSAGES = {
   // media
   MEDIAS_MUST_BE_AN_ARRAY_OF_MEDIA_OBJECT: 'Medias must be an array of media object',
 
+  // circle
+  USER_NOT_IN_CIRCLE_TWEET: 'This user is not in cicle tweet',
+
   TWEET_NOT_FOUND: 'Tweet not found',
   TWEET_IS_NOT_PUBLIC: 'Tweet is not public',
   TWEET_ID_MUST_BE_IS_STRING: 'Tweet id must be is string',
@@ -41,7 +44,9 @@ const TWEETS_MESSAGES = {
 
   // success
   CREATE_TWEET_SUCCESS: 'Create tweet successfully',
-  DELETE_TWEET_SUCCESS: 'Delete tweet successfully'
+  DELETE_TWEET_SUCCESS: 'Delete tweet successfully',
+  CREATE_CIRCLE_SUCCESS: 'Create circle success',
+  DELETE_CIRCLE_SUCCESS: 'Delete circle success'
 } as const;
 
 export default TWEETS_MESSAGES;

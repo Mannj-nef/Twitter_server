@@ -30,7 +30,34 @@ tweetRouter.post(
   middlewaresAuth.authentication,
   middlewaresAuth.verifyStatusUser,
   tweetValidate.createTweet,
-  wrapRequestHandle(tweetController.createTweer)
+  wrapRequestHandle(tweetController.createTweet)
+);
+
+/**
+ * [PORT]
+ * Path: /circle
+ * Body: { user_id_tweetCircle: string[] } maxLength: 150
+ * Response: { message: string, result: TweetCircleModel }
+ */
+tweetRouter.post(
+  '/circle',
+  middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
+  tweetValidate.validateTweetCircle,
+  wrapRequestHandle(tweetController.createTweetCircle)
+);
+
+/**
+ * [DELETE]
+ * Path: /circle/:user_id_tweetCircle
+ * Response: { message: string }
+ */
+tweetRouter.delete(
+  '/circle/:user_id_tweetCircle',
+  middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
+  tweetValidate.validateTweetCircle,
+  wrapRequestHandle(tweetController.deleteTweetCircle)
 );
 
 /**

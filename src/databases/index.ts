@@ -17,6 +17,7 @@ import TweetModel from '~/models/schemas/Tweet';
 import HashTagModel from '~/models/schemas/HashTags';
 import BookMarkModel from '~/models/schemas/BookMark';
 import LikeTweetModel from '~/models/schemas/LikeTweet';
+import TweetCircleModel from '~/models/schemas/TweetCircle';
 
 dotenv.config();
 
@@ -48,7 +49,9 @@ class Database {
     this.followIndexs();
     this.hashTagIndex();
     this.tweetIndex();
+    this.tweetCircleIndex();
     this.bookmarkIndex();
+    this.likeIndex();
   };
 
   // collection
@@ -81,8 +84,8 @@ class Database {
     return this.db.collection(process.env.DB_FOLLOW_COLLECTION as string);
   }
 
-  get medias() {
-    return;
+  get tweetCircle(): Collection<TweetCircleModel> {
+    return this.db.collection(process.env.DB_TWEET_CIRCLE as string);
   }
 
   // indexs
@@ -130,11 +133,25 @@ class Database {
     await this.tweets.createIndex({ user_id: 1, _id: 1 });
   };
 
+  tweetCircleIndex = async () => {
+    const existed = await this.tweets.indexExists(['user_id_1_user_id_tweetCircle_1']);
+    if (existed) return;
+
+    await this.tweetCircle.createIndex({ user_id: 1, user_id_tweetCircle: 1 });
+  };
+
   bookmarkIndex = async () => {
-    const existed = await this.tweets.indexExists(['user_id_1', 'tweet_id_1']);
+    const existed = await this.tweets.indexExists(['user_id_1_tweet_id_1']);
     if (existed) return;
 
     await this.bookmarks.createIndex({ user_id: 1, tweet_id: 1 });
+  };
+
+  likeIndex = async () => {
+    const existed = await this.likes.indexExists(['user_id_1_tweet_id_1']);
+    if (existed) return;
+
+    await this.likes.createIndex({ user_id: 1, tweet_id: 1 });
   };
 
   // methods
@@ -251,6 +268,55 @@ class Database {
       await this.tweets.deleteOne({
         _id: new ObjectId(tweet_id),
         user_id: new ObjectId(user_id)
+      });
+    }
+  };
+
+  tweetCircleMethods = {
+    findTweetCircle: async ({
+      user_id,
+      user_id_tweetCircle
+    }: {
+      user_id: string;
+      user_id_tweetCircle: string;
+    }) => {
+      const tweetCircle = await this.tweetCircle.findOne({
+        user_id: new ObjectId(user_id),
+        user_id_tweetCircle: new ObjectId(user_id_tweetCircle)
+      });
+
+      return tweetCircle;
+    },
+
+    findAndUpdate: async ({
+      user_id,
+      user_id_tweetCircle
+    }: {
+      user_id: string;
+      user_id_tweetCircle: string;
+    }) => {
+      const result = await this.tweetCircle.findOneAndUpdate(
+        { user_id: new ObjectId(user_id), user_id_tweetCircle: new ObjectId(user_id_tweetCircle) },
+        { $setOnInsert: new TweetCircleModel({ user_id, user_id_tweetCircle }) },
+        {
+          upsert: true,
+          returnDocument: 'after'
+        }
+      );
+
+      return result.value;
+    },
+
+    deleteTweetCircle: async ({
+      user_id,
+      user_id_tweetCircle
+    }: {
+      user_id: string;
+      user_id_tweetCircle: string;
+    }) => {
+      await this.tweetCircle.deleteOne({
+        user_id: new ObjectId(user_id),
+        user_id_tweetCircle: new ObjectId(user_id_tweetCircle)
       });
     }
   };

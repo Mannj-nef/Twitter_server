@@ -11,3 +11,7 @@ export interface ITweetRequestBody {
   mentions: string[];
   medias: IMedia[];
 }
+
+export interface ITweetCircleRequestBody {
+  user_id_tweetCircle: string;
+}

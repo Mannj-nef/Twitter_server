@@ -15,3 +15,7 @@ export type typeCreateTweet = {
 export type typeDeteleTweet = {
   tweet_id: ParamSchema;
 };
+
+export type typeTweetCircle = {
+  user_id_tweetCircle: ParamSchema;
+};
