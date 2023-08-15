@@ -11,8 +11,10 @@ import tweetSecvices from '~/services/tweets';
 
 const tweetController = {
   // [GET] /tweet
-  getAll: (rep: Request, res: Response) => {
-    res.json('alo');
+  getTweetDetail: (rep: Request, res: Response) => {
+    res.json({
+      message: 'success'
+    });
   },
 
   // [PORT] /tweet

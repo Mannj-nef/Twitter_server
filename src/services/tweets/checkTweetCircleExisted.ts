@@ -7,7 +7,7 @@ const handleCheckTweetCircleExisted = async ({
   user_id: string;
   user_id_tweetCircle: string;
 }) => {
-  const tweet = await database.tweetCircleMethods.findTweetCircle({
+  const tweet = await database.tweetCircleMethods.findOneTweetCircle({
     user_id,
     user_id_tweetCircle
   });

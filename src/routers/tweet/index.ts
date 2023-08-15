@@ -8,7 +8,13 @@ import wrapRequestHandle from '~/utils/wrapRequest.util';
 const tweetRouter = Router();
 
 // [GET]
-tweetRouter.get('/', tweetController.getAll);
+tweetRouter.get(
+  '/:tweet_id',
+  middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
+  tweetValidate.audienceValidator,
+  wrapRequestHandle(tweetController.getTweetDetail)
+);
 
 /**
  * [PORT]

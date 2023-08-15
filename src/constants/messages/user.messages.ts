@@ -80,6 +80,7 @@ const USERS_MESSAGES = {
   UNFOLLOW_USER_AREADY_SUCCESS: 'Unfollowed this user before',
   USER_BANNED:
     'This user has been banned, please contact the administrator of the site or application if you have any questions',
+  USER_DO_NOT_HAVE_ACCESS: 'You do not have access',
 
   // bio
   BIO_MUST_BE_STRING: 'Biography must be a string',

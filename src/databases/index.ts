@@ -18,6 +18,7 @@ import HashTagModel from '~/models/schemas/HashTags';
 import BookMarkModel from '~/models/schemas/BookMark';
 import LikeTweetModel from '~/models/schemas/LikeTweet';
 import TweetCircleModel from '~/models/schemas/TweetCircle';
+import { tweetCircleUnion } from './types/tweet';
 
 dotenv.config();
 
@@ -274,6 +275,17 @@ class Database {
 
   tweetCircleMethods = {
     findTweetCircle: async ({
+      filter,
+      findOptions
+    }: {
+      filter: tweetCircleUnion;
+      findOptions?: FindOptions;
+    }) => {
+      const tweetCircle = await this.tweetCircle.find(filter, findOptions).toArray();
+      return tweetCircle;
+    },
+
+    findOneTweetCircle: async ({
       user_id,
       user_id_tweetCircle
     }: {
