@@ -7,34 +7,43 @@ import errorHandler from './middlewares/errors';
 import corsConfig from './configs/cors';
 import initFoulder from './utils/initFolder';
 
-// .env
-dotenv.config();
+const START_SERVER = async () => {
+  try {
+    // connect db
+    // database.connect();
+    await database.connect().then(() => {
+      database.createIndexCollection();
+    });
 
-const app = express();
-const port = process.env.PORT || 3838;
+    // .env
+    dotenv.config();
 
-//  init foulder uploads
-initFoulder();
+    const app = express();
+    const port = process.env.PORT || 3838;
 
-// config cors
-app.use(cors(corsConfig));
+    //  init foulder uploads
+    initFoulder();
 
-// connect db
-// database.connect();
-database.connect().then(() => {
-  database.createIndexCollection();
-});
+    // config cors
+    app.use(cors(corsConfig));
 
-// body parser
-app.use(express.json());
+    // body parser
+    app.use(express.json());
 
-// router
-app.use(router);
+    // router
+    app.use(router);
 
-// handle error
-app.use(errorHandler);
+    // handle error
+    app.use(errorHandler);
 
-// lisster port
-app.listen(port, () => {
-  console.log(`server listien on port ${port}`);
-});
+    // lisster port
+    app.listen(port, () => {
+      console.log(`server listien on port ${port}`);
+    });
+  } catch (error) {
+    console.log(error);
+    process.exit(0);
+  }
+};
+
+START_SERVER();
