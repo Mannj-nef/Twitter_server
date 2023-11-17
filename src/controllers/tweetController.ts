@@ -11,9 +11,11 @@ import tweetSecvices from '~/services/tweets';
 
 const tweetController = {
   // [GET] /tweet
-  getTweetDetail: (rep: Request, res: Response) => {
-    res.json({
-      message: 'success'
+  getTweetDetail: (rep: Request, res: Response<IResponseResult<TweetModel>>) => {
+    const tweet = rep.tweet as TweetModel;
+    return res.json({
+      message: 'success',
+      result: tweet
     });
   },
 
