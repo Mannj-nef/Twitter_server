@@ -7,17 +7,14 @@ import { TweetAudience } from '~/enums/tweet';
 import { UserVerifyStatus } from '~/enums/user';
 import { TokenPayload } from '~/interfaces/requests';
 import { CustomError } from '~/models/errors';
+import aggregate from '~/databases/aggregate';
+import TweetModel from '~/models/schemas/Tweet';
 
 const audienceValidator = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const tweet_id = req.params.tweet_id as string;
     const { user_id } = req.decoded_token as TokenPayload;
 
-    const tweet = await database.tweetsMethods.findTweet({
-      filter: {
-        _id: new ObjectId(tweet_id)
-      }
-    });
+    const [tweet] = await database.tweets.aggregate<TweetModel>(aggregate.getTweetDetail).toArray();
 
     if (!tweet) {
       throw new CustomError({
@@ -65,6 +62,7 @@ const audienceValidator = async (req: Request, res: Response, next: NextFunction
       }
     }
 
+    req.tweet = tweet;
     next();
   } catch (error) {
     next(error);
