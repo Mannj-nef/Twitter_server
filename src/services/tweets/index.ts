@@ -4,6 +4,7 @@ import createTweet from './createTweet';
 import createTweetCircle from './createTweetCircle';
 import deleteTweet from './deleteTweet';
 import deleteTweetCircle from './deleteTweetCircle';
+import increaseView from './increaseView';
 
 class TweetServices {
   createTweet = createTweet;
@@ -16,6 +17,9 @@ class TweetServices {
   // checkTweetExisted
   checkTweetExisted = handleCheckTweetExisted;
   checkTweetCircleExisted = handleCheckTweetCircleExisted;
+
+  // increaseView when get tweet
+  increaseView = increaseView;
 }
 
 const tweetSecvices = new TweetServices();

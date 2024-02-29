@@ -11,11 +11,23 @@ import tweetSecvices from '~/services/tweets';
 
 const tweetController = {
   // [GET] /tweet
-  getTweetDetail: (rep: Request, res: Response<IResponseResult<TweetModel>>) => {
+  getTweetDetail: async (rep: Request, res: Response<IResponseResult<TweetModel>>) => {
     const tweet = rep.tweet as TweetModel;
+    const resultTweetView = await tweetSecvices.increaseView({
+      tweet_id: `${tweet._id}`,
+      user_id: `${tweet.user_id}`
+    });
+
+    console.log(resultTweetView);
+
     return res.json({
       message: 'success',
-      result: tweet
+      result: {
+        ...tweet,
+        user_views: resultTweetView.user_views,
+        guest_views: resultTweetView.guest_views,
+        updated_at: resultTweetView.updated_at
+      }
     });
   },
 
