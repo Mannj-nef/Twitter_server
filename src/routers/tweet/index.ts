@@ -7,13 +7,33 @@ import wrapRequestHandle from '~/utils/wrapRequest.util';
 //  Path: /tweets
 const tweetRouter = Router();
 
-// [GET]
+/**
+ * [GET]
+ * Path: /:tweet_id
+ * Header: { Authorization: 'Bearer <access_token>' }
+ * Response: { message: string, result: TweetModel }
+ */
 tweetRouter.get(
   '/:tweet_id',
   middlewaresAuth.authentication,
   middlewaresAuth.verifyStatusUser,
   tweetValidate.audienceValidator,
   wrapRequestHandle(tweetController.getTweetDetail)
+);
+
+/**
+ * [GET]
+ * Path: /:tweet_id/children
+ * Header: { Authorization: 'Bearer <access_token>' }
+ * Response: { message: string, result: TweetModel[] }
+ * Query: { limit: number, page: number, type: TweetType }
+ */
+tweetRouter.get(
+  '/:tweet_id/children',
+  middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
+  tweetValidate.audienceValidator,
+  wrapRequestHandle(tweetController.getTweetChildren)
 );
 
 /**

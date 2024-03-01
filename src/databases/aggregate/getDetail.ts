@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import { TweetType } from '~/enums/tweet';
 
 const detailTweet = (tweet_id: string) => {
   return [
@@ -74,7 +75,7 @@ const detailTweet = (tweet_id: string) => {
               input: '$reply',
               as: 'item',
               cond: {
-                $eq: ['$$item.type', 'comment']
+                $eq: ['$$item.type', TweetType.Comment]
               }
             }
           }
@@ -85,7 +86,7 @@ const detailTweet = (tweet_id: string) => {
               input: '$reply',
               as: 'item',
               cond: {
-                $eq: ['$$item.type', 'quoteTweet']
+                $eq: ['$$item.type', TweetType.QuoteTweet]
               }
             }
           }
@@ -96,7 +97,7 @@ const detailTweet = (tweet_id: string) => {
               input: '$reply',
               as: 'item',
               cond: {
-                $eq: ['$$item.type', 'retweet']
+                $eq: ['$$item.type', TweetType.Retweet]
               }
             }
           }

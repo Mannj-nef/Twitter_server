@@ -7,18 +7,16 @@ import { ITweetCircleRequestBody, ITweetRequestBody, TokenPayload } from '~/inte
 import { IResponse, IResponseResult } from '~/interfaces/response';
 import TweetModel from '~/models/schemas/Tweet';
 import TweetCircleModel from '~/models/schemas/TweetCircle';
-import tweetSecvices from '~/services/tweets';
+import tweetServices from '~/services/tweets';
 
 const tweetController = {
   // [GET] /tweet
   getTweetDetail: async (rep: Request, res: Response<IResponseResult<TweetModel>>) => {
     const tweet = rep.tweet as TweetModel;
-    const resultTweetView = await tweetSecvices.increaseView({
+    const resultTweetView = await tweetServices.increaseView({
       tweet_id: `${tweet._id}`,
       user_id: `${tweet.user_id}`
     });
-
-    console.log(resultTweetView);
 
     return res.json({
       message: 'success',
@@ -31,13 +29,21 @@ const tweetController = {
     });
   },
 
+  // [GET] /tweets/children
+  getTweetChildren: async (req: Request, res: Response) => {
+    return res.json({
+      message: 'success',
+      result: 'okey'
+    });
+  },
+
   // [PORT] /tweet
   createTweet: async (
     req: Request<ParamsDictionary, IResponseResult<ITweetRequestBody>, ITweetRequestBody>,
     res: Response<IResponseResult<ITweetRequestBody>>
   ) => {
     const { user_id } = req.decoded_token as TokenPayload;
-    const result = await tweetSecvices.createTweet({ user_id, tweet: req.body });
+    const result = await tweetServices.createTweet({ user_id, tweet: req.body });
 
     return res.json({
       message: TWEETS_MESSAGES.CREATE_TWEET_SUCCESS,
@@ -57,7 +63,7 @@ const tweetController = {
     const { user_id_tweetCircle } = req.body;
     const { user_id } = req.decoded_token as TokenPayload;
 
-    const result = await tweetSecvices.createCircle({ user_id, user_id_tweetCircle });
+    const result = await tweetServices.createCircle({ user_id, user_id_tweetCircle });
 
     return res.json({
       message: TWEETS_MESSAGES.CREATE_CIRCLE_SUCCESS,
@@ -70,7 +76,7 @@ const tweetController = {
     const { user_id_tweetCircle } = req.params;
     const { user_id } = req.decoded_token as TokenPayload;
 
-    const isTweetCircleExisted = await tweetSecvices.checkTweetCircleExisted({
+    const isTweetCircleExisted = await tweetServices.checkTweetCircleExisted({
       user_id,
       user_id_tweetCircle
     });
@@ -81,7 +87,7 @@ const tweetController = {
       });
     }
 
-    await tweetSecvices.deleteCircle({ user_id, user_id_tweetCircle });
+    await tweetServices.deleteCircle({ user_id, user_id_tweetCircle });
 
     return res.json({
       message: TWEETS_MESSAGES.DELETE_CIRCLE_SUCCESS
@@ -93,7 +99,7 @@ const tweetController = {
     const { tweet_id } = req.params;
     const { user_id } = req.decoded_token as TokenPayload;
 
-    const tweetExisted = await tweetSecvices.checkTweetExisted({
+    const tweetExisted = await tweetServices.checkTweetExisted({
       tweet_id,
       user_id
     });
@@ -104,7 +110,7 @@ const tweetController = {
       });
     }
 
-    await tweetSecvices.deleteTweet({ user_id, tweet_id });
+    await tweetServices.deleteTweet({ user_id, tweet_id });
 
     return res.json({
       message: TWEETS_MESSAGES.DELETE_TWEET_SUCCESS
