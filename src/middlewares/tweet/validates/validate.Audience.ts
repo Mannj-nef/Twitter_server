@@ -14,7 +14,16 @@ const audienceValidator = async (req: Request, res: Response, next: NextFunction
   try {
     const { user_id } = req.decoded_token as TokenPayload;
 
-    const [tweet] = await database.tweets.aggregate<TweetModel>(aggregate.getTweetDetail).toArray();
+    if (!ObjectId.isValid(req.params.tweet_id)) {
+      throw new CustomError({
+        statusCode: HTTP_STATUS.NOT_FOUND,
+        message: TWEETS_MESSAGES.INVALID_TWEET_ID
+      });
+    }
+
+    const [tweet] = await database.tweets
+      .aggregate<TweetModel>(aggregate.getTweetDetail(req.params.tweet_id))
+      .toArray();
 
     if (!tweet) {
       throw new CustomError({
