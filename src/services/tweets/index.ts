@@ -4,6 +4,7 @@ import createTweet from './createTweet';
 import createTweetCircle from './createTweetCircle';
 import deleteTweet from './deleteTweet';
 import deleteTweetCircle from './deleteTweetCircle';
+import getTweetChildren from './getTweetChildren';
 import increaseView from './increaseView';
 
 class TweetServices {
@@ -20,7 +21,9 @@ class TweetServices {
 
   // increaseView when get tweet
   increaseView = increaseView;
+
+  getChildren = getTweetChildren;
 }
 
-const tweetSecvices = new TweetServices();
-export default tweetSecvices;
+const tweetServices = new TweetServices();
+export default tweetServices;

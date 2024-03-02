@@ -3,6 +3,7 @@ import { ParamsDictionary } from 'express-serve-static-core';
 import { WithId } from 'mongodb';
 import HTTP_STATUS from '~/constants/httpStatuss';
 import { TWEETS_MESSAGES } from '~/constants/messages';
+import { TweetType } from '~/enums/tweet';
 import { ITweetCircleRequestBody, ITweetRequestBody, TokenPayload } from '~/interfaces/requests';
 import { IResponse, IResponseResult } from '~/interfaces/response';
 import TweetModel from '~/models/schemas/Tweet';
@@ -19,7 +20,7 @@ const tweetController = {
     });
 
     return res.json({
-      message: 'success',
+      message: TWEETS_MESSAGES.GET_TWEET_SUCCESS,
       result: {
         ...tweet,
         user_views: resultTweetView.user_views,
@@ -31,9 +32,24 @@ const tweetController = {
 
   // [GET] /tweets/children
   getTweetChildren: async (req: Request, res: Response) => {
+    const { tweet_type, limit, page } = req.query;
+
+    const { totalPage, tweets } = await tweetServices.getChildren({
+      tweet_type: `${tweet_type}` as TweetType,
+      tweet_id: req.params.tweet_id,
+      user_id: req.decoded_token?.user_id,
+      limit: Number(limit),
+      page: Number(page)
+    });
+
     return res.json({
-      message: 'success',
-      result: 'okey'
+      message: TWEETS_MESSAGES.GET_TWEET_SUCCESS,
+      result: {
+        tweets,
+        totalPage: Math.ceil(Number(totalPage) / Number(limit)),
+        page: Number(page),
+        limit: Number(limit)
+      }
     });
   },
 
