@@ -5,7 +5,7 @@ import database from './databases';
 import cors from 'cors';
 import errorHandler from './middlewares/errors';
 import corsConfig from './configs/cors';
-import initFoulder from './utils/initFolder';
+import initFolder from './utils/initFolder';
 
 const START_SERVER = async () => {
   try {
@@ -22,7 +22,7 @@ const START_SERVER = async () => {
     const port = process.env.PORT || 3838;
 
     //  init foulder uploads
-    initFoulder();
+    initFolder();
 
     // config cors
     app.use(cors(corsConfig));
