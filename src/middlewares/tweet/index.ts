@@ -3,6 +3,7 @@ import {
   deleteTweet,
   validateTweetCircle,
   audienceValidator,
+  validateTweetPagination,
   tweetChildrenQueryValidation
 } from './validates';
 
@@ -11,6 +12,7 @@ const tweetValidate = {
   deleteTweet,
   validateTweetCircle,
   audienceValidator,
+  validateTweetPagination,
   tweetChildrenQueryValidation
 };
 

@@ -11,9 +11,32 @@ import TweetCircleModel from '~/models/schemas/TweetCircle';
 import tweetServices from '~/services/tweets';
 
 const tweetController = {
-  // [GET] /tweet
-  getTweetDetail: async (rep: Request, res: Response<IResponseResult<TweetModel>>) => {
-    const tweet = rep.tweet as TweetModel;
+  // [GET] /
+  getTweets: async (req: Request, res: Response) => {
+    const { limit, page } = req.query;
+
+    const limitData = limit ? Number(limit) : 10;
+    const pageDate = page ? Number(page) : 1;
+
+    const tweets = await tweetServices.getTweets({
+      limit: limitData,
+      page: pageDate,
+      user_id: req.decoded_token?.user_id as string
+    });
+
+    return res.json({
+      message: TWEETS_MESSAGES.GET_NEW_TWEETS_SUCCESS,
+      result: {
+        limit: limitData,
+        page: pageDate,
+        tweets
+      }
+    });
+  },
+
+  // [GET] /:tweet_id
+  getTweetDetail: async (req: Request, res: Response<IResponseResult<TweetModel>>) => {
+    const tweet = req.tweet as TweetModel;
     const resultTweetView = await tweetServices.increaseView({
       tweet_id: `${tweet._id}`,
       user_id: `${tweet.user_id}`
@@ -30,7 +53,7 @@ const tweetController = {
     });
   },
 
-  // [GET] /tweets/children
+  // [GET] /:tweet_id/children
   getTweetChildren: async (req: Request, res: Response) => {
     const { tweet_type, limit, page } = req.query;
 
@@ -56,7 +79,7 @@ const tweetController = {
     });
   },
 
-  // [PORT] /tweet
+  // [PORT] /
   createTweet: async (
     req: Request<ParamsDictionary, IResponseResult<ITweetRequestBody>, ITweetRequestBody>,
     res: Response<IResponseResult<ITweetRequestBody>>
@@ -90,7 +113,7 @@ const tweetController = {
     });
   },
 
-  // [DELETE] /circle/:user_id
+  // [DELETE] /circle/:user_id_tweetCircle
   deleteTweetCircle: async (req: Request, res: Response<IResponse>) => {
     const { user_id_tweetCircle } = req.params;
     const { user_id } = req.decoded_token as TokenPayload;

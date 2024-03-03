@@ -6,10 +6,13 @@ import deleteTweet from './deleteTweet';
 import deleteTweetCircle from './deleteTweetCircle';
 import getTweetChildren from './getTweetChildren';
 import increaseView from './increaseView';
+import handleGetTweets from './getTweets';
 
 class TweetServices {
   createTweet = createTweet;
   deleteTweet = deleteTweet;
+  getTweets = handleGetTweets;
+  getChildren = getTweetChildren;
 
   // circle
   createCircle = createTweetCircle;
@@ -21,8 +24,6 @@ class TweetServices {
 
   // increaseView when get tweet
   increaseView = increaseView;
-
-  getChildren = getTweetChildren;
 }
 
 const tweetServices = new TweetServices();

@@ -53,7 +53,8 @@ const TWEETS_MESSAGES = {
   DELETE_TWEET_SUCCESS: 'Delete tweet successfully',
   CREATE_CIRCLE_SUCCESS: 'Create circle success',
   DELETE_CIRCLE_SUCCESS: 'Delete circle success',
-  GET_TWEET_SUCCESS: 'Get tweet successfully'
+  GET_TWEET_SUCCESS: 'Get tweet successfully',
+  GET_NEW_TWEETS_SUCCESS: 'Get new tweets successfully'
 } as const;
 
 export default TWEETS_MESSAGES;

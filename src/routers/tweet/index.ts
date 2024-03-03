@@ -9,6 +9,21 @@ const tweetRouter = Router();
 
 /**
  * [GET]
+ * Path: /
+ * Header: { Authorization: 'Bearer <access_token>' }
+ * Response: { message: string, result: TweetModel[] }
+ * Query: { limit: number, page: number }
+ */
+tweetRouter.get(
+  '/',
+  middlewaresAuth.authentication,
+  middlewaresAuth.verifyStatusUser,
+  tweetValidate.validateTweetPagination,
+  wrapRequestHandle(tweetController.getTweets)
+);
+
+/**
+ * [GET]
  * Path: /:tweet_id
  * Header: { Authorization: 'Bearer <access_token>' }
  * Response: { message: string, result: TweetModel }
@@ -31,6 +46,7 @@ tweetRouter.get(
 tweetRouter.get(
   '/:tweet_id/children',
   tweetValidate.tweetChildrenQueryValidation,
+  tweetValidate.validateTweetPagination,
   middlewaresAuth.authentication,
   middlewaresAuth.verifyStatusUser,
   tweetValidate.audienceValidator,

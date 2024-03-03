@@ -30,6 +30,18 @@ export const LOOK_UP = {
     localField: '_id',
     foreignField: 'tweet_id',
     as: 'bookmarks'
+  },
+  TWEET_CIRCLES: {
+    from: 'tweetCircle',
+    localField: 'user_id',
+    foreignField: 'user_id',
+    as: 'tweetCircle'
+  },
+  USERS: {
+    from: 'users',
+    localField: 'user_id',
+    foreignField: '_id',
+    as: 'users'
   }
 };
 
