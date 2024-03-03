@@ -1,10 +1,17 @@
-import { createTweet, deleteTweet, validateTweetCircle, audienceValidator } from './validates';
+import {
+  createTweet,
+  deleteTweet,
+  validateTweetCircle,
+  audienceValidator,
+  tweetChildrenQueryValidation
+} from './validates';
 
 const tweetValidate = {
   createTweet,
   deleteTweet,
   validateTweetCircle,
-  audienceValidator
+  audienceValidator,
+  tweetChildrenQueryValidation
 };
 
 export default tweetValidate;

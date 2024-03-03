@@ -34,21 +34,24 @@ const tweetController = {
   getTweetChildren: async (req: Request, res: Response) => {
     const { tweet_type, limit, page } = req.query;
 
+    const limitData = limit ? Number(limit) : 10;
+    const pageDate = page ? Number(page) : 1;
+
     const { totalPage, tweets } = await tweetServices.getChildren({
       tweet_type: `${tweet_type}` as TweetType,
       tweet_id: req.params.tweet_id,
       user_id: req.decoded_token?.user_id,
-      limit: Number(limit),
-      page: Number(page)
+      limit: limitData,
+      page: pageDate
     });
 
     return res.json({
       message: TWEETS_MESSAGES.GET_TWEET_SUCCESS,
       result: {
-        tweets,
-        totalPage: Math.ceil(Number(totalPage) / Number(limit)),
-        page: Number(page),
-        limit: Number(limit)
+        totalPage: Math.ceil(Number(totalPage) / Number(limitData)),
+        limit: limitData,
+        page: pageDate,
+        tweets
       }
     });
   },

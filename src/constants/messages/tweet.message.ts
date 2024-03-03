@@ -2,6 +2,7 @@ const TWEETS_MESSAGES = {
   INVALID_TYPE: 'Invalid type',
   INVALID_AUDIENCE: 'Invalid audience',
   INVALID_TWEET_ID: 'Invalid tweet id',
+  INVALID_TWEET_TYPE: 'Type must be is tweet, retweet, comment or quoteTweet',
 
   // content
   CONTENT_LENGTH_MUST_BE_FROM_1_TO_300: 'Content length must be from 1 to 100',
@@ -41,6 +42,11 @@ const TWEETS_MESSAGES = {
 
   USER_ID_MUST_BE_IS_STRING: 'UserId must be is string',
   USER_ID_MUST_BE_INVALID: 'UserId must be is ObjectId',
+
+  // limit && page
+  LIMIT_MUST_BE_FROM_1_TO_100: 'Limit must be from 1 to 100',
+  PAGE_MUST_BE_FROM_1: 'Page must be from 1',
+  PAGE_AND_LIMIT_MUST_BE_NUMBER: 'Page and limit must be number',
 
   // success
   CREATE_TWEET_SUCCESS: 'Create tweet successfully',

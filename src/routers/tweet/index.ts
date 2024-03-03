@@ -30,6 +30,7 @@ tweetRouter.get(
  */
 tweetRouter.get(
   '/:tweet_id/children',
+  tweetValidate.tweetChildrenQueryValidation,
   middlewaresAuth.authentication,
   middlewaresAuth.verifyStatusUser,
   tweetValidate.audienceValidator,
