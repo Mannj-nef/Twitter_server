@@ -31,6 +31,11 @@ const handleGetTweets = async ({
     )
     .toArray();
 
+  /**
+   * miss total page required
+   * miss plus view when get tweet
+   */
+
   return tweets;
 };
 
