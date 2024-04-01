@@ -21,22 +21,90 @@ const handleGetTweets = async ({
   const ids = userFollowed.map((user) => user.followed_user_id as ObjectId);
   ids.push(new ObjectId(user_id));
 
-  const tweets = await database.tweets
-    .aggregate<TweetModel[]>(
-      aggregate.getNewTweets({
-        ids,
-        limit,
-        page
-      })
-    )
-    .toArray();
+  const [tweets, totalCount] = await Promise.all([
+    await database.tweets
+      .aggregate<TweetModel>(
+        aggregate.getNewTweets({
+          ids,
+          limit,
+          page
+        })
+      )
+      .toArray(),
 
-  /**
-   * miss total page required
-   * miss plus view when get tweet
-   */
+    await database.tweets
+      .aggregate([
+        {
+          $match: {
+            user_id: {
+              $in: ids
+            }
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'users'
+          }
+        },
+        {
+          $unwind: {
+            path: '$users'
+          }
+        },
+        {
+          $lookup: {
+            from: 'tweetCircle',
+            localField: 'user_id',
+            foreignField: 'user_id',
+            as: 'tweetCircle'
+          }
+        },
+        {
+          $match: {
+            $or: [
+              {
+                audience: 'everyone'
+              },
+              {
+                $and: [
+                  {
+                    audience: 'circle'
+                  },
+                  {
+                    'tweetCircle.user_id_tweetCircle': {
+                      $in: [user_id]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          $count: 'total'
+        }
+      ])
+      .toArray()
+  ]);
 
-  return tweets;
+  const tweetIds = tweets.map((tweet) => tweet._id as ObjectId);
+  await database.tweets.updateMany(
+    {
+      _id: { $in: tweetIds }
+    },
+    {
+      $inc: { user_views: 1 },
+      $set: { updated_at: new Date() }
+    }
+  );
+  tweets.forEach((tweet) => {
+    tweet.user_views++;
+  });
+
+  return { tweets, totalCount: totalCount[0].total };
 };
 
 export default handleGetTweets;

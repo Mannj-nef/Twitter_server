@@ -18,7 +18,7 @@ const tweetController = {
     const limitData = limit ? Number(limit) : 10;
     const pageDate = page ? Number(page) : 1;
 
-    const tweets = await tweetServices.getTweets({
+    const { tweets, totalCount } = await tweetServices.getTweets({
       limit: limitData,
       page: pageDate,
       user_id: req.decoded_token?.user_id as string
@@ -29,6 +29,8 @@ const tweetController = {
       result: {
         limit: limitData,
         page: pageDate,
+        total: totalCount,
+        totalPage: Math.ceil(Number(totalCount) / Number(limitData)),
         tweets
       }
     });
