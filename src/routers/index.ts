@@ -6,6 +6,7 @@ import mediaRouter from './media';
 import staticRouter from './static';
 import followRouter from './follow';
 import bookmarkRouter from './bookmars';
+import searchRouter from './search';
 
 import notFound from '~/controllers/notFoundController';
 import likeRouter from './like';
@@ -19,6 +20,7 @@ router.use('/tweets', tweetRouter);
 router.use('/static', staticRouter);
 router.use('/bookmarks', bookmarkRouter);
 router.use('/likes', likeRouter);
+router.use('/search', searchRouter);
 
 // router not found!
 router.use('*', notFound);

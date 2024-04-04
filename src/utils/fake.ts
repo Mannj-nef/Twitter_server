@@ -10,17 +10,9 @@ import Tweet from '~/models/schemas/Tweet';
 import User from '~/models/schemas/User';
 import { handleHashPassword as hashPassword } from '~/utils/password.util';
 
-/**
- * Yêu cầu: Mọi người phải cài đặt `@faker-js/faker` vào project
- * Cài đặt: `npm i @faker-js/faker`
- */
-
-// Mật khẩu cho các fake user
 const PASSWORD = 'Mquan123!';
-// ID của tài khoản của mình, dùng để follow người khác
 const MYID = new ObjectId('64ba0043c22e9164e4654633');
 
-// Số lượng user được tạo, mỗi user sẽ mặc định tweet 2 cái
 const USER_COUNT = 400;
 
 const createRandomUser = () => {

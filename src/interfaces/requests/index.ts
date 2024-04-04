@@ -4,3 +4,5 @@ export * from './tweet.request';
 export * from './follow.requests';
 export * from './oauth.requests';
 export * from './bookmark.requests';
+export * from './like.request';
+export * from './search.request';
