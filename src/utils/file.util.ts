@@ -5,7 +5,7 @@ import { CustomError } from '~/models/errors';
 import fileSystem from 'fs';
 
 import { MEDIA_MESSAGE } from '~/constants/messages';
-import HTTP_STATUS from '~/constants/httpStatuss';
+import HTTP_STATUS from '~/constants/httpStatus';
 
 export const handleCreateFolder = (path: string) => {
   if (!fileSystem.existsSync(path)) {

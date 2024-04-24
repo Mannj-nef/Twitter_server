@@ -1,6 +1,6 @@
 import { USERS_MESSAGES } from '~/constants/messages';
 import { ErrorResponse, ErrorWithStatus, ErrorsTypeValidate } from './types';
-import HTTP_STATUS from '~/constants/httpStatuss';
+import HTTP_STATUS from '~/constants/httpStatus';
 
 class CustomError extends Error {
   statusCode: number;

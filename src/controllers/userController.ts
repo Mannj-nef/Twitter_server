@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
-import HTTP_STATUS from '~/constants/httpStatuss';
+import HTTP_STATUS from '~/constants/httpStatus';
 import { USERS_MESSAGES } from '~/constants/messages';
 import { UserVerifyStatus } from '~/enums/user';
 import {

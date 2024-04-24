@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { WithId } from 'mongodb';
-import HTTP_STATUS from '~/constants/httpStatuss';
+import HTTP_STATUS from '~/constants/httpStatus';
 import { TWEETS_MESSAGES } from '~/constants/messages';
 import { TweetType } from '~/enums/tweet';
 import { ITweetCircleRequestBody, ITweetRequestBody, TokenPayload } from '~/interfaces/requests';

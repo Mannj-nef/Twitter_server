@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import HTTP_STATUS from '~/constants/httpStatuss';
+import HTTP_STATUS from '~/constants/httpStatus';
 import { USERS_MESSAGES } from '~/constants/messages';
 import database from '~/databases';
 import { ILogoutRequestBody } from '~/interfaces/requests';

@@ -1,5 +1,6 @@
 import { ObjectId } from 'bson';
 import { ADD_FIELDS, LOOK_UP } from '~/constants/aggregate/tweet';
+import { TweetAudience } from '~/enums';
 
 export const getNewTweets = ({
   ids,
@@ -33,12 +34,12 @@ export const getNewTweets = ({
       $match: {
         $or: [
           {
-            audience: 'everyone'
+            audience: TweetAudience.Everyone
           },
           {
             $and: [
               {
-                audience: 'circle'
+                audience: TweetAudience.TwitterCircle
               },
               {
                 'tweetCircle.user_id_tweetCircle': {

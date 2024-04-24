@@ -1,6 +1,6 @@
 import { ObjectId } from 'bson';
 import { NextFunction, Request, Response } from 'express';
-import HTTP_STATUS from '~/constants/httpStatuss';
+import HTTP_STATUS from '~/constants/httpStatus';
 import { TWEETS_MESSAGES, USERS_MESSAGES } from '~/constants/messages';
 import database from '~/databases';
 import { TweetAudience } from '~/enums/tweet';

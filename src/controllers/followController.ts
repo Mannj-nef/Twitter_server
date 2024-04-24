@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
-import HTTP_STATUS from '~/constants/httpStatuss';
+import HTTP_STATUS from '~/constants/httpStatus';
 import { USERS_MESSAGES } from '~/constants/messages';
 import { TokenPayload } from '~/interfaces/requests';
 import {
