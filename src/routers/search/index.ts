@@ -5,7 +5,11 @@ import searchController from '~/controllers/searchController';
 const useRouter = Router();
 
 /**
- *
+ * [GET]
+ * Path: /
+ * Header: { Authorization: 'Bearer <access_token>' }
+ * Response: { message: string, result: TweetModel[] | UserModel[] } }
+ * Query: { content: string, page: number, limit: number }
  */
 useRouter.get('/', searchController.search);
 
