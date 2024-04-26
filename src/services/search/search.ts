@@ -1,23 +1,37 @@
+/* eslint-disable prettier/prettier */
 import { ObjectId } from 'mongodb';
 import database from '~/databases';
-import { TweetAudience } from '~/enums';
+import { MediaType, TweetAudience, TweetType } from '~/enums';
 
 const handleSearch = async ({
   content,
   page,
   limit,
-  userId
+  userId,
+  mediaType
 }: {
   content: string;
   page: number;
   userId: string;
   limit: number;
+  mediaType?: MediaType;
 }) => {
+  const $match = () => {
+    if (!mediaType) {
+      return { $text: { $search: content, $path: 'full', $caseSensitive: false } };
+    } else {
+      return {
+        $text: { $search: content, $caseSensitive: false },
+        ['medias.type']: mediaType
+      };
+    }
+  };
+
   const [data, totalCount] = await Promise.all([
     await database.tweets
       .aggregate(
         [
-          { $match: { $text: { $search: content } } },
+          { $match: $match() },
           {
             $lookup: {
               from: 'users',
@@ -119,7 +133,7 @@ const handleSearch = async ({
                     input: '$reply',
                     as: 'item',
                     cond: {
-                      $eq: ['$$item.type', 'comment']
+                      $eq: ['$$item.type', TweetType.Comment]
                     }
                   }
                 }
@@ -130,7 +144,7 @@ const handleSearch = async ({
                     input: '$reply',
                     as: 'item',
                     cond: {
-                      $eq: ['$$item.type', 'quoteTweet']
+                      $eq: ['$$item.type', TweetType.QuoteTweet]
                     }
                   }
                 }
@@ -141,7 +155,7 @@ const handleSearch = async ({
                     input: '$reply',
                     as: 'item',
                     cond: {
-                      $eq: ['$$item.type', 'retweet']
+                      $eq: ['$$item.type', TweetType.Retweet]
                     }
                   }
                 }
@@ -159,7 +173,7 @@ const handleSearch = async ({
               }
             }
           },
-          { $skip: limit * (page - 1) },
+          { $skip: (page - 1) * limit },
           { $limit: limit }
         ],
         { maxTimeMS: 60000, allowDiskUse: true }
@@ -171,7 +185,7 @@ const handleSearch = async ({
       .toArray()
   ]);
 
-  return { data, totalCount: totalCount[0].total };
+  return { data, totalCount: totalCount[0]?.total || 0 };
 };
 
 export default handleSearch;

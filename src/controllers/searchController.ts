@@ -1,5 +1,6 @@
-import { Request, Response } from 'express';
+import { Request, Response, query } from 'express';
 import SEARCH_MESSAGE from '~/constants/messages/search.message';
+import { MediaType } from '~/enums';
 import searchServices from '~/services/search';
 
 const searchController = {
@@ -14,7 +15,8 @@ const searchController = {
       content: contentSearch as string,
       page,
       limit,
-      userId
+      userId,
+      mediaType: req.query.media_type as MediaType
     });
 
     return res.json({

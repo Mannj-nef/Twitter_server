@@ -12,7 +12,6 @@ import {
 import { UserModel, RefreshTokenModel, FollowerModel } from '~/models/schemas/';
 import { UserUnion } from './types/users';
 import { FollowerUnion } from './types/followers';
-import FollowerModle from '~/models/schemas/Follower';
 import TweetModel from '~/models/schemas/Tweet';
 import HashTagModel from '~/models/schemas/HashTags';
 import BookMarkModel from '~/models/schemas/BookMark';
@@ -81,7 +80,7 @@ class Database {
     return this.db.collection(process.env.DB_REFRESH_TOKEN_COLLECTION as string);
   }
 
-  get followers(): Collection<FollowerModle> {
+  get followers(): Collection<FollowerModel> {
     return this.db.collection(process.env.DB_FOLLOW_COLLECTION as string);
   }
 
@@ -127,11 +126,12 @@ class Database {
   };
 
   tweetIndex = async () => {
-    const existed = await this.tweets.indexExists(['user_id_1', 'user_id_1__id_1']);
+    const existed = await this.tweets.indexExists(['user_id_1', 'user_id_1__id_1', 'content_text']);
     if (existed) return;
 
     await this.tweets.createIndex({ user_id: 1 });
     await this.tweets.createIndex({ user_id: 1, _id: 1 });
+    await this.tweets.createIndex({ content: 'text' }, { default_language: 'none' });
   };
 
   tweetCircleIndex = async () => {
