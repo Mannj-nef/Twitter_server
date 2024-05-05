@@ -18,7 +18,7 @@ const handleSearch = async ({
 }) => {
   const $match = () => {
     if (!mediaType) {
-      return { $text: { $search: content, $path: 'full', $caseSensitive: false } };
+      return { $text: { $search: content, $caseSensitive: false } };
     } else {
       return {
         $text: { $search: content, $caseSensitive: false },

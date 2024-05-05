@@ -9,7 +9,7 @@ const searchController = {
     const contentSearch = req.query.content;
     const page = req.query.page ? Number(req.query.page) : 1;
     const limit = req.query.limit ? Number(req.query.limit) : 1;
-    const userId = '65e44a7093aa2b572e46bea2';
+    const userId = req.decoded_token?.user_id as string;
 
     const result = await searchServices.search({
       content: contentSearch as string,
