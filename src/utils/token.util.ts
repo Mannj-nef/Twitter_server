@@ -5,6 +5,7 @@ import { CustomError } from '~/models/errors';
 import { capitalize } from 'lodash';
 import { TokenType } from '~/enums/token';
 import { TokenPayload } from '~/interfaces/requests';
+import HTTP_STATUS from '~/constants/httpStatus';
 
 dotenv.config();
 
@@ -71,7 +72,15 @@ const signForgotPassToken = (payload: IDataToken) => {
 };
 
 // verify token
-const verifyToken = ({ token, secretKey }: { token: string; secretKey: string }) => {
+const verifyToken = ({
+  token,
+  secretKey,
+  statusCodeError = HTTP_STATUS.FORBIDDEN
+}: {
+  token: string;
+  secretKey: string;
+  statusCodeError?: number;
+}) => {
   try {
     const decoded = jwt.verify(token, secretKey);
 
@@ -79,7 +88,7 @@ const verifyToken = ({ token, secretKey }: { token: string; secretKey: string })
   } catch (error) {
     const { message } = error as Error;
 
-    throw new CustomError({ statusCode: 403, message: capitalize(message) });
+    throw new CustomError({ statusCode: statusCodeError, message: capitalize(message) });
   }
 };
 

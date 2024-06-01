@@ -6,6 +6,7 @@ import { RefreshTokenModel, UserModel } from '~/models/schemas';
 import { handleHashPassword } from '~/utils/password.util';
 import createToken, { signEmailToken, verifyToken } from '~/utils/token.util';
 import dotenv from 'dotenv';
+import sendEmail from '~/utils/sesSendEmail.util';
 
 dotenv.config();
 
@@ -48,6 +49,11 @@ const register = async (payload: IRegisterRequestBody) => {
    * util send email
    */
   console.log({ email_verify_token });
+  sendEmail({
+    body: `hello this is email from ses aws <a href=${process.env.CLIENT_URL}/verify-email?token=${email_verify_token}>link</a>`,
+    subject: 'verify email',
+    toAddress: 'manhquan.05012002@gmail.com'
+  });
 
   return {
     token,

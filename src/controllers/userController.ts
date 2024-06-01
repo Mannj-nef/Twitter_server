@@ -129,15 +129,9 @@ const userController = {
   verifyEmail: async (req: Request, res: Response<IResponseToken | IResponse>) => {
     const user = req.user as UserModel;
 
-    if (user.verify === UserVerifyStatus.Verified) {
-      return res.status(HTTP_STATUS.OK).json({
-        message: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE
-      });
-    }
-
     const { token, rfToken } = await userServices.verifyEmail(user);
 
-    return res.status(200).json({
+    return res.status(HTTP_STATUS.OK).json({
       message: USERS_MESSAGES.VERIFY_EMAIL_TOKEN_SUCCESS,
       access_token: token,
       refresh_token: rfToken
@@ -164,10 +158,10 @@ const userController = {
 
   // [PORT] /user/forgot-password
   forgotPassword: async (req: Request, res: Response<IResponse>) => {
-    const { _id } = req.user as UserModel;
+    const { _id, verify } = req.user as UserModel;
     const user_id = (_id as ObjectId).toString();
 
-    await userServices.forgotPassword(user_id);
+    await userServices.forgotPassword({ user_id, verify });
 
     return res.status(200).json({
       message: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_SUCCESS

@@ -84,7 +84,7 @@ userRouter.post(
  * [PORT]
  * Path: /logout
  * Header: {Authorization: 'Bearer <access_token>'}
- * Body: { refetchToken: JWT<refersh_token> }
+ * Body: { refetchToken: JWT<refresh_token> }
  * Response: { message: string }
  */
 userRouter.post(
@@ -102,7 +102,7 @@ userRouter.post(
  * Response: { accessToken: JWT<access_token>, refreshToken: JWT<access_token> }
  */
 userRouter.post(
-  '/veriry-email',
+  '/verify-email',
   validate.emailToken,
   middlewaresAuth.verifyEmailToken,
   wrapRequestHandle(userController.verifyEmail)

@@ -21,7 +21,7 @@ const START_SERVER = async () => {
     const app = express();
     const port = process.env.PORT || 3838;
 
-    //  init foulder uploads
+    //  init folder uploads
     initFolder();
 
     // config cors
@@ -36,9 +36,9 @@ const START_SERVER = async () => {
     // handle error
     app.use(errorHandler);
 
-    // lisster port
+    // listen  port
     app.listen(port, () => {
-      console.log(`server listien on port ${port}`);
+      console.log(`server listen on port ${port}`);
     });
   } catch (error) {
     console.log(error);
