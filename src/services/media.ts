@@ -2,7 +2,7 @@ import media from './medias';
 
 class MediaServices {
   uploadImage = media.uploadImage;
-  uploadvideo = media.uploadvideo;
+  uploadVideo = media.uploadVideo;
 }
 
 const mediaServices = new MediaServices();

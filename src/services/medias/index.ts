@@ -1,8 +1,8 @@
 import uploadImage from './uploadImage';
-import uploadvideo from './uploadVideo';
+import uploadVideo from './uploadVideo';
 
 const media = {
-  uploadvideo,
+  uploadVideo,
   uploadImage
 };
 

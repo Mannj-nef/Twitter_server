@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { ListIdentitiesCommand, SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 
 dotenv.config();
 

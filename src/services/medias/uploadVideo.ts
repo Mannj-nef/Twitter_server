@@ -1,33 +1,42 @@
 import { Request } from 'express';
 import fileSystem from 'fs';
-import { isProduction } from '~/configs/argv';
 import { MediaType } from '~/enums/media';
 import { IMedia } from '~/models/schemas/Media';
 import { uploadFile } from '~/utils/file.util';
 import dotenv from 'dotenv';
 import { formidableVideoOption } from '~/common/medias';
+import { uploadS3 } from '~/utils/s3';
+import fs from 'fs';
+import { UPLOAD_VIDEO_DIR } from '~/constants/dirs';
 
 dotenv.config();
 
-const uploadvideo = async (req: Request) => {
+const uploadVideo = async (req: Request) => {
   const fileVideos = await uploadFile({ req, formidableOption: formidableVideoOption });
 
-  const listUrlVideo: IMedia[] = fileVideos.map((file) => {
-    // ["name", "mp4"]
-    const nameSlpit = file.originalFilename?.split('.') as string[];
-    const fileExtension = nameSlpit[nameSlpit.length - 1];
+  const listUrlVideo: IMedia[] = await Promise.all(
+    fileVideos.map(async (file) => {
+      const nameSplit = file.originalFilename?.split('.') as string[]; // ["name", "mp4"]
+      const fileExtension = nameSplit[nameSplit.length - 1];
+      const newPath = `${UPLOAD_VIDEO_DIR}/${file.newFilename}.${fileExtension}`;
 
-    fileSystem.renameSync(file.filepath, `${file.filepath}.${fileExtension}`);
+      fileSystem.renameSync(file.filepath, `${file.filepath}.${fileExtension}`);
 
-    const hostVideoUrl = isProduction
-      ? `${process.env.HOST}`
-      : `http://localhost:${process.env.PORT}`;
-    const videoURL = `${hostVideoUrl}/static/videos/${file.newFilename}.mp4`;
+      console.log(`videos/${nameSplit[0]}.${fileExtension}`);
 
-    return { url: videoURL, type: MediaType.Video };
-  });
+      const videoURL = await uploadS3({
+        fileName: `videos/${nameSplit[0]}.${fileExtension}`,
+        file: fs.readFileSync(newPath),
+        ContentType: 'video/mp4'
+      });
+
+      fileSystem.unlinkSync(`${file.filepath}.${fileExtension}`);
+
+      return { url: videoURL, type: MediaType.Video };
+    })
+  );
 
   return listUrlVideo;
 };
 
-export default uploadvideo;
+export default uploadVideo;

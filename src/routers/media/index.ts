@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import mediaControler from '~/controllers/mediaController';
+import mediaController from '~/controllers/mediaController';
 import wrapRequestHandle from '~/utils/wrapRequest.util';
 
 const mediaRouter = Router();
@@ -11,7 +11,7 @@ const mediaRouter = Router();
  * Body: { File : { key: image } }
  * Response: { message: string, result: IMedia[] }
  */
-mediaRouter.post('/upload-image', wrapRequestHandle(mediaControler.uploadImage));
+mediaRouter.post('/upload-image', wrapRequestHandle(mediaController.uploadImage));
 
 /**
  * [POST]
@@ -20,6 +20,6 @@ mediaRouter.post('/upload-image', wrapRequestHandle(mediaControler.uploadImage))
  * Body: { File : { key: video } }
  * Response: { message: string, result: IMedia[] }
  */
-mediaRouter.post('/upload-video', wrapRequestHandle(mediaControler.uploadVideo));
+mediaRouter.post('/upload-video', wrapRequestHandle(mediaController.uploadVideo));
 
 export default mediaRouter;

@@ -8,7 +8,7 @@ import mediaServices from '~/services/media';
 import fileSystem from 'fs';
 import mime from 'mime';
 
-const mediaControler = {
+const mediaController = {
   // [POST] /medias/upload-image
   uploadImage: async (req: Request, res: Response<IResponseResult<IMedia[]>>) => {
     const result = await mediaServices.uploadImage(req);
@@ -21,7 +21,7 @@ const mediaControler = {
 
   // [POST] /medias/upload-video
   uploadVideo: async (req: Request, res: Response<IResponseResult<IMedia[]>>) => {
-    const result = await mediaServices.uploadvideo(req);
+    const result = await mediaServices.uploadVideo(req);
 
     return res.json({
       message: 'success',
@@ -96,4 +96,4 @@ const mediaControler = {
   }
 };
 
-export default mediaControler;
+export default mediaController;
