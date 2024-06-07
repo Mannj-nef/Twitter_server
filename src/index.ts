@@ -6,6 +6,8 @@ import cors from 'cors';
 import errorHandler from './middlewares/errors';
 import corsConfig from './configs/cors';
 import initFolder from './utils/initFolder';
+import { Server } from 'socket.io';
+import { createServer } from 'http';
 
 const START_SERVER = async () => {
   try {
@@ -19,6 +21,8 @@ const START_SERVER = async () => {
     dotenv.config();
 
     const app = express();
+    const server = createServer(app);
+    const io = new Server(server);
     const port = process.env.PORT || 3838;
 
     //  init folder uploads
@@ -37,7 +41,7 @@ const START_SERVER = async () => {
     app.use(errorHandler);
 
     // listen  port
-    app.listen(port, () => {
+    server.listen(port, () => {
       console.log(`server listen on port ${port}`);
     });
   } catch (error) {
