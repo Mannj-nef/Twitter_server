@@ -12,7 +12,6 @@ import { createServer } from 'http';
 const START_SERVER = async () => {
   try {
     // connect db
-    // database.connect();
     await database.connect().then(() => {
       database.createIndexCollection();
     });
@@ -22,7 +21,11 @@ const START_SERVER = async () => {
 
     const app = express();
     const server = createServer(app);
-    const io = new Server(server);
+    const io = new Server(server, {
+      cors: {
+        origin: process.env.CLIENT_URL
+      }
+    });
     const port = process.env.PORT || 3838;
 
     //  init folder uploads
@@ -39,6 +42,21 @@ const START_SERVER = async () => {
 
     // handle error
     app.use(errorHandler);
+
+    // socket io
+    io.on('connection', (socket) => {
+      console.log('---------------------------------------------------------------------------');
+
+      console.log('a user connected: ', socket.id);
+
+      socket.on('disconnect', () => {
+        console.log('user disconnected');
+      });
+
+      socket.on('message', (data) => {
+        console.log('message: ', data);
+      });
+    });
 
     // listen  port
     server.listen(port, () => {
