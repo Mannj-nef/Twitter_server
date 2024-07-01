@@ -44,22 +44,22 @@ const START_SERVER = async () => {
     app.use(errorHandler);
 
     // socket io
-    io.on('connection', (socket) => {
-      console.log('---------------------------------------------------------------------------');
+    // io.on('connection', (socket) => {
+    //   console.log('---------------------------------------------------------------------------');
 
-      console.log('a user connected: ', socket.id);
+    //   console.log('a user connected: ', socket.id);
 
-      socket.on('disconnect', () => {
-        console.log('user disconnected');
-      });
+    //   socket.on('disconnect', () => {
+    //     console.log('user disconnected');
+    //   });
 
-      socket.on('message', (data) => {
-        console.log('message: ', data);
-      });
-    });
+    //   socket.on('message', (data) => {
+    //     console.log('message: ', data);
+    //   });
+    // });
 
     // listen  port
-    server.listen(port, () => {
+    app.listen(port, () => {
       console.log(`server listen on port ${port}`);
     });
   } catch (error) {
