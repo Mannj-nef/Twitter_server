@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: ['master']
+  pull_request:
+    branches: ['master']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 'Create env file'
+        run: echo "${{ secrets.ENV_PRODUCTION }}" > .env
+
+      - name: Build the Docker image
+        run: docker build -t mannjnef/twitter_server:v1 .
+
+      - name: Login Docker hub
+        run: docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
+
+      - name: Push docker hub
+        run: docker push mannjnef/twitter_server:v1
